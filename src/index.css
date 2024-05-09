@@ -1,3 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
 body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.righteous {
+  font-family: 'Righteous', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+}
+
+.fs-7 {
+  font-size: 0.9rem;
+}
+
+.fs-8 {
+  font-size: 0.75rem;
+}
+
+.btn {
+  border-radius: 2rem;
+  padding-inline: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  margin: 0;
 }
