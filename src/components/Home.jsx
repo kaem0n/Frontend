@@ -20,7 +20,11 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <button onClick={logOut}>Log Out</button>
+  return (
+    <>
+      <button onClick={logOut}>Log Out</button>
+    </>
+  )
 }
 
 export default Home

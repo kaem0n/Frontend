@@ -4,12 +4,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import UserSignUp from './components/UserSignUp'
 import Login from './components/Login'
 import Home from './components/Home'
+import NavBar from './components/NavBar'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
 
   return (
     <BrowserRouter>
+      {accessToken ? <NavBar /> : <></>}
       <Routes>
         <Route
           path="/register"

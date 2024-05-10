@@ -11989,4 +11989,8 @@ textarea.form-control-lg {
   border-radius: 2rem;
   padding-inline: 1.5rem;
   font-weight: 600;
+}
+
+.dropdown-toggle.nav-link {
+  padding-block: 0;
 }/*# sourceMappingURL=custom_bootstrap.css.map */
