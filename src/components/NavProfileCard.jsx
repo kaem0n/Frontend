@@ -1,11 +1,24 @@
 /* eslint-disable react/prop-types */
+import { useRef } from 'react'
 import { NavDropdown } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 const NavProfileCard = ({ user }) => {
+  const navigate = useNavigate()
+  const toggleRef = useRef(null)
+
+  const logOut = () => {
+    localStorage.removeItem('accessToken')
+    navigate('/')
+    window.location.reload()
+  }
+
   return (
     <NavDropdown
       align="end"
+      ref={toggleRef}
       className="d-flex justify-content-center align-items-center"
+      id="test"
       title={
         user && (
           <img
@@ -19,7 +32,13 @@ const NavProfileCard = ({ user }) => {
     >
       <div className="profile-menu px-2 fs-7">
         {user && (
-          <div className="menu-option">
+          <div
+            className="menu-option"
+            onClick={() => {
+              navigate('/me')
+              toggleRef.current.click()
+            }}
+          >
             <img
               src={user.proPic}
               alt="profile-picture"
@@ -30,11 +49,17 @@ const NavProfileCard = ({ user }) => {
           </div>
         )}
         <hr />
-        <div className="menu-option">
+        <div
+          className="menu-option"
+          onClick={() => {
+            navigate('/settings')
+            toggleRef.current.click()
+          }}
+        >
           <i className="fa-solid fa-gear me-1"></i>
           Settings
         </div>
-        <div className="menu-option">
+        <div className="menu-option" onClick={logOut}>
           <i className="fa-solid fa-right-from-bracket me-1"></i>
           Log Out
         </div>

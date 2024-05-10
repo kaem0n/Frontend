@@ -1,14 +1,15 @@
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import Footer from './Footer'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-const Login = () => {
+const UserLogin = () => {
   const [usernameField, setUsernameField] = useState('')
   const [passwordField, setPasswordField] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [show, setShow] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const logIn = async () => {
     setLoading(true)
@@ -46,6 +47,9 @@ const Login = () => {
     e.preventDefault()
     logIn()
   }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => navigate('/'), [])
 
   return (
     <div className="d-flex flex-column vh-100 bg-body-tertiary">
@@ -100,4 +104,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default UserLogin

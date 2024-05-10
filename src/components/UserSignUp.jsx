@@ -7,9 +7,9 @@ import {
   Button,
   Spinner,
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const UserSignUp = () => {
   const [emailField, setEmailField] = useState('')
@@ -19,6 +19,7 @@ const UserSignUp = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
+  const navigate = useNavigate()
 
   const logIn = async () => {
     try {
@@ -91,6 +92,13 @@ const UserSignUp = () => {
     e.preventDefault()
     register()
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      navigate('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="pt-5 bg-body-tertiary vh-100 d-flex flex-column">
