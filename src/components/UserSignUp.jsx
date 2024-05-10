@@ -7,9 +7,9 @@ import {
   Button,
   Spinner,
 } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Footer from './Footer'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const UserSignUp = () => {
   const [emailField, setEmailField] = useState('')

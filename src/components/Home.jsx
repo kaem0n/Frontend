@@ -17,6 +17,7 @@ const Home = () => {
     ) {
       navigate('/')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <button onClick={logOut}>Log Out</button>
