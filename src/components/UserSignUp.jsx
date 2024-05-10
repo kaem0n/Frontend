@@ -1,15 +1,58 @@
-import { Form, Card, Col, Container, Row, Button } from 'react-bootstrap'
+import {
+  Form,
+  Card,
+  Col,
+  Container,
+  Row,
+  Button,
+  Spinner,
+} from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const UserSignUp = () => {
   const [emailField, setEmailField] = useState('')
   const [usernameField, setUsernameField] = useState('')
   const [passwordField, setPasswordField] = useState('')
-  const navigate = useNavigate()
+  const [isLoading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [show1, setShow1] = useState(false)
+  const [show2, setShow2] = useState(false)
+
+  const logIn = async () => {
+    try {
+      const res = await fetch('http://localhost:3030/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: usernameField,
+          password: passwordField,
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        console.log(data)
+        const accessToken = 'Bearer ' + data.accessToken
+        localStorage.setItem('accessToken', accessToken)
+        window.location.reload()
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      setErrorMsg(`${error}`)
+    }
+  }
 
   const register = async () => {
+    setLoading(true)
+    setShow1(false)
+    setShow2(false)
     try {
       const res = await fetch('http://localhost:3030/api/auth/register', {
         method: 'POST',
@@ -25,26 +68,35 @@ const UserSignUp = () => {
       if (res.ok) {
         const data = await res.json()
         console.log(data)
+        logIn()
       } else {
         const data = await res.json()
         throw new Error(data.message)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
+      let msg = '' + error
+      msg = msg.slice(msg.indexOf(' ') + 1)
+      setErrorMsg(msg)
+      if (msg.includes('Email')) {
+        setShow1(true)
+      } else if (msg.includes('Username')) {
+        setShow2(true)
+      }
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     register()
-    navigate('/')
   }
 
   return (
     <div className="pt-5 bg-body-tertiary vh-100 d-flex flex-column">
       <div className="flex-grow-1">
         <div className="mb-5 text-center text-secondary">
-          <h1 className="righteous">Welcome to</h1>
+          <h1 className="righteous cursor-default">Welcome to</h1>
           <img src="logo.png" alt="logo" height="70px" />
         </div>
         <Container>
@@ -56,23 +108,51 @@ const UserSignUp = () => {
                     Create your account
                   </Card.Title>
                   <Form className="mb-3" onSubmit={handleSubmit}>
-                    <Form.Control
-                      type="email"
-                      placeholder="Insert your email"
-                      className="py-2 mb-3"
-                      value={emailField}
-                      onChange={(e) => setEmailField(e.target.value)}
-                      required
-                    />
-                    <Form.Control
-                      placeholder="Choose an username"
-                      className="py-2 mb-3"
-                      minLength={3}
-                      maxLength={20}
-                      value={usernameField}
-                      onChange={(e) => setUsernameField(e.target.value)}
-                      required
-                    />
+                    <div className="mb-3">
+                      <Form.Control
+                        type="email"
+                        placeholder="Insert your email"
+                        className={
+                          show1
+                            ? 'py-2 border-danger text-danger shadow-none'
+                            : 'py-2'
+                        }
+                        value={emailField}
+                        onChange={(e) => {
+                          setEmailField(e.target.value)
+                          setShow1(false)
+                        }}
+                        required
+                      />
+                      {show1 && (
+                        <Form.Text className="text-danger fs-8">
+                          {errorMsg}
+                        </Form.Text>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <Form.Control
+                        placeholder="Choose an username"
+                        className={
+                          show2
+                            ? 'py-2 border-danger text-danger shadow-none'
+                            : 'py-2'
+                        }
+                        minLength={3}
+                        maxLength={20}
+                        value={usernameField}
+                        onChange={(e) => {
+                          setUsernameField(e.target.value)
+                          setShow2(false)
+                        }}
+                        required
+                      />
+                      {show2 && (
+                        <Form.Text className="text-danger fs-8">
+                          {errorMsg}
+                        </Form.Text>
+                      )}
+                    </div>
                     <Form.Control
                       type="password"
                       placeholder="Choose a password"
@@ -93,11 +173,11 @@ const UserSignUp = () => {
                     />
                     <div className="d-flex">
                       <Button type="submit" className="flex-grow-1">
-                        Create account
+                        {isLoading ? <Spinner size="sm" /> : 'Create account'}
                       </Button>
                     </div>
                   </Form>
-                  <p>
+                  <p className="text-center">
                     Already have an account?{' '}
                     <Link to="/" className="link-info">
                       Sign in

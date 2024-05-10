@@ -24,6 +24,10 @@ $colors: map-merge($colors, $new-colors);
   font-size: 0.9rem;
 }
 
+.form-check-input {
+  cursor: pointer;
+}
+
 .form-check-input:checked {
   background-color: $new-info;
   border-color: $new-info;

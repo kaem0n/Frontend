@@ -11969,6 +11969,10 @@ textarea.form-control-lg {
   font-size: 0.9rem;
 }
 
+.form-check-input {
+  cursor: pointer;
+}
+
 .form-check-input:checked {
   background-color: #58a399;
   border-color: #58a399;

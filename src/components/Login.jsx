@@ -60,7 +60,7 @@ const Login = () => {
               <Container fluid>
                 <Row>
                   <Col xl={9}>
-                    {show && <p className="p-2 text-danger fs-7">{errorMsg}</p>}
+                    {show && <p className="text-danger fs-7">{errorMsg}</p>}
                     <Form.Control
                       placeholder="Username"
                       className="mb-3"
