@@ -1,4 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import './custom_bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import UserSignUp from './components/UserSignUp'

@@ -82,8 +82,9 @@ const UserSignUp = () => {
                       onChange={(e) => setPasswordField(e.target.value)}
                       required
                     />
-                    <Form.Text>
-                      Password length must be at least 8 characters long.
+                    <Form.Text className="fs-8 m-0 d-flex align-items-center">
+                      <i className="bi bi-info-circle me-1 fs-7"></i>Password
+                      length must be at least 8 characters long.
                     </Form.Text>
                     <Form.Check
                       label="I agree to the Terms of Service and Privacy Policy, including Cookie Use."
@@ -91,13 +92,17 @@ const UserSignUp = () => {
                       required
                     />
                     <div className="d-flex">
-                      <Button type="submit" className="fw-semibold flex-grow-1">
+                      <Button type="submit" className="flex-grow-1">
                         Create account
                       </Button>
                     </div>
                   </Form>
                   <p>
-                    Already have an account? <Link to="/">Sign in</Link>.
+                    Already have an account?{' '}
+                    <Link to="/" className="link-info">
+                      Sign in
+                    </Link>
+                    .
                   </p>
                 </Card.Body>
               </Card>

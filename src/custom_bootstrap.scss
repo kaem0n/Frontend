@@ -1,0 +1,43 @@
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootstrap/scss/variables';
+@import '../node_modules/bootstrap/scss/mixins';
+
+$new-primary: #496989;
+$new-info: #58a399;
+
+$new-theme-colors: (
+  'primary': $new-primary,
+  'info': $new-info,
+);
+
+$new-colors: (
+  'blue': $new-primary,
+  'cyan': $new-info,
+);
+
+$theme-colors: map-merge($theme-colors, $new-theme-colors);
+$colors: map-merge($colors, $new-colors);
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+.form-check-label {
+  font-size: 0.9rem;
+}
+
+.form-check-input:checked {
+  background-color: $new-info;
+  border-color: $new-info;
+}
+
+.form-select:focus,
+.form-control:focus,
+.form-check-input:focus {
+  border-color: #81a5a0;
+  box-shadow: 0 0 0 0.25rem rgba(73, 105, 137, 0.25);
+}
+
+.btn {
+  border-radius: 2rem;
+  padding-inline: 1.5rem;
+  font-weight: 600;
+}
