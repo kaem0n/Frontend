@@ -1,4 +1,4 @@
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import Footer from './Footer'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
@@ -6,8 +6,13 @@ import { useState } from 'react'
 const Login = () => {
   const [usernameField, setUsernameField] = useState('')
   const [passwordField, setPasswordField] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+  const [show, setShow] = useState(false)
+  const [isLoading, setLoading] = useState(false)
 
   const logIn = async () => {
+    setLoading(true)
+    setShow(false)
     try {
       const res = await fetch('http://localhost:3030/api/auth/login', {
         method: 'POST',
@@ -31,6 +36,9 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
+      setErrorMsg(`${error}`)
+      setShow(true)
     }
   }
 
@@ -52,6 +60,7 @@ const Login = () => {
               <Container fluid>
                 <Row>
                   <Col xl={9}>
+                    {show && <p className="p-2 text-danger fs-7">{errorMsg}</p>}
                     <Form.Control
                       placeholder="Username"
                       className="mb-3"
@@ -69,7 +78,7 @@ const Login = () => {
                     />
                     <div className="d-flex mb-3">
                       <Button type="submit" className="flex-grow-1">
-                        Log In
+                        {isLoading ? <Spinner size="sm" /> : 'Log In'}
                       </Button>
                     </div>
                     <p>
