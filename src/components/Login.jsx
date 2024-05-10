@@ -42,40 +42,46 @@ const Login = () => {
   return (
     <div className="d-flex flex-column vh-100 bg-body-tertiary">
       <Container className="flex-grow-1">
-        <Row className="h-100 justify-content-center align-items-center text-center">
-          <Col xs={5} className="text-secondary">
+        <Row className="h-100 justify-content-evenly align-items-center align-content-center text-center">
+          <Col md={6} lg={5} className="text-secondary mb-5 mb-md-0">
             <h1 className="display-3 righteous cursor-default">Welcome to</h1>
-            <img src="logo.png" alt="logo" height="100px" />
+            <img src="logo.png" alt="logo" className="w-100" />
           </Col>
-          <Col xs={5}>
+          <Col xs={11} sm={9} md={6} lg={5}>
             <Form onSubmit={handleSubmit}>
-              <Form.Control
-                placeholder="Username"
-                className="mb-3"
-                value={usernameField}
-                onChange={(e) => setUsernameField(e.target.value)}
-                required
-              />
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                className="mb-3"
-                value={passwordField}
-                onChange={(e) => setPasswordField(e.target.value)}
-                required
-              />
-              <div className="d-flex mb-3">
-                <Button type="submit" className="flex-grow-1">
-                  Log In
-                </Button>
-              </div>
-              <p>
-                Don&apos;t have an account?{' '}
-                <Link to="/register" className="link-info">
-                  Sign up
-                </Link>
-                .
-              </p>
+              <Container fluid>
+                <Row>
+                  <Col xl={9}>
+                    <Form.Control
+                      placeholder="Username"
+                      className="mb-3"
+                      value={usernameField}
+                      onChange={(e) => setUsernameField(e.target.value)}
+                      required
+                    />
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      className="mb-3"
+                      value={passwordField}
+                      onChange={(e) => setPasswordField(e.target.value)}
+                      required
+                    />
+                    <div className="d-flex mb-3">
+                      <Button type="submit" className="flex-grow-1">
+                        Log In
+                      </Button>
+                    </div>
+                    <p>
+                      Don&apos;t have an account?{' '}
+                      <Link to="/register" className="link-info">
+                        Sign up
+                      </Link>
+                      .
+                    </p>
+                  </Col>
+                </Row>
+              </Container>
             </Form>
           </Col>
         </Row>
