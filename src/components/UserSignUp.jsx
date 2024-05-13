@@ -180,7 +180,11 @@ const UserSignUp = () => {
                       required
                     />
                     <div className="d-flex">
-                      <Button type="submit" className="flex-grow-1">
+                      <Button
+                        type="submit"
+                        className="flex-grow-1"
+                        disabled={isLoading ? true : false}
+                      >
                         {isLoading ? <Spinner size="sm" /> : 'Create account'}
                       </Button>
                     </div>

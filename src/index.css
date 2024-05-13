@@ -76,7 +76,8 @@ hr {
 
 #change-username,
 #change-email,
-#change-password {
+#change-password,
+#delete-account {
   width: 95%;
   top: -100%;
   opacity: 0;
@@ -86,7 +87,8 @@ hr {
 
 #change-username.vanish-right,
 #change-email.vanish-right,
-#change-password.vanish-right {
+#change-password.vanish-right,
+#delete-account.vanish-right {
   opacity: 1;
   transform: translate(0px);
   transition: 0.3s;

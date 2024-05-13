@@ -2,18 +2,13 @@ export const START_LOAD = 'START_LOAD'
 export const END_LOAD = 'END_LOAD'
 export const TRIGGER = 'TRIGGER'
 export const MY_PROFILE = 'MY_PROFILE'
+export const CLEAR_DATA = 'CLEAR_DATA'
 
-export const load = () => ({
-  type: START_LOAD,
-})
+export const load = () => ({ type: START_LOAD })
 
-export const endLoad = () => ({
-  type: END_LOAD,
-})
+export const endLoad = () => ({ type: END_LOAD })
 
-export const trigger = () => ({
-  type: TRIGGER,
-})
+export const trigger = () => ({ type: TRIGGER })
 
 export const getProfileData = (accessToken) => {
   return async (dispatch) => {
@@ -51,3 +46,5 @@ export const getProfileData = (accessToken) => {
     }
   }
 }
+
+export const clearData = () => ({ type: CLEAR_DATA })

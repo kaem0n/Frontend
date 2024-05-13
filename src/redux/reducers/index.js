@@ -1,4 +1,10 @@
-import { END_LOAD, MY_PROFILE, START_LOAD, TRIGGER } from '../actions'
+import {
+  CLEAR_DATA,
+  END_LOAD,
+  MY_PROFILE,
+  START_LOAD,
+  TRIGGER,
+} from '../actions'
 
 const initialState = {
   isLoading: false,
@@ -27,6 +33,10 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         profile: action.payload,
+      }
+    case CLEAR_DATA:
+      return {
+        initialState,
       }
     default:
       return state
