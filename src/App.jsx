@@ -6,77 +6,36 @@ import UserLogin from './components/UserLogin'
 import Home from './components/Home'
 import NavBar from './components/NavBar'
 import Settings from './components/Settings'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProfileData } from './redux/actions'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
-  const [user, setUser] = useState(null)
-  const [trigger, setTrigger] = useState(false)
-
-  const getUserData = async () => {
-    try {
-      const res = await fetch('http://localhost:3030/api/users/me', {
-        headers: {
-          Authorization: accessToken,
-        },
-      })
-      if (res.ok) {
-        const data = await res.json()
-        console.log(data)
-        const userData = {
-          id: data.id,
-          boardId: data.board.id,
-          username: data.username,
-          email: data.email,
-          proPic: data.proPicUrl,
-          registration: data.registration,
-          name: data.name,
-          surname: data.surname,
-          birthday: data.birthday,
-          gender: data.gender,
-          occupation: data.occupation,
-          hobbies: data.hobbies,
-          bio: data.bio,
-        }
-        setUser(userData)
-      } else {
-        const data = await res.json()
-        throw new Error(data.message)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const user = useSelector((state) => state.profile)
+  const reloadTrigger = useSelector((state) => state.reloadTrigger)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (user === null) {
-      getUserData()
+      dispatch(getProfileData(accessToken))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    getUserData()
+    dispatch(getProfileData(accessToken))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trigger])
+  }, [reloadTrigger])
 
   return (
     <BrowserRouter>
-      {accessToken ? <NavBar user={user} /> : <></>}
+      {accessToken ? <NavBar /> : <></>}
       <Routes>
         {accessToken ? (
           <>
-            <Route path="/" element={<Home user={user} />} />
-            <Route
-              path="/settings"
-              element={
-                <Settings
-                  user={user}
-                  trigger={trigger}
-                  setTrigger={setTrigger}
-                />
-              }
-            />
+            <Route path="/" element={<Home />} />
+            <Route path="/settings" element={<Settings />} />
           </>
         ) : (
           <Route path="*" element={<UserLogin />} />

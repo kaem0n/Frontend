@@ -2,17 +2,20 @@ import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import Footer from './Footer'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { endLoad, load } from '../redux/actions'
 
 const UserLogin = () => {
+  const isLoading = useSelector((state) => state.isLoading)
   const [usernameField, setUsernameField] = useState('')
   const [passwordField, setPasswordField] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [show, setShow] = useState(false)
-  const [isLoading, setLoading] = useState(false)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const logIn = async () => {
-    setLoading(true)
+    dispatch(load())
     setShow(false)
     try {
       const res = await fetch('http://localhost:3030/api/auth/login', {
@@ -37,7 +40,7 @@ const UserLogin = () => {
       }
     } catch (error) {
       console.log(error)
-      setLoading(false)
+      dispatch(endLoad())
       setShow(true)
       let msg = '' + error
       msg = msg.slice(msg.indexOf(' ') + 1)

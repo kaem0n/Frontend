@@ -1,9 +1,10 @@
-/* eslint-disable react/prop-types */
 import { useRef } from 'react'
 import { NavDropdown } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-const NavProfileCard = ({ user }) => {
+const NavProfileCard = () => {
+  const user = useSelector((state) => state.profile)
   const navigate = useNavigate()
   const toggleRef = useRef(null)
 

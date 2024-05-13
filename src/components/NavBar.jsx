@@ -1,9 +1,8 @@
-/* eslint-disable react/prop-types */
 import { Container, Form, Nav, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import NavProfileCard from './NavProfileCard'
 
-const NavBar = ({ user }) => {
+const NavBar = () => {
   return (
     <header>
       <Navbar
@@ -24,7 +23,7 @@ const NavBar = ({ user }) => {
               </Form>
             </Nav>
             <Nav>
-              <NavProfileCard user={user} />
+              <NavProfileCard />
             </Nav>
           </Navbar.Collapse>
         </Container>

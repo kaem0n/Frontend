@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Button,
   Card,
@@ -10,9 +9,13 @@ import {
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { endLoad, load, trigger } from '../redux/actions'
 
-const Settings = ({ user, trigger, setTrigger }) => {
+const Settings = () => {
   const accessToken = localStorage.getItem('accessToken')
+  const user = useSelector((state) => state.profile)
+  const isLoading = useSelector((state) => state.isLoading)
   const [showMenu, setShowMenu] = useState(true)
   const [showSetting1, setShowSetting1] = useState(false)
   const [showSetting2, setShowSetting2] = useState(false)
@@ -23,11 +26,11 @@ const Settings = ({ user, trigger, setTrigger }) => {
   const [newPasswordField, setNewPasswordField] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
-  const [isLoading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   const changeParameter = async (parameter, value1, value2) => {
     setErrorMsg('')
-    setLoading(true)
+    dispatch(load())
     let payload
 
     if (parameter === 'Username') {
@@ -54,7 +57,8 @@ const Settings = ({ user, trigger, setTrigger }) => {
         const data = await res.json()
         console.log(data)
         setSuccessMsg(data.responseMessage)
-        setLoading(false)
+        dispatch(endLoad())
+        dispatch(trigger())
         setTimeout(() => {
           setShowSetting1(false)
           setShowSetting2(false)
@@ -75,14 +79,13 @@ const Settings = ({ user, trigger, setTrigger }) => {
       let msg = '' + error
       msg = msg.slice(msg.indexOf(' ') + 1)
       setErrorMsg(msg)
-      setLoading(false)
+      dispatch(endLoad())
     }
   }
 
   const handleSubmit = (e, parameter, value1, value2) => {
     e.preventDefault()
     changeParameter(parameter, value1, value2)
-    setTrigger(!trigger)
   }
 
   return (

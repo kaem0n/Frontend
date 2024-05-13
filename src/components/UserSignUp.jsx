@@ -10,16 +10,19 @@ import {
 import { Link, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { endLoad, load } from '../redux/actions'
 
 const UserSignUp = () => {
+  const isLoading = useSelector((state) => state.isLoading)
   const [emailField, setEmailField] = useState('')
   const [usernameField, setUsernameField] = useState('')
   const [passwordField, setPasswordField] = useState('')
-  const [isLoading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const logIn = async () => {
     try {
@@ -45,13 +48,13 @@ const UserSignUp = () => {
       }
     } catch (error) {
       console.log(error)
-      setLoading(false)
+      dispatch(endLoad())
       setErrorMsg(`${error}`)
     }
   }
 
   const register = async () => {
-    setLoading(true)
+    dispatch(load())
     setShow1(false)
     setShow2(false)
     try {
@@ -76,7 +79,7 @@ const UserSignUp = () => {
       }
     } catch (error) {
       console.log(error)
-      setLoading(false)
+      dispatch(endLoad())
       let msg = '' + error
       msg = msg.slice(msg.indexOf(' ') + 1)
       setErrorMsg(msg)
