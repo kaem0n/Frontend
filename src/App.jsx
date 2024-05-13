@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
   const [user, setUser] = useState(null)
+  const [trigger, setTrigger] = useState(false)
 
   const getUserData = async () => {
     try {
@@ -54,6 +55,11 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    getUserData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trigger])
+
   return (
     <BrowserRouter>
       {accessToken ? <NavBar user={user} /> : <></>}
@@ -61,7 +67,16 @@ const App = () => {
         {accessToken ? (
           <>
             <Route path="/" element={<Home user={user} />} />
-            <Route path="/settings" element={<Settings user={user} />} />
+            <Route
+              path="/settings"
+              element={
+                <Settings
+                  user={user}
+                  trigger={trigger}
+                  setTrigger={setTrigger}
+                />
+              }
+            />
           </>
         ) : (
           <Route path="*" element={<UserLogin />} />

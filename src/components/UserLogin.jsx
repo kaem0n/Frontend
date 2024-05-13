@@ -38,8 +38,10 @@ const UserLogin = () => {
     } catch (error) {
       console.log(error)
       setLoading(false)
-      setErrorMsg(`${error}`)
       setShow(true)
+      let msg = '' + error
+      msg = msg.slice(msg.indexOf(' ') + 1)
+      setErrorMsg(msg)
     }
   }
 

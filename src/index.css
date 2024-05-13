@@ -56,3 +56,38 @@ hr {
 .menu-option:hover {
   background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity));
 }
+
+.btn-clean {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+#settings-menu {
+  transition: 0.3s;
+}
+
+#settings-menu.vanish-left {
+  top: -100%;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: 0.3s;
+}
+
+#change-username,
+#change-email,
+#change-password {
+  width: 95%;
+  top: -100%;
+  opacity: 0;
+  transform: translate(30px);
+  transition: 0.3s;
+}
+
+#change-username.vanish-right,
+#change-email.vanish-right,
+#change-password.vanish-right {
+  opacity: 1;
+  transform: translate(0px);
+  transition: 0.3s;
+}

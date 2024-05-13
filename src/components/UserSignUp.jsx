@@ -146,8 +146,6 @@ const UserSignUp = () => {
                             ? 'py-2 border-danger text-danger shadow-none'
                             : 'py-2'
                         }
-                        minLength={3}
-                        maxLength={20}
                         value={usernameField}
                         onChange={(e) => {
                           setUsernameField(e.target.value)
@@ -165,7 +163,6 @@ const UserSignUp = () => {
                       type="password"
                       placeholder="Choose a password"
                       className="py-2"
-                      minLength={8}
                       value={passwordField}
                       onChange={(e) => setPasswordField(e.target.value)}
                       required

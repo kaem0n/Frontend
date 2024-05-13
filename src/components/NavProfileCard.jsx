@@ -18,7 +18,6 @@ const NavProfileCard = ({ user }) => {
       align="end"
       ref={toggleRef}
       className="d-flex justify-content-center align-items-center"
-      id="test"
       title={
         user && (
           <img

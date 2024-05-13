@@ -18,9 +18,9 @@ const NavBar = ({ user }) => {
           </Link>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mx-auto">
-              <Form>
-                <Form.Control placeholder="Search" />
+            <Nav className="me-auto w-25">
+              <Form className="flex-grow-1">
+                <Form.Control placeholder="Search on MeeToo" />
               </Form>
             </Nav>
             <Nav>
