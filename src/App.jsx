@@ -9,6 +9,7 @@ import Settings from './components/Settings'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProfileData } from './redux/actions'
+import ProfilePage from './components/ProfilePage'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -18,13 +19,13 @@ const App = () => {
 
   useEffect(() => {
     if (user === null) {
-      dispatch(getProfileData(accessToken))
+      dispatch(getProfileData())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    dispatch(getProfileData(accessToken))
+    dispatch(getProfileData())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadTrigger])
 
@@ -35,6 +36,7 @@ const App = () => {
         {accessToken ? (
           <>
             <Route path="/" element={<Home />} />
+            <Route path="/me" element={<ProfilePage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (

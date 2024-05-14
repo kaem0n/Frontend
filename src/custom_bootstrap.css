@@ -11993,4 +11993,14 @@ textarea.form-control-lg {
 
 .dropdown-toggle.nav-link {
   padding-block: 0;
+}
+
+.profile-username {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+@media screen and (max-width: 576px) {
+  .profile-username {
+    font-size: 1.1rem;
+  }
 }/*# sourceMappingURL=custom_bootstrap.css.map */

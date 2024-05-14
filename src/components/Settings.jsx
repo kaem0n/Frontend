@@ -59,7 +59,6 @@ const Settings = () => {
       )
       if (res.ok) {
         const data = await res.json()
-        console.log(data)
         setSuccessMsg(data.responseMessage)
         dispatch(trigger())
         setTimeout(() => {

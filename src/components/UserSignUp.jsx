@@ -38,7 +38,6 @@ const UserSignUp = () => {
       })
       if (res.ok) {
         const data = await res.json()
-        console.log(data)
         const accessToken = 'Bearer ' + data.accessToken
         localStorage.setItem('accessToken', accessToken)
         window.location.reload()
@@ -70,8 +69,6 @@ const UserSignUp = () => {
         }),
       })
       if (res.ok) {
-        const data = await res.json()
-        console.log(data)
         logIn()
       } else {
         const data = await res.json()

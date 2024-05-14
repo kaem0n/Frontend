@@ -81,7 +81,7 @@ hr {
   width: 95%;
   top: -100%;
   opacity: 0;
-  transform: translate(30px);
+  transform: translateX(30px);
   transition: 0.3s;
 }
 
@@ -90,6 +90,54 @@ hr {
 #change-password.vanish-right,
 #delete-account.vanish-right {
   opacity: 1;
-  transform: translate(0px);
+  transform: translateX(0px);
   transition: 0.3s;
+}
+
+.propic {
+  width: 100%;
+  height: 100%;
+  max-height: 180px;
+  max-width: 180px;
+  border-radius: 50%;
+}
+
+.propic-icon {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  box-shadow: inset 0px 0px 0px 60px rgba(0, 0, 0, 0.329);
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  max-height: 180px;
+  max-width: 180px;
+  border-radius: 50%;
+}
+
+.propic-icon:hover {
+  opacity: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.notification-fade {
+  animation-name: fade;
+  animation-duration: 3s;
+  animation-delay: 5s;
 }

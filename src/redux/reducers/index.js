@@ -1,6 +1,8 @@
 import {
   CLEAR_DATA,
   END_LOAD,
+  FOLLOWERS,
+  FOLLOWING,
   MY_PROFILE,
   START_LOAD,
   TRIGGER,
@@ -10,6 +12,8 @@ const initialState = {
   isLoading: false,
   reloadTrigger: false,
   profile: null,
+  followers: null,
+  following: null,
 }
 
 const userReducer = (state = initialState, action) => {
@@ -33,6 +37,16 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         profile: action.payload,
+      }
+    case FOLLOWERS:
+      return {
+        ...state,
+        followers: action.payload,
+      }
+    case FOLLOWING:
+      return {
+        ...state,
+        following: action.payload,
       }
     case CLEAR_DATA:
       return {

@@ -49,3 +49,11 @@ $colors: map-merge($colors, $new-colors);
 .dropdown-toggle.nav-link {
   padding-block: 0;
 }
+
+.profile-username {
+  font-weight: 600;
+  font-size: 1.5rem;
+  @media screen and (max-width: 576px) {
+    font-size: 1.1rem;
+  }
+}

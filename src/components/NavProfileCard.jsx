@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const NavProfileCard = () => {
   const user = useSelector((state) => state.profile)
   const navigate = useNavigate()
-  const toggleRef = useRef(null)
+  const toggleRef = useRef()
 
   const logOut = () => {
     localStorage.removeItem('accessToken')
