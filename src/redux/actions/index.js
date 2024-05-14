@@ -16,7 +16,6 @@ export const trigger = () => ({ type: TRIGGER })
 
 export const getProfileData = () => {
   return async (dispatch) => {
-    dispatch({ type: START_LOAD })
     try {
       const res = await fetch('http://localhost:3030/api/users/me', {
         headers: {
@@ -41,14 +40,12 @@ export const getProfileData = () => {
           bio: data.bio,
         }
         dispatch({ type: MY_PROFILE, payload: userData })
-        dispatch({ type: END_LOAD })
       } else {
         const data = await res.json()
         throw new Error(data.message)
       }
     } catch (error) {
       console.log(error)
-      dispatch({ type: END_LOAD })
     }
   }
 }

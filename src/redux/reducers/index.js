@@ -12,8 +12,8 @@ const initialState = {
   isLoading: false,
   reloadTrigger: false,
   profile: null,
-  followers: null,
-  following: null,
+  followers: [],
+  following: [],
 }
 
 const userReducer = (state = initialState, action) => {

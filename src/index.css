@@ -68,7 +68,7 @@ hr {
 }
 
 #settings-menu.vanish-left {
-  top: -100%;
+  top: -500%;
   opacity: 0;
   transform: translateX(-30px);
   transition: 0.3s;
@@ -79,7 +79,7 @@ hr {
 #change-password,
 #delete-account {
   width: 95%;
-  top: -100%;
+  top: -500%;
   opacity: 0;
   transform: translateX(30px);
   transition: 0.3s;
@@ -140,4 +140,50 @@ hr {
   animation-name: fade;
   animation-duration: 3s;
   animation-delay: 5s;
+}
+
+.special-textarea {
+  position: relative;
+}
+
+.special-textarea > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  height: 100%;
+  padding: 1rem 0.75rem;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+  border: var(--bs-border-width) solid transparent;
+  transform-origin: 0 0;
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.special-textarea > .form-control:focus ~ label,
+.special-textarea > .form-control:not(:placeholder-shown) ~ label,
+.special-textarea > .form-control-plaintext ~ label,
+.special-textarea > .form-select ~ label {
+  color: rgba(var(--bs-body-color-rgb), 0.65);
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+}
+
+.special-textarea > .form-control:focus,
+.special-textarea > .form-control:not(:placeholder-shown),
+.special-textarea > .form-control-plaintext:focus,
+.special-textarea > .form-control-plaintext:not(:placeholder-shown) {
+  padding-top: 1.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.special-textarea > .form-control,
+.special-textarea > .form-control-plaintext {
+  padding: 1rem 0.75rem;
+}
+
+.textarea-resize-none {
+  resize: none;
 }
