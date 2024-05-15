@@ -63,6 +63,50 @@ hr {
   padding: 0;
 }
 
+.btn-special {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 1rem;
+}
+
+.btn-special.active {
+  font-weight: 600;
+}
+
+.btn-special:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-bottom: 3px solid #58a399;
+  pointer-events: none;
+  height: 100%;
+  width: 10%;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.btn-special:hover:after {
+  width: 100%;
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.btn-special.active:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-bottom: 3px solid #58a399;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  pointer-events: none;
+}
+
 #settings-menu {
   transition: 0.3s;
 }
@@ -186,4 +230,8 @@ hr {
 
 .textarea-resize-none {
   resize: none;
+}
+
+.line-break {
+  white-space: pre-line;
 }

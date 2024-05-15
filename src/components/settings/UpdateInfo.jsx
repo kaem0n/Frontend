@@ -140,6 +140,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
                   onChange={(e) => {
                     setSurnameField(e.target.value)
                   }}
+                  disabled={nameField ? false : true}
                 />
               </FloatingLabel>
               {errorMsg !== '' && errorMsg.includes('Surname') && (

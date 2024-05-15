@@ -25,6 +25,22 @@ const ProfilePage = () => {
   const [responseMsg, setResponseMsg] = useState('')
   const dispatch = useDispatch()
   const imageInputRef = useRef()
+  const btn1 = useRef()
+  const btn2 = useRef()
+  const btn3 = useRef()
+
+  const handleActive = (event, ref1, ref2) => {
+    const current = event.target
+    const other1 = ref1.current
+    const other2 = ref2.current
+    if (!current.className.includes(' active')) current.className += ' active'
+    if (other1.className.includes(' active')) {
+      other1.className = other1.className.replace(' active', '')
+    }
+    if (other2.className.includes(' active')) {
+      other2.className = other2.className.replace(' active', '')
+    }
+  }
 
   const proPicUpload = async () => {
     const file = imageInputRef.current.files[0]
@@ -71,11 +87,11 @@ const ProfilePage = () => {
 
   return (
     user && (
-      <Container fluid className="mt-4">
+      <Container fluid className="mt-5">
         <Row className="justify-content-center">
-          <Col lg={6}>
+          <Col md={6}>
             <Container fluid>
-              <Row className="text-center my-3 align-items-center border-bottom pb-3">
+              <Row className="text-center align-items-center border-bottom pb-3">
                 <Col xs={4} md={3}>
                   {isLoading ? (
                     <Placeholder as="p" animation="glow">
@@ -110,7 +126,6 @@ const ProfilePage = () => {
                       />
                     </div>
                   )}
-
                   <p className="profile-username">{user.username}</p>
                 </Col>
                 <Col xs={4} md={3}>
@@ -122,6 +137,46 @@ const ProfilePage = () => {
                     following && <p>{following.length}</p>
                   )}
                   <p className="fw-semibold">Following</p>
+                </Col>
+                <Col xs={12} className="text-start mt-3">
+                  {user.name && (
+                    <p className="fw-semibold mb-1">
+                      {user.name} {user.surname ? user.surname : ''}
+                    </p>
+                  )}
+                  {user.bio && <p className="line-break fs-7">{user.bio}</p>}
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex">
+                  <button
+                    type="button"
+                    ref={btn1}
+                    className="btn-special flex-grow-1 border-bottom active"
+                    onClick={(e) => handleActive(e, btn2, btn3)}
+                  >
+                    Board
+                  </button>
+                </Col>
+                <Col className="d-flex">
+                  <button
+                    type="button"
+                    ref={btn2}
+                    className="btn-special flex-grow-1 border-bottom"
+                    onClick={(e) => handleActive(e, btn1, btn3)}
+                  >
+                    Network
+                  </button>
+                </Col>
+                <Col className="d-flex">
+                  <button
+                    type="button"
+                    ref={btn3}
+                    className="btn-special flex-grow-1 border-bottom"
+                    onClick={(e) => handleActive(e, btn1, btn2)}
+                  >
+                    Info
+                  </button>
                 </Col>
               </Row>
             </Container>
