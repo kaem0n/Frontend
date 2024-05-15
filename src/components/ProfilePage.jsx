@@ -15,6 +15,7 @@ import {
   load,
   trigger,
 } from '../redux/actions'
+import ProfileInfo from './ProfileInfo'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -23,6 +24,9 @@ const ProfilePage = () => {
   const followers = useSelector((state) => state.followers)
   const following = useSelector((state) => state.following)
   const [responseMsg, setResponseMsg] = useState('')
+  const [showBoard, setShowBoard] = useState(true)
+  const [showNetwork, setShowNetwork] = useState(false)
+  const [showInfo, setShowInfo] = useState(false)
   const dispatch = useDispatch()
   const imageInputRef = useRef()
   const btn1 = useRef()
@@ -147,13 +151,18 @@ const ProfilePage = () => {
                   {user.bio && <p className="line-break fs-7">{user.bio}</p>}
                 </Col>
               </Row>
-              <Row>
+              <Row className="mb-3">
                 <Col className="d-flex">
                   <button
                     type="button"
                     ref={btn1}
                     className="btn-special flex-grow-1 border-bottom active"
-                    onClick={(e) => handleActive(e, btn2, btn3)}
+                    onClick={(e) => {
+                      handleActive(e, btn2, btn3)
+                      setShowBoard(true)
+                      setShowNetwork(false)
+                      setShowInfo(false)
+                    }}
                   >
                     Board
                   </button>
@@ -163,7 +172,12 @@ const ProfilePage = () => {
                     type="button"
                     ref={btn2}
                     className="btn-special flex-grow-1 border-bottom"
-                    onClick={(e) => handleActive(e, btn1, btn3)}
+                    onClick={(e) => {
+                      handleActive(e, btn1, btn3)
+                      setShowBoard(false)
+                      setShowNetwork(true)
+                      setShowInfo(false)
+                    }}
                   >
                     Network
                   </button>
@@ -173,11 +187,19 @@ const ProfilePage = () => {
                     type="button"
                     ref={btn3}
                     className="btn-special flex-grow-1 border-bottom"
-                    onClick={(e) => handleActive(e, btn1, btn2)}
+                    onClick={(e) => {
+                      handleActive(e, btn1, btn2)
+                      setShowBoard(false)
+                      setShowNetwork(false)
+                      setShowInfo(true)
+                    }}
                   >
                     Info
                   </button>
                 </Col>
+              </Row>
+              <Row>
+                <Col>{showInfo && <ProfileInfo />}</Col>
               </Row>
             </Container>
           </Col>

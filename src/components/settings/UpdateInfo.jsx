@@ -42,7 +42,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
         body: JSON.stringify({
           name: nameField,
           surname: surnameField,
-          birthday: birthdayField,
+          birthday: birthdayField === '' ? null : birthdayField,
           gender: genderField,
           occupation: occupationField,
           hobbies: hobbiesField,
