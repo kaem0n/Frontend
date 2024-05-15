@@ -8,6 +8,7 @@ import ChangePassword from './settings/ChangePassword'
 import DeleteAccount from './settings/DeleteAccount'
 import UpdateInfo from './settings/UpdateInfo'
 import { trigger } from '../redux/actions'
+import ChangeDateFormat from './settings/ChangeDateFormat'
 
 const Settings = () => {
   const user = useSelector((state) => state.profile)
@@ -67,13 +68,13 @@ const Settings = () => {
                 className={showMenu ? '' : 'vanish-left position-absolute'}
               >
                 {user && (
-                  <Row>
-                    <Col xs={4} className="border-end text-end">
+                  <Row className="align-items-start">
+                    <Col xs={4} className="text-end">
                       <p className="mb-2">Username</p>
                     </Col>
-                    <Col xs={8}>
+                    <Col xs={8} className="align-self-end border-start">
                       <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p>{user.username}</p>
+                        <p className="fs-7">{user.username}</p>
                         <button
                           className="btn-clean link-info fs-7"
                           onClick={() => {
@@ -86,12 +87,12 @@ const Settings = () => {
                         </button>
                       </div>
                     </Col>
-                    <Col xs={4} className="border-end text-end">
+                    <Col xs={4} className="text-end">
                       <p className="mb-2">Email</p>
                     </Col>
-                    <Col xs={8}>
+                    <Col xs={8} className="align-self-end border-start">
                       <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p>{user.email}</p>
+                        <p className="fs-7">{user.email}</p>
                         <button
                           className="btn-clean link-info fs-7"
                           onClick={() => {
@@ -104,12 +105,12 @@ const Settings = () => {
                         </button>
                       </div>
                     </Col>
-                    <Col xs={4} className="border-end text-end">
+                    <Col xs={4} className="text-end">
                       <p className="mb-2">Password</p>
                     </Col>
-                    <Col xs={8}>
+                    <Col xs={8} className="align-self-end border-start">
                       <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p>●●●●●●●●</p>
+                        <p className="fs-7">●●●●●●●●</p>
                         <button
                           className="btn-clean link-info fs-7"
                           onClick={() => {
@@ -122,10 +123,10 @@ const Settings = () => {
                         </button>
                       </div>
                     </Col>
-                    <Col xs={4} className="border-end text-end">
+                    <Col xs={4} className="text-end">
                       <p className="mb-2">Info</p>
                     </Col>
-                    <Col xs={8}>
+                    <Col xs={8} className="align-self-end border-start">
                       <div className="mb-2 d-flex justify-content-between align-items-center">
                         <div className="flex-grow-1 d-flex">
                           <ProgressBar
@@ -160,26 +161,33 @@ const Settings = () => {
                         </button>
                       </div>
                     </Col>
-                    <Col xs={4} className="border-end text-end">
-                      <p className="mb-2">Account management</p>
+                    <Col xs={4} className="text-end"></Col>
+                    <Col xs={8} className="align-self-end border-start">
+                      <br />
                     </Col>
-                    <Col xs={8}>
-                      <div className="mb-2 d-flex justify-content-between align-items-center">
+                    <Col xs={4} className="text-end">
+                      <p className="lh-sm">Account management</p>
+                    </Col>
+                    <Col xs={8} className="align-self-end border-start">
+                      <div className="d-flex justify-content-between align-items-center">
                         <div></div>
-                        <button
-                          className="btn-clean link-danger fs-7"
-                          onClick={() => {
-                            setShowMenu(false)
-                            setShowSetting5(true)
-                            setDisabled(true)
-                            setTimeout(() => {
-                              setDisabled(false)
-                            }, 5000)
-                          }}
-                          disabled={!showMenu}
-                        >
-                          Delete account
-                        </button>
+                        <div className="d-flex flex-column align-items-end flex-grow-1">
+                          <ChangeDateFormat />
+                          <button
+                            className="btn-clean link-danger fs-7"
+                            onClick={() => {
+                              setShowMenu(false)
+                              setShowSetting5(true)
+                              setDisabled(true)
+                              setTimeout(() => {
+                                setDisabled(false)
+                              }, 5000)
+                            }}
+                            disabled={!showMenu}
+                          >
+                            Delete account
+                          </button>
+                        </div>
                       </div>
                     </Col>
                   </Row>

@@ -232,6 +232,10 @@ hr {
   resize: none;
 }
 
+.form-floating > .form-select-sm {
+  padding-left: 0.75rem;
+}
+
 .line-break {
   white-space: pre-line;
 }

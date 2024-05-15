@@ -37,6 +37,7 @@ export const getProfileData = () => {
           gender: data.gender,
           occupation: data.occupation,
           hobbies: data.hobbies,
+          dateFormat: data.dateFormat,
           bio: data.bio,
         }
         dispatch({ type: MY_PROFILE, payload: userData })

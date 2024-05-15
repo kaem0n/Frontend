@@ -1,5 +1,6 @@
 import { Badge, Col, Container, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import dateFormatter from '../utils/dateFormatter'
 
 const ProfileInfo = () => {
   const user = useSelector((state) => state.profile)
@@ -15,32 +16,6 @@ const ProfileInfo = () => {
       }
       return age
     } else return '/'
-  }
-
-  const formatDate = (date, format = 'DD-MM-YYYY') => {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ]
-    const dateRef = new Date(date)
-    const year = dateRef.getFullYear()
-    const month = dateRef.getMonth()
-    const day = dateRef.getDate()
-    if (format === 'MM-DD-YYYY') {
-      return `${months[month]} ${day}, ${year}`
-    } else {
-      return `${day} ${months[month]} ${year}`
-    }
   }
 
   return (
@@ -66,7 +41,9 @@ const ProfileInfo = () => {
           <p className="mb-2">Member since</p>
         </Col>
         <Col xs={8}>
-          <p className="mb-2">{formatDate(user.registration)}</p>
+          <p className="mb-2">
+            {dateFormatter(user.registration, user.dateFormat)}
+          </p>
         </Col>
         <Col xs={4} className="border-end text-end fw-semibold">
           <br />
