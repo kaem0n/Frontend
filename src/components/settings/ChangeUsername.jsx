@@ -1,6 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { endLoad, load, trigger } from '../../redux/actions'
 
@@ -65,12 +73,14 @@ const ChangeUsername = ({ showSetting, setShowSetting, setShowMenu }) => {
       <Row>
         <Col>
           <Form onSubmit={handleSubmit}>
-            <p className="mb-2">Choose a new username:</p>
             <div className="mb-2">
-              <Form.Control
-                value={newUsernameField}
-                onChange={(e) => setNewUsernameField(e.target.value)}
-              />
+              <FloatingLabel label="Choose your new username">
+                <Form.Control
+                  size="sm"
+                  value={newUsernameField}
+                  onChange={(e) => setNewUsernameField(e.target.value)}
+                />
+              </FloatingLabel>
               {errorMsg !== '' && (
                 <Form.Text className="text-danger fs-8">{errorMsg}</Form.Text>
               )}

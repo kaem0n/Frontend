@@ -1,6 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { endLoad, load, trigger } from '../../redux/actions'
 
@@ -74,24 +82,28 @@ const ChangePassword = ({ showSetting, setShowSetting, setShowMenu }) => {
               handleSubmit(e, 'Password', oldPasswordField, newPasswordField)
             }
           >
-            <p className="mb-2">Insert your old password:</p>
             <div className="mb-2">
-              <Form.Control
-                type="password"
-                value={oldPasswordField}
-                onChange={(e) => setOldPasswordField(e.target.value)}
-              />
+              <FloatingLabel label="Insert your old password">
+                <Form.Control
+                  size="sm"
+                  type="password"
+                  value={oldPasswordField}
+                  onChange={(e) => setOldPasswordField(e.target.value)}
+                />
+              </FloatingLabel>
               {errorMsg !== '' && errorMsg.includes('Old password') && (
                 <Form.Text className="text-danger fs-8">{errorMsg}</Form.Text>
               )}
             </div>
-            <p className="mb-2">Choose a new password:</p>
             <div className="mb-2">
-              <Form.Control
-                type="password"
-                value={newPasswordField}
-                onChange={(e) => setNewPasswordField(e.target.value)}
-              />
+              <FloatingLabel label="Choose a new password">
+                <Form.Control
+                  size="sm"
+                  type="password"
+                  value={newPasswordField}
+                  onChange={(e) => setNewPasswordField(e.target.value)}
+                />
+              </FloatingLabel>
               {errorMsg !== '' && !errorMsg.includes('Old password') && (
                 <Form.Text className="text-danger fs-8">{errorMsg}</Form.Text>
               )}

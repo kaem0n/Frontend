@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import {
+  Button,
+  Col,
+  Container,
+  FloatingLabel,
+  Form,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { endLoad, load, trigger } from '../../redux/actions'
 
@@ -65,12 +73,14 @@ const ChangeEmail = ({ showSetting, setShowSetting, setShowMenu }) => {
       <Row>
         <Col>
           <Form onSubmit={(e) => handleSubmit(e, 'Email', newEmailField)}>
-            <p className="mb-2">Choose a new email:</p>
             <div className="mb-2">
-              <Form.Control
-                value={newEmailField}
-                onChange={(e) => setNewEmailField(e.target.value)}
-              />
+              <FloatingLabel label="Insert your new email address">
+                <Form.Control
+                  size="sm"
+                  value={newEmailField}
+                  onChange={(e) => setNewEmailField(e.target.value)}
+                />
+              </FloatingLabel>
               {errorMsg !== '' && (
                 <Form.Text className="text-danger fs-8">{errorMsg}</Form.Text>
               )}

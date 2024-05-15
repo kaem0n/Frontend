@@ -97,7 +97,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
     setHobbiesField(filtered)
   }
 
-  useEffect(() => {
+  const updateFields = () => {
     if (user) {
       setNameField(user.name === null ? '' : user.name)
       setSurnameField(user.surname === null ? '' : user.surname)
@@ -107,8 +107,10 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
       setHobbiesField(user.hobbies === null ? [] : user.hobbies)
       setBioField(user.bio === null ? '' : user.bio)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => updateFields(), [])
 
   return (
     <Container
@@ -187,6 +189,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
                     size="sm"
                     onKeyDown={addHobby}
                     className="textarea-resize-none"
+                    minLength={3}
                   />
                 </FloatingLabel>
                 {errorMsg !== '' && errorMsg.includes('Hobby') && (
@@ -245,6 +248,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
                   setShowMenu(true)
                   setShowSetting(false)
                   setErrorMsg('')
+                  updateFields()
                 }}
               >
                 Cancel
