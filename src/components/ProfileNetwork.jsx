@@ -128,7 +128,7 @@ const ProfileNetwork = ({
               <Col
                 xs={12}
                 key={user.userID}
-                className="d-flex align-items-center"
+                className="d-flex align-items-center border-bottom pb-2"
               >
                 <div className="w-100">
                   <img
@@ -175,7 +175,7 @@ const ProfileNetwork = ({
               <Col
                 xs={12}
                 key={user.userID}
-                className="d-flex align-items-center"
+                className="d-flex align-items-center border-bottom pb-2"
               >
                 <div className="w-100">
                   <img
