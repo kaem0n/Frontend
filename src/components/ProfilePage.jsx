@@ -8,26 +8,23 @@ import {
   Spinner,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  endLoad,
-  getFollowerData,
-  getFollowingData,
-  load,
-  trigger,
-} from '../redux/actions'
+import { endLoad, load, trigger } from '../redux/actions'
 import ProfileInfo from './ProfileInfo'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')
-  const user = useSelector((state) => state.profile)
   const isLoading = useSelector((state) => state.isLoading)
-  const followers = useSelector((state) => state.followers)
-  const following = useSelector((state) => state.following)
+  const [user, setUser] = useState(null)
+  const [followers, setFollowers] = useState([])
+  const [following, setFollowing] = useState([])
   const [responseMsg, setResponseMsg] = useState('')
   const [showBoard, setShowBoard] = useState(true)
   const [showNetwork, setShowNetwork] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const params = useParams()
   const imageInputRef = useRef()
   const btn1 = useRef()
   const btn2 = useRef()
@@ -43,6 +40,26 @@ const ProfilePage = () => {
     }
     if (other2.className.includes(' active')) {
       other2.className = other2.className.replace(' active', '')
+    }
+  }
+
+  const getUserData = async (param) => {
+    try {
+      const res = await fetch(`http://localhost:3030/api/users/${param}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      if (res.ok) {
+        const data = await res.json()
+        console.log(data)
+        setUser(data)
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -83,11 +100,63 @@ const ProfilePage = () => {
     }
   }
 
+  const getFollowingData = async (param) => {
+    dispatch(load())
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/users/${param}/following`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        setFollowing(data)
+        dispatch(endLoad())
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      dispatch(endLoad())
+    }
+  }
+
+  const getFollowerData = async (param) => {
+    dispatch(load())
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/users/${param}/followedBy`,
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        setFollowers(data)
+        dispatch(endLoad())
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      dispatch(endLoad())
+    }
+  }
+
   useEffect(() => {
-    dispatch(getFollowerData())
-    dispatch(getFollowingData())
+    getUserData(params.userId)
+    getFollowerData(params.userId)
+    getFollowingData(params.userId)
+    navigate(`/profile/${params.userId}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [params.userId])
 
   return (
     user && (
@@ -114,20 +183,24 @@ const ProfilePage = () => {
                   ) : (
                     <div className="position-relative">
                       <img
-                        src={user.proPic}
+                        src={user.proPicUrl}
                         alt="profile-picture"
                         className="propic border"
                       />
-                      <i
-                        className="fa-solid fa-pen-to-square fs-2 propic-icon"
-                        onClick={() => imageInputRef.current.click()}
-                      ></i>
-                      <input
-                        type="file"
-                        className="d-none"
-                        ref={imageInputRef}
-                        onChange={proPicUpload}
-                      />
+                      {params.userId === 'me' && (
+                        <>
+                          <i
+                            className="fa-solid fa-pen-to-square fs-2 propic-icon"
+                            onClick={() => imageInputRef.current.click()}
+                          ></i>
+                          <input
+                            type="file"
+                            className="d-none"
+                            ref={imageInputRef}
+                            onChange={proPicUpload}
+                          />
+                        </>
+                      )}
                     </div>
                   )}
                   <p className="profile-username">{user.username}</p>
@@ -199,7 +272,7 @@ const ProfilePage = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>{showInfo && <ProfileInfo />}</Col>
+                <Col>{showInfo && <ProfileInfo user={user} />}</Col>
               </Row>
             </Container>
           </Col>

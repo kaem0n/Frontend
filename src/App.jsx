@@ -36,7 +36,7 @@ const App = () => {
         {accessToken ? (
           <>
             <Route path="/" element={<Home />} />
-            <Route path="/me" element={<ProfilePage />} />
+            <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (

@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Badge, Col, Container, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import dateFormatter from '../utils/dateFormatter'
+import { useSelector } from 'react-redux'
 
-const ProfileInfo = () => {
-  const user = useSelector((state) => state.profile)
+const ProfileInfo = ({ user }) => {
+  const dateFormat = useSelector((state) => state.profile.dateFormat)
 
   const calculateAge = (birthday) => {
     if (birthday !== null) {
@@ -41,9 +42,7 @@ const ProfileInfo = () => {
           <p className="mb-2">Member since</p>
         </Col>
         <Col xs={8}>
-          <p className="mb-2">
-            {dateFormatter(user.registration, user.dateFormat)}
-          </p>
+          <p className="mb-2">{dateFormatter(user.registration, dateFormat)}</p>
         </Col>
         <Col xs={4} className="border-end text-end fw-semibold">
           <br />

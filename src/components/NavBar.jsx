@@ -13,7 +13,7 @@ const NavBar = () => {
       >
         <Container fluid>
           <Link className="navbar-brand" to="/">
-            <img src="logo.png" alt="logo" height={30} />
+            <img src="/public/logo.png" alt="logo" height={30} />
           </Link>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

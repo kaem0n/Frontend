@@ -35,7 +35,7 @@ const NavProfileCard = () => {
           <div
             className="menu-option"
             onClick={() => {
-              navigate('/me')
+              navigate('/profile/me')
               toggleRef.current.click()
             }}
           >
