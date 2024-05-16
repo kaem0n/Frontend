@@ -11,17 +11,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { endLoad, load, trigger } from '../redux/actions'
 import ProfileInfo from './ProfileInfo'
 import { useNavigate, useParams } from 'react-router-dom'
+import ProfileNetwork from './ProfileNetwork'
+import ProfileGroups from './ProfileGroups'
+import ProfileBoard from './ProfileBoard'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')
   const isLoading = useSelector((state) => state.isLoading)
+  const reloadTrigger = useSelector((state) => state.reloadTrigger)
+  const myID = useSelector((state) => state.profile.id)
   const [user, setUser] = useState(null)
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
-  const [responseMsg, setResponseMsg] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [timerID, setTimerID] = useState(null)
   const [showBoard, setShowBoard] = useState(true)
-  const [showNetwork, setShowNetwork] = useState(false)
+  const [showGroups, setShowGroups] = useState(false)
   const [showInfo, setShowInfo] = useState(false)
+  const [showProfile, setShowProfile] = useState(true)
+  const [showNetwork, setShowNetwork] = useState(false)
+  const [toOpen, setToOpen] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const params = useParams()
@@ -43,6 +52,29 @@ const ProfilePage = () => {
     }
   }
 
+  const handleClick = (e) => {
+    setToOpen(`${e.target.innerText}`)
+    setShowNetwork(true)
+    setShowProfile(false)
+  }
+
+  const handleNotification = (msg) => {
+    clearTimeout(timerID)
+    const jsx = (
+      <div className="position-absolute bottom-0 end-0 mx-3 mb-3 notification-fade">
+        <Alert
+          variant={msg.includes('Error') ? 'danger' : 'success'}
+          className="m-0"
+        >
+          {msg.includes('Error') ? msg.slice(msg.indexOf(' ') + 1) : msg}
+        </Alert>
+      </div>
+    )
+    setNotification(jsx)
+    const timer = setTimeout(() => setNotification(null), 8000)
+    setTimerID(timer)
+  }
+
   const getUserData = async (param) => {
     try {
       const res = await fetch(`http://localhost:3030/api/users/${param}`, {
@@ -52,7 +84,6 @@ const ProfilePage = () => {
       })
       if (res.ok) {
         const data = await res.json()
-        console.log(data)
         setUser(data)
       } else {
         const data = await res.json()
@@ -67,6 +98,7 @@ const ProfilePage = () => {
     const file = imageInputRef.current.files[0]
     if (file) {
       dispatch(load())
+      setNotification(null)
       const formData = new FormData()
       formData.append('image', file)
       try {
@@ -82,10 +114,9 @@ const ProfilePage = () => {
         )
         if (res.ok) {
           const data = await res.json()
-          setResponseMsg(data.responseMessage)
+          handleNotification(data.responseMessage)
           dispatch(endLoad())
           dispatch(trigger())
-          setTimeout(() => setResponseMsg(''), 8000)
         } else {
           const data = await res.json()
           throw new Error(data.message)
@@ -93,9 +124,8 @@ const ProfilePage = () => {
       } catch (error) {
         console.log(error)
         let msg = '' + error
-        setResponseMsg(msg)
+        handleNotification(msg)
         dispatch(endLoad())
-        setTimeout(() => setResponseMsg(''), 8000)
       }
     }
   }
@@ -151,29 +181,58 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
-    getUserData(params.userId)
-    getFollowerData(params.userId)
-    getFollowingData(params.userId)
-    navigate(`/profile/${params.userId}`)
+    getUserData(params.userID)
+    getFollowerData(params.userID)
+    getFollowingData(params.userID)
+    myID && params.userID !== myID
+      ? navigate(`/profile/${params.userID}`)
+      : navigate('/profile/me')
+    setShowNetwork(false)
+    setShowProfile(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.userId])
+  }, [params.userID])
+
+  useEffect(() => {
+    getFollowerData(params.userID)
+    getFollowingData(params.userID)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reloadTrigger])
 
   return (
     user && (
-      <Container fluid className="mt-5">
+      <Container fluid>
         <Row className="justify-content-center">
           <Col md={6}>
-            <Container fluid>
+            <Container
+              fluid
+              id="profile-page"
+              className={
+                showProfile ? 'mt-5' : 'mt-5 vanish-left position-absolute'
+              }
+            >
               <Row className="text-center align-items-center border-bottom pb-3">
-                <Col xs={4} md={3}>
+                <Col
+                  xs={4}
+                  md={3}
+                  className="d-flex flex-column align-items-center"
+                >
                   {isLoading ? (
                     <Placeholder as="p" animation="glow">
                       <Placeholder xs={3} />
                     </Placeholder>
                   ) : (
-                    followers && <p>{followers.length}</p>
+                    followers && (
+                      <button className="btn-clean" onClick={handleClick}>
+                        {followers.length}
+                      </button>
+                    )
                   )}
-                  <p className="fw-semibold">Followers</p>
+                  <button
+                    className="fw-semibold btn-clean"
+                    onClick={handleClick}
+                  >
+                    Followers
+                  </button>
                 </Col>
                 <Col xs={4} md={6}>
                   {isLoading ? (
@@ -187,10 +246,10 @@ const ProfilePage = () => {
                         alt="profile-picture"
                         className="propic border"
                       />
-                      {params.userId === 'me' && (
+                      {params.userID === 'me' && (
                         <>
                           <i
-                            className="fa-solid fa-pen-to-square fs-2 propic-icon"
+                            className="fa-solid fa-pen-to-square fs-2 propic-edit"
                             onClick={() => imageInputRef.current.click()}
                           ></i>
                           <input
@@ -205,15 +264,28 @@ const ProfilePage = () => {
                   )}
                   <p className="profile-username">{user.username}</p>
                 </Col>
-                <Col xs={4} md={3}>
+                <Col
+                  xs={4}
+                  md={3}
+                  className="d-flex flex-column align-items-center"
+                >
                   {isLoading ? (
                     <Placeholder as="p" animation="glow">
                       <Placeholder xs={3} />
                     </Placeholder>
                   ) : (
-                    following && <p>{following.length}</p>
+                    following && (
+                      <button className="btn-clean" onClick={handleClick}>
+                        {following.length}
+                      </button>
+                    )
                   )}
-                  <p className="fw-semibold">Following</p>
+                  <button
+                    className="fw-semibold btn-clean"
+                    onClick={handleClick}
+                  >
+                    Following
+                  </button>
                 </Col>
                 <Col xs={12} className="text-start mt-3">
                   {user.name && (
@@ -233,7 +305,7 @@ const ProfilePage = () => {
                     onClick={(e) => {
                       handleActive(e, btn2, btn3)
                       setShowBoard(true)
-                      setShowNetwork(false)
+                      setShowGroups(false)
                       setShowInfo(false)
                     }}
                   >
@@ -248,11 +320,11 @@ const ProfilePage = () => {
                     onClick={(e) => {
                       handleActive(e, btn1, btn3)
                       setShowBoard(false)
-                      setShowNetwork(true)
+                      setShowGroups(true)
                       setShowInfo(false)
                     }}
                   >
-                    Network
+                    Groups
                   </button>
                 </Col>
                 <Col className="d-flex">
@@ -263,7 +335,7 @@ const ProfilePage = () => {
                     onClick={(e) => {
                       handleActive(e, btn1, btn2)
                       setShowBoard(false)
-                      setShowNetwork(false)
+                      setShowGroups(false)
                       setShowInfo(true)
                     }}
                   >
@@ -272,23 +344,35 @@ const ProfilePage = () => {
                 </Col>
               </Row>
               <Row>
-                <Col>{showInfo && <ProfileInfo user={user} />}</Col>
+                {showBoard && (
+                  <Col>
+                    <ProfileBoard />
+                  </Col>
+                )}
+                {showGroups && (
+                  <Col>
+                    <ProfileGroups />
+                  </Col>
+                )}
+                {showInfo && (
+                  <Col>
+                    <ProfileInfo user={user} />
+                  </Col>
+                )}
               </Row>
             </Container>
+            <ProfileNetwork
+              show={showNetwork}
+              setShow={setShowNetwork}
+              setHide={setShowProfile}
+              followers={followers}
+              following={following}
+              toOpen={toOpen}
+              setToOpen={setToOpen}
+            />
           </Col>
         </Row>
-        {responseMsg !== '' && (
-          <div className="position-absolute bottom-0 end-0 mx-3 mb-3 notification-fade">
-            <Alert
-              variant={responseMsg.includes('Error') ? 'danger' : 'success'}
-              className="m-0"
-            >
-              {responseMsg.includes('Error')
-                ? responseMsg.slice(responseMsg.indexOf(' ') + 1)
-                : responseMsg}
-            </Alert>
-          </div>
-        )}
+        {notification !== null ? notification : <></>}
       </Container>
     )
   )

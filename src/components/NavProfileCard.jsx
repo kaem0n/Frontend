@@ -22,32 +22,31 @@ const NavProfileCard = () => {
       title={
         user && (
           <img
-            src={user.proPic}
+            src={user.proPicUrl}
             alt="profile-picture"
             height={40}
-            className="rounded-circle border"
+            className="nav-propic border"
           />
         )
       }
     >
       <div className="profile-menu px-2 fs-7">
-        {user && (
-          <div
-            className="menu-option"
-            onClick={() => {
-              navigate('/profile/me')
-              toggleRef.current.click()
-            }}
-          >
-            <img
-              src={user.proPic}
-              alt="profile-picture"
-              height={50}
-              className="rounded-circle border me-2"
-            />
-            <p className="fs-5 fw-semibold">{user.username}</p>
-          </div>
-        )}
+        <div
+          className="menu-option"
+          onClick={() => {
+            navigate('/profile/me')
+            toggleRef.current.click()
+          }}
+        >
+          <img
+            src={user.proPicUrl}
+            alt="profile-picture"
+            height={50}
+            className="card-propic border me-2"
+          />
+          <p className="fs-5 fw-semibold">{user.username}</p>
+        </div>
+
         <hr />
         <div
           className="menu-option"

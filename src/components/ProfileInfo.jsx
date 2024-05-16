@@ -20,7 +20,7 @@ const ProfileInfo = ({ user }) => {
   }
 
   return (
-    <Container>
+    <Container fluid className="pb-3">
       <Row>
         <Col xs={4} className="border-end text-end fw-semibold">
           <p className="mb-2">Age</p>

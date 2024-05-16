@@ -98,19 +98,17 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
   }
 
   const updateFields = () => {
-    if (user) {
-      setNameField(user.name === null ? '' : user.name)
-      setSurnameField(user.surname === null ? '' : user.surname)
-      setBirthdayField(user.birthday === null ? '' : user.birthday)
-      setGenderField(user.gender)
-      setOccupationField(user.occupation === null ? '' : user.occupation)
-      setHobbiesField(user.hobbies === null ? [] : user.hobbies)
-      setBioField(user.bio === null ? '' : user.bio)
-    }
+    setNameField(user.name === null ? '' : user.name)
+    setSurnameField(user.surname === null ? '' : user.surname)
+    setBirthdayField(user.birthday === null ? '' : user.birthday)
+    setGenderField(user.gender)
+    setOccupationField(user.occupation === null ? '' : user.occupation)
+    setHobbiesField(user.hobbies === null ? [] : user.hobbies)
+    setBioField(user.bio === null ? '' : user.bio)
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => updateFields(), [])
+  useEffect(() => updateFields(), [user])
 
   return (
     <Container

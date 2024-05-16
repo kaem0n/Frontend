@@ -67,131 +67,129 @@ const Settings = () => {
                 id="settings-menu"
                 className={showMenu ? '' : 'vanish-left position-absolute'}
               >
-                {user && (
-                  <Row className="align-items-start">
-                    <Col xs={4} className="text-end">
-                      <p className="mb-2">Username</p>
-                    </Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p className="fs-7">{user.username}</p>
+                <Row className="align-items-start">
+                  <Col xs={4} className="text-end">
+                    <p className="mb-2">Username</p>
+                  </Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                      <p className="fs-7">{user.username}</p>
+                      <button
+                        className="btn-clean link-info fs-7"
+                        onClick={() => {
+                          setShowMenu(false)
+                          setShowSetting1(true)
+                        }}
+                        disabled={!showMenu}
+                      >
+                        Change username
+                      </button>
+                    </div>
+                  </Col>
+                  <Col xs={4} className="text-end">
+                    <p className="mb-2">Email</p>
+                  </Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                      <p className="fs-7">{user.email}</p>
+                      <button
+                        className="btn-clean link-info fs-7"
+                        onClick={() => {
+                          setShowMenu(false)
+                          setShowSetting2(true)
+                        }}
+                        disabled={!showMenu}
+                      >
+                        Change email
+                      </button>
+                    </div>
+                  </Col>
+                  <Col xs={4} className="text-end">
+                    <p className="mb-2">Password</p>
+                  </Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                      <p className="fs-7">●●●●●●●●</p>
+                      <button
+                        className="btn-clean link-info fs-7"
+                        onClick={() => {
+                          setShowMenu(false)
+                          setShowSetting3(true)
+                        }}
+                        disabled={!showMenu}
+                      >
+                        Change password
+                      </button>
+                    </div>
+                  </Col>
+                  <Col xs={4} className="text-end">
+                    <p className="mb-2">Info</p>
+                  </Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                      <div className="flex-grow-1 d-flex">
+                        <ProgressBar
+                          now={infoProgress()[0]}
+                          label={infoProgress()[1] + '/' + infoProgress()[2]}
+                          className="w-75 me-1"
+                          variant={
+                            infoProgress()[1] === infoProgress()[2]
+                              ? 'info'
+                              : 'warning'
+                          }
+                        />
+                        <i
+                          className={
+                            'fa-solid fa-check text-success' +
+                            (infoProgress()[1] === infoProgress()[2]
+                              ? ''
+                              : ' d-none')
+                          }
+                        ></i>
+                      </div>
+                      <button
+                        className="btn-clean link-info fs-7"
+                        onClick={() => {
+                          setShowMenu(false)
+                          setShowSetting4(true)
+                          dispatch(trigger())
+                        }}
+                        disabled={!showMenu}
+                      >
+                        Update info
+                      </button>
+                    </div>
+                  </Col>
+                  <Col xs={4} className="text-end"></Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <br />
+                  </Col>
+                  <Col xs={4} className="text-end">
+                    <p className="lh-sm">Account management</p>
+                  </Col>
+                  <Col xs={8} className="align-self-end border-start">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div></div>
+                      <div className="d-flex flex-column align-items-end flex-grow-1">
+                        <ChangeDateFormat />
                         <button
-                          className="btn-clean link-info fs-7"
+                          className="btn-clean link-danger fs-7"
                           onClick={() => {
                             setShowMenu(false)
-                            setShowSetting1(true)
+                            setShowSetting5(true)
+                            setDisabled(true)
+                            setTimeout(() => {
+                              setDisabled(false)
+                            }, 5000)
                           }}
                           disabled={!showMenu}
                         >
-                          Change username
+                          Delete account
                         </button>
                       </div>
-                    </Col>
-                    <Col xs={4} className="text-end">
-                      <p className="mb-2">Email</p>
-                    </Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p className="fs-7">{user.email}</p>
-                        <button
-                          className="btn-clean link-info fs-7"
-                          onClick={() => {
-                            setShowMenu(false)
-                            setShowSetting2(true)
-                          }}
-                          disabled={!showMenu}
-                        >
-                          Change email
-                        </button>
-                      </div>
-                    </Col>
-                    <Col xs={4} className="text-end">
-                      <p className="mb-2">Password</p>
-                    </Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <p className="fs-7">●●●●●●●●</p>
-                        <button
-                          className="btn-clean link-info fs-7"
-                          onClick={() => {
-                            setShowMenu(false)
-                            setShowSetting3(true)
-                          }}
-                          disabled={!showMenu}
-                        >
-                          Change password
-                        </button>
-                      </div>
-                    </Col>
-                    <Col xs={4} className="text-end">
-                      <p className="mb-2">Info</p>
-                    </Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <div className="mb-2 d-flex justify-content-between align-items-center">
-                        <div className="flex-grow-1 d-flex">
-                          <ProgressBar
-                            now={infoProgress()[0]}
-                            label={infoProgress()[1] + '/' + infoProgress()[2]}
-                            className="w-75 me-1"
-                            variant={
-                              infoProgress()[1] === infoProgress()[2]
-                                ? 'info'
-                                : 'warning'
-                            }
-                          />
-                          <i
-                            className={
-                              'fa-solid fa-check text-success' +
-                              (infoProgress()[1] === infoProgress()[2]
-                                ? ''
-                                : ' d-none')
-                            }
-                          ></i>
-                        </div>
-                        <button
-                          className="btn-clean link-info fs-7"
-                          onClick={() => {
-                            setShowMenu(false)
-                            setShowSetting4(true)
-                            dispatch(trigger())
-                          }}
-                          disabled={!showMenu}
-                        >
-                          Update info
-                        </button>
-                      </div>
-                    </Col>
-                    <Col xs={4} className="text-end"></Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <br />
-                    </Col>
-                    <Col xs={4} className="text-end">
-                      <p className="lh-sm">Account management</p>
-                    </Col>
-                    <Col xs={8} className="align-self-end border-start">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div></div>
-                        <div className="d-flex flex-column align-items-end flex-grow-1">
-                          <ChangeDateFormat />
-                          <button
-                            className="btn-clean link-danger fs-7"
-                            onClick={() => {
-                              setShowMenu(false)
-                              setShowSetting5(true)
-                              setDisabled(true)
-                              setTimeout(() => {
-                                setDisabled(false)
-                              }, 5000)
-                            }}
-                            disabled={!showMenu}
-                          >
-                            Delete account
-                          </button>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                )}
+                    </div>
+                  </Col>
+                </Row>
               </Container>
               <ChangeUsername
                 showSetting={showSetting1}

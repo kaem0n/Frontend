@@ -8,7 +8,11 @@ import NavBar from './components/NavBar'
 import Settings from './components/Settings'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProfileData } from './redux/actions'
+import {
+  getMyFollowerData,
+  getMyFollowingData,
+  getProfileData,
+} from './redux/actions'
 import ProfilePage from './components/ProfilePage'
 
 const App = () => {
@@ -26,6 +30,8 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getProfileData())
+    dispatch(getMyFollowerData())
+    dispatch(getMyFollowingData())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadTrigger])
 
@@ -36,7 +42,7 @@ const App = () => {
         {accessToken ? (
           <>
             <Route path="/" element={<Home />} />
-            <Route path="/profile/:userId" element={<ProfilePage />} />
+            <Route path="/profile/:userID" element={<ProfilePage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (
