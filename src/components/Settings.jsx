@@ -58,7 +58,7 @@ const Settings = () => {
   return (
     <Container className="mt-5 h-100">
       <Row className="justify-content-center">
-        <Col lg={6}>
+        <Col lg={7} xl={6}>
           <Card>
             <Card.Header as="h5">Account Settings</Card.Header>
             <Card.Body className="px-1">
@@ -67,15 +67,15 @@ const Settings = () => {
                 id="settings-menu"
                 className={showMenu ? '' : 'vanish-left position-absolute'}
               >
-                <Row className="align-items-start">
+                <Row className="align-items-start gx-3 gx-md-4">
                   <Col xs={4} className="text-end">
-                    <p className="mb-2">Username</p>
+                    <p className="mb-2 lh-sm">Username</p>
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
-                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                    <div className="mb-2 d-flex flex-column flex-sm-row justify-content-between">
                       <p className="fs-7">{user.username}</p>
                       <button
-                        className="btn-clean link-info fs-7"
+                        className="btn-clean link-info fs-7 align-self-end"
                         onClick={() => {
                           setShowMenu(false)
                           setShowSetting1(true)
@@ -87,13 +87,13 @@ const Settings = () => {
                     </div>
                   </Col>
                   <Col xs={4} className="text-end">
-                    <p className="mb-2">Email</p>
+                    <p className="mb-2 lh-sm">Email</p>
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
-                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                    <div className="mb-2 d-flex flex-column flex-sm-row justify-content-between">
                       <p className="fs-7">{user.email}</p>
                       <button
-                        className="btn-clean link-info fs-7"
+                        className="btn-clean link-info fs-7 align-self-end"
                         onClick={() => {
                           setShowMenu(false)
                           setShowSetting2(true)
@@ -105,10 +105,10 @@ const Settings = () => {
                     </div>
                   </Col>
                   <Col xs={4} className="text-end">
-                    <p className="mb-2">Password</p>
+                    <p className="mb-2 lh-sm">Password</p>
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
-                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                    <div className="mb-2 d-flex justify-content-between">
                       <p className="fs-7">●●●●●●●●</p>
                       <button
                         className="btn-clean link-info fs-7"
@@ -123,7 +123,7 @@ const Settings = () => {
                     </div>
                   </Col>
                   <Col xs={4} className="text-end">
-                    <p className="mb-2">Info</p>
+                    <p className="mb-2 lh-sm">Info</p>
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
                     <div className="mb-2 d-flex justify-content-between align-items-center">
@@ -168,7 +168,7 @@ const Settings = () => {
                     <p className="lh-sm">Account management</p>
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex justify-content-between">
                       <div></div>
                       <div className="d-flex flex-column align-items-end flex-grow-1">
                         <ChangeDateFormat />

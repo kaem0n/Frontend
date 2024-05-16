@@ -9,7 +9,7 @@ body {
 }
 
 .fs-7 {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .fs-8 {
@@ -72,6 +72,7 @@ hr {
   background: none;
   border: none;
   padding: 1rem;
+  white-space: no-wrap;
 }
 
 .btn-special.active {

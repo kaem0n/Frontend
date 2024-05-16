@@ -53,7 +53,7 @@ const ChangeDateFormat = () => {
   useEffect(() => setDateFormatField(user.dateFormat), [])
 
   return (
-    <div className="mb-2 d-flex justify-content-between w-100 align-items-start">
+    <div className="mb-2 d-flex flex-column flex-sm-row justify-content-between w-100">
       <div className="me-2">
         {showDateSelect ? (
           <Form.Select
@@ -80,7 +80,7 @@ const ChangeDateFormat = () => {
         )}
       </div>
       <button
-        className="btn-clean link-info fs-7"
+        className="btn-clean link-info fs-7 align-self-end align-self-sm-start"
         onClick={() => {
           setShowDateSelect(!showDateSelect)
         }}

@@ -122,6 +122,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
               <FloatingLabel label="Name" className="me-2 flex-grow-1">
                 <Form.Control
                   size="sm"
+                  maxLength={50}
                   value={nameField}
                   onChange={(e) => {
                     setNameField(e.target.value)
@@ -134,6 +135,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
               <FloatingLabel label="Surname" className="flex-grow-1">
                 <Form.Control
                   size="sm"
+                  maxLength={50}
                   value={surnameField}
                   onChange={(e) => {
                     setSurnameField(e.target.value)
@@ -172,6 +174,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
               <FloatingLabel label="Occupation">
                 <Form.Control
                   size="sm"
+                  maxLength={30}
                   value={occupationField}
                   onChange={(e) => setOccupationField(e.target.value)}
                 />
@@ -186,6 +189,7 @@ const UpdateInfo = ({ showSetting, setShowSetting, setShowMenu }) => {
                   <Form.Control
                     as="textarea"
                     size="sm"
+                    maxLength={20}
                     onKeyDown={addHobby}
                     className="textarea-resize-none"
                     minLength={3}

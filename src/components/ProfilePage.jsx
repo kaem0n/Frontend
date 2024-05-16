@@ -296,8 +296,8 @@ const ProfilePage = () => {
                   {user.bio && <p className="line-break fs-7">{user.bio}</p>}
                 </Col>
               </Row>
-              <Row className="mb-3">
-                <Col className="d-flex">
+              <Row className="mb-3 gx-3">
+                <Col xs={4} className="d-flex justify-content-center">
                   <button
                     type="button"
                     ref={btn1}
@@ -309,10 +309,10 @@ const ProfilePage = () => {
                       setShowInfo(false)
                     }}
                   >
-                    Board
+                    <i className="fa-solid fa-chalkboard-user"></i> Board
                   </button>
                 </Col>
-                <Col className="d-flex">
+                <Col xs={4} className="d-flex justify-content-center">
                   <button
                     type="button"
                     ref={btn2}
@@ -324,10 +324,10 @@ const ProfilePage = () => {
                       setShowInfo(false)
                     }}
                   >
-                    Groups
+                    <i className="fa-solid fa-users"></i> Groups
                   </button>
                 </Col>
-                <Col className="d-flex">
+                <Col xs={4} className="d-flex justify-content-center">
                   <button
                     type="button"
                     ref={btn3}
@@ -339,7 +339,7 @@ const ProfilePage = () => {
                       setShowInfo(true)
                     }}
                   >
-                    Info
+                    <i className="fa-solid fa-address-card"></i> Info
                   </button>
                 </Col>
               </Row>

@@ -77,6 +77,7 @@ const ChangeUsername = ({ showSetting, setShowSetting, setShowMenu }) => {
               <FloatingLabel label="Choose your new username">
                 <Form.Control
                   size="sm"
+                  maxLength={20}
                   value={newUsernameField}
                   onChange={(e) => setNewUsernameField(e.target.value)}
                 />
