@@ -44,6 +44,10 @@ hr {
   cursor: pointer;
 }
 
+.pevent-none {
+  pointer-events: none;
+}
+
 .profile-menu {
   min-width: 250px;
 }
@@ -65,6 +69,54 @@ hr {
   background: none;
   border: none;
   padding: 0;
+}
+
+@keyframes activate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  25% {
+    transform: scale(1.5) rotate(-10deg);
+  }
+
+  50% {
+    transform: scale(1.5) rotate(-10deg);
+  }
+
+  75% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.activate {
+  animation-name: activate;
+  animation-duration: 0.5s;
+}
+
+.btn-post {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-block: 0.25rem;
+  margin-inline: 0.125rem;
+  width: 50%;
+  border-radius: 0.375rem;
+  height: 2.5rem;
+}
+
+.btn-post:hover {
+  background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity));
+  color: #58a399;
+}
+
+.btn-post.active {
+  color: #496989;
+  font-weight: 600;
 }
 
 .btn-special {
@@ -273,4 +325,16 @@ hr {
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.img-sm {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}
+
+.img-lg {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 1/2;
 }
