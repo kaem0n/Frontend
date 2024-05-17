@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   Alert,
+  Button,
   Col,
   Container,
   Placeholder,
@@ -20,6 +21,7 @@ const ProfilePage = () => {
   const isLoading = useSelector((state) => state.isLoading)
   const reloadTrigger = useSelector((state) => state.reloadTrigger)
   const myID = useSelector((state) => state.profile.id)
+  const myFollowingList = useSelector((state) => state.following)
   const [user, setUser] = useState(null)
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
@@ -56,6 +58,15 @@ const ProfilePage = () => {
     setToOpen(`${e.target.innerText}`)
     setShowNetwork(true)
     setShowProfile(false)
+  }
+
+  const checkUserFollow = (id) => {
+    for (let user of myFollowingList) {
+      if (user.userID === id) {
+        return true
+      }
+    }
+    return false
   }
 
   const handleNotification = (msg) => {
@@ -180,6 +191,33 @@ const ProfilePage = () => {
     }
   }
 
+  const followUser = async (id) => {
+    dispatch(load())
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/users/me/follow/${id}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        console.log(data)
+        dispatch(endLoad())
+        dispatch(trigger())
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      dispatch(endLoad())
+    }
+  }
+
   useEffect(() => {
     getUserData(params.userID)
     getFollowerData(params.userID)
@@ -263,6 +301,18 @@ const ProfilePage = () => {
                     </div>
                   )}
                   <p className="profile-username">{user.username}</p>
+                  {myID !== user.id && (
+                    <Button
+                      size="sm"
+                      className="mt-2"
+                      variant={
+                        checkUserFollow(user.id) ? 'outline-primary' : 'primary'
+                      }
+                      onClick={() => followUser(user.userID)}
+                    >
+                      {checkUserFollow(user.id) ? 'Unfollow' : 'Follow'}
+                    </Button>
+                  )}
                 </Col>
                 <Col
                   xs={4}
@@ -369,6 +419,7 @@ const ProfilePage = () => {
               following={following}
               toOpen={toOpen}
               setToOpen={setToOpen}
+              followUser={followUser}
             />
           </Col>
         </Row>

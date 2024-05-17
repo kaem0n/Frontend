@@ -13,6 +13,7 @@ const ProfileNetwork = ({
   following,
   toOpen,
   setToOpen,
+  followUser,
 }) => {
   const accessToken = localStorage.getItem('accessToken')
   const myID = useSelector((state) => state.profile.id)
@@ -40,33 +41,6 @@ const ProfileNetwork = ({
       }
     }
     return false
-  }
-
-  const followUser = async (id) => {
-    dispatch(load())
-    try {
-      const res = await fetch(
-        `http://localhost:3030/api/users/me/follow/${id}`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: accessToken,
-          },
-        }
-      )
-      if (res.ok) {
-        const data = await res.json()
-        console.log(data)
-        dispatch(endLoad())
-        dispatch(trigger())
-      } else {
-        const data = await res.json()
-        throw new Error(data.message)
-      }
-    } catch (error) {
-      console.log(error)
-      dispatch(endLoad())
-    }
   }
 
   useEffect(() => {
