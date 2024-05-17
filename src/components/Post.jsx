@@ -1,7 +1,11 @@
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import dateFormatter from '../utils/dateFormatter'
+import CommentSection from './CommentSection'
+import { useState } from 'react'
 
 const Post = () => {
+  const [showComments, setShowComments] = useState(false)
+
   const handleActive = (e) => {
     if (!e.target.className.includes(' active')) {
       e.target.className += ' active'
@@ -28,18 +32,25 @@ const Post = () => {
   return (
     <Card className="bg-body-tertiary">
       <Card.Body className="px-0 pb-0 pt-3">
-        <div className="d-flex align-items-center mb-2 px-3">
+        <div className="d-flex justify-content-between align-items-center mb-2 px-3">
           {/* POST INFO */}
-          <img
-            src="https://res.cloudinary.com/kaem0n/image/upload/v1714550501/default_user_icon_nm5w0s.png"
-            className="nav-propic border me-2"
-          />
-          <div className="d-flex flex-column">
-            <p className="fw-semibold underline cursor-pointer">username</p>
-            <p className="fs-8 text-secondary">
-              {dateFormatter(new Date('2023-05-03'), 'DMY')} · 18:39
-            </p>
+          <div className="d-flex align-items-center">
+            <img
+              src="https://res.cloudinary.com/kaem0n/image/upload/v1714550501/default_user_icon_nm5w0s.png"
+              className="card-propic border me-2"
+            />
+            <div className="d-flex flex-column align-items-start">
+              <button type="button" className="btn-clean fw-semibold underline">
+                username
+              </button>
+              <p className="fs-8 text-secondary">
+                {dateFormatter(new Date('2023-05-03'), 'DMY')} · 18:39
+              </p>
+            </div>
           </div>
+          <button type="button" className="btn-clean align-self-start">
+            <i className="fa-solid fa-ellipsis"></i>
+          </button>
         </div>
         <Container className="px-0">
           {/* CONTENT */}
@@ -79,22 +90,40 @@ const Post = () => {
               <i className="fa-solid fa-thumbs-up me-1"></i>
               99
             </button>
-            <button type="button" className="btn-clean underline">
+            <button
+              type="button"
+              className="btn-clean underline"
+              onClick={() => setShowComments(!showComments)}
+            >
               Comments: 12
             </button>
           </div>
         </div>
         {/* <hr className="mb-0" /> */}
       </Card.Body>
-      <Card.Footer className="d-flex bg-body p-0">
-        <button type="button" className="btn-post ms-1" onClick={handleActive}>
-          <i className="fa-regular fa-thumbs-up me-1 pevent-none"></i>
-          Like
-        </button>
-        <button type="button" className="btn-post me-1">
-          <i className="fa-regular fa-comment me-1"></i>
-          Comment
-        </button>
+      <Card.Footer className="d-flex flex-column bg-body p-0">
+        <div className="d-flex w-100">
+          <button
+            type="button"
+            className="btn-post ms-1"
+            onClick={handleActive}
+          >
+            <i className="fa-regular fa-thumbs-up me-1 pevent-none"></i>
+            Like
+          </button>
+          <button
+            type="button"
+            className="btn-post me-1"
+            onClick={() => setShowComments(!showComments)}
+          >
+            <i className="fa-regular fa-comment me-1"></i>
+            Comment
+          </button>
+        </div>
+        <div className={showComments ? '' : 'd-none'}>
+          <hr className="m-0" />
+          <CommentSection />
+        </div>
       </Card.Footer>
     </Card>
   )
