@@ -13,7 +13,9 @@ const initialState = {
   reloadTrigger: false,
   profile: {
     id: '',
-    board: '',
+    board: {
+      id: '',
+    },
     username: '',
     email: '',
     proPicUrl: '',
@@ -23,7 +25,7 @@ const initialState = {
     birthday: '',
     gender: '',
     occupation: '',
-    hobbies: '',
+    hobbies: [],
     dateFormat: '',
     bio: '',
   },

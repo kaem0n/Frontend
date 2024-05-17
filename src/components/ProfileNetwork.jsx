@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { endLoad, load, trigger } from '../redux/actions'
 
 const ProfileNetwork = ({
   show,
@@ -15,7 +14,6 @@ const ProfileNetwork = ({
   setToOpen,
   followUser,
 }) => {
-  const accessToken = localStorage.getItem('accessToken')
   const myID = useSelector((state) => state.profile.id)
   const myFollowingList = useSelector((state) => state.following)
   const [showFollowers, setShowFollowers] = useState(true)
@@ -23,7 +21,6 @@ const ProfileNetwork = ({
   const btn1 = useRef()
   const btn2 = useRef()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const handleActive = (ref1, ref2) => {
     const current = ref1.current

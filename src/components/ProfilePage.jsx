@@ -192,7 +192,6 @@ const ProfilePage = () => {
   }
 
   const followUser = async (id) => {
-    dispatch(load())
     try {
       const res = await fetch(
         `http://localhost:3030/api/users/me/follow/${id}`,
@@ -206,7 +205,6 @@ const ProfilePage = () => {
       if (res.ok) {
         const data = await res.json()
         console.log(data)
-        dispatch(endLoad())
         dispatch(trigger())
       } else {
         const data = await res.json()
@@ -214,7 +212,6 @@ const ProfilePage = () => {
       }
     } catch (error) {
       console.log(error)
-      dispatch(endLoad())
     }
   }
 
@@ -308,7 +305,7 @@ const ProfilePage = () => {
                       variant={
                         checkUserFollow(user.id) ? 'outline-primary' : 'primary'
                       }
-                      onClick={() => followUser(user.userID)}
+                      onClick={() => followUser(user.id)}
                     >
                       {checkUserFollow(user.id) ? 'Unfollow' : 'Follow'}
                     </Button>
