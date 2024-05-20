@@ -30,7 +30,7 @@ const NavProfileCard = () => {
         )
       }
     >
-      <div className="profile-menu px-2 fs-7">
+      <div className="profile-menu p-2 fs-7">
         <div
           className="menu-option"
           onClick={() => {

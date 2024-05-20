@@ -409,3 +409,15 @@ hr {
   top: 7px;
   left: 26px;
 }
+
+.emoji-menu {
+  width: 250px;
+  height: 300px;
+  overflow: hidden;
+}
+
+.emoji-container {
+  width: 250px;
+  height: 300px;
+  overflow-y: auto;
+}

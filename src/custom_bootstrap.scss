@@ -57,3 +57,12 @@ $colors: map-merge($colors, $new-colors);
     font-size: 1.1rem;
   }
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-menu {
+  padding: 0 !important;
+  overflow: hidden;
+}

@@ -242,7 +242,7 @@ const ProfilePage = () => {
               fluid
               id="profile-page"
               className={
-                showProfile ? 'mt-5' : 'mt-5 vanish-left position-absolute'
+                showProfile ? 'mt-3' : 'mt-3 vanish-left position-absolute'
               }
             >
               <Row className="text-center align-items-center border-bottom pb-3">

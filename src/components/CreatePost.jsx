@@ -11,9 +11,12 @@ import {
   Row,
   Tooltip,
 } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import EmojiMenu from './EmojiMenu'
 
 const CreatePost = ({ boardID }) => {
   const accessToken = localStorage.getItem('accessToken')
+  const user = useSelector((state) => state.profile)
   const [show, setShow] = useState(false)
   const [files, setFiles] = useState([])
   const [previews, setPreviews] = useState([])
@@ -133,7 +136,7 @@ const CreatePost = ({ boardID }) => {
 
   return (
     <>
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           setShow(true)
@@ -141,7 +144,19 @@ const CreatePost = ({ boardID }) => {
         }}
       >
         Launch demo modal
-      </button>
+      </button> */}
+      <div className="bg-body-tertiary border rounded-3 p-2 d-flex">
+        <img src={user.proPicUrl} className="card-propic border me-2" />
+        <button
+          type="button"
+          className="btn-clean border text-secondary rounded-5 bg-body flex-grow-1 text-start ps-3"
+          onClick={() => {
+            setShow(true)
+          }}
+        >
+          Create a post...
+        </button>
+      </div>
 
       <Modal
         show={show}
@@ -170,14 +185,14 @@ const CreatePost = ({ boardID }) => {
               value={contentField}
               onChange={(e) => setContentField(e.target.value)}
             ></textarea>
-            <div className="text-end">
+            <div className="d-flex justify-content-between align-items-center mb-3">
               <OverlayTrigger
-                placement="left"
+                placement="right"
                 overlay={<Tooltip>Add media to your post</Tooltip>}
               >
                 <button
                   type="button"
-                  className="align-self-end mb-3 btn-media text-info px-1"
+                  className="btn-media text-info px-1"
                   onClick={() => inputFileRef.current.click()}
                 >
                   <span className="position-relative">
@@ -186,6 +201,12 @@ const CreatePost = ({ boardID }) => {
                   </span>
                 </button>
               </OverlayTrigger>
+              <EmojiMenu
+                value={contentField}
+                setValue={setContentField}
+                className="fs-4 me-2 text-secondary"
+                align="end"
+              />
             </div>
             <input
               type="file"

@@ -4,12 +4,12 @@ import NavProfileCard from './NavProfileCard'
 
 const NavBar = () => {
   return (
-    <header>
+    <header className="mb-5 pb-5">
       <Navbar
         collapseOnSelect
         expand="lg"
         className="bg-body-tertiary border-bottom"
-        sticky="top"
+        fixed="top"
       >
         <Container fluid>
           <Link className="navbar-brand" to="/">

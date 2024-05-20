@@ -12003,4 +12003,13 @@ textarea.form-control-lg {
   .profile-username {
     font-size: 1.1rem;
   }
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.dropdown-menu {
+  padding: 0 !important;
+  overflow: hidden;
 }/*# sourceMappingURL=custom_bootstrap.css.map */

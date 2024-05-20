@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Comment from './Comment'
+import EmojiMenu from './EmojiMenu'
 
 const CommentSection = () => {
   const [inputValue, setInputValue] = useState('')
@@ -27,21 +28,28 @@ const CommentSection = () => {
               className="px-2 d-flex justify-content-between"
               onClick={() => textarea.current.focus()}
             >
-              <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip>Upload an image</Tooltip>}
-              >
-                <button
-                  type="button"
-                  className="btn-clean"
-                  onClick={() => {
-                    inputFile.current.click()
-                    console.log(inputFile)
-                  }}
+              <div className="d-flex align-items-center">
+                <OverlayTrigger
+                  placement="bottom"
+                  overlay={<Tooltip>Upload an image</Tooltip>}
                 >
-                  <i className="fa-regular fa-image text-secondary fs-5"></i>
-                </button>
-              </OverlayTrigger>
+                  <button
+                    type="button"
+                    className="btn-clean me-2 fs-5"
+                    onClick={() => {
+                      inputFile.current.click()
+                      console.log(inputFile)
+                    }}
+                  >
+                    <i className="fa-regular fa-image text-secondary"></i>
+                  </button>
+                </OverlayTrigger>
+                <EmojiMenu
+                  value={inputValue}
+                  setValue={setInputValue}
+                  className="text-secondary fs-5"
+                />
+              </div>
               <OverlayTrigger
                 placement="bottom"
                 overlay={<Tooltip>Send</Tooltip>}
