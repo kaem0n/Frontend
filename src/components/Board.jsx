@@ -1,10 +1,16 @@
+/* eslint-disable react/prop-types */
 import { useSelector } from 'react-redux'
+import CreatePost from './CreatePost'
 
-const Board = () => {
+const Board = ({ id }) => {
   const accessToken = localStorage.getItem('accessToken')
-  const boardID = useSelector((state) => state.profile.board.id)
+  const user = useSelector((state) => state.profile)
 
-  return <></>
+  return (
+    <>
+      <CreatePost boardID={id} />
+    </>
+  )
 }
 
 export default Board

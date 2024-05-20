@@ -18,13 +18,18 @@ const Comment = () => {
         </div>
       </div>
       <div>
-        <div className="pb-2 pt-1 px-3 bg-body border comment-container">
-          <p className="fs-7">
+        <div className="bg-body border comment-container">
+          <p className="pb-2 pt-1 px-3 fs-7">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto
             assumenda minus voluptas explicabo est sunt quibusdam sit, nihil
             placeat autem amet aperiam harum, quos voluptatibus illo iste
             voluptate natus dolore!
           </p>
+          <img
+            src="https://placebear.com/1000/800"
+            alt="test"
+            className="comment-img"
+          />
         </div>
         <div className="fs-7 px-3">
           <button type="button" className="btn-clean underline">

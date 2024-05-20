@@ -14,7 +14,7 @@ import ProfileInfo from './ProfileInfo'
 import { useNavigate, useParams } from 'react-router-dom'
 import ProfileNetwork from './ProfileNetwork'
 import ProfileGroups from './ProfileGroups'
-import ProfileBoard from './ProfileBoard'
+import Board from './Board'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -393,7 +393,7 @@ const ProfilePage = () => {
               <Row>
                 {showBoard && (
                   <Col>
-                    <ProfileBoard />
+                    <Board id={user.board.id} />
                   </Col>
                 )}
                 {showGroups && (
