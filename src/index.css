@@ -99,6 +99,11 @@ hr {
   background-color: rgba(var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity));
 }
 
+.btn-media:disabled {
+  opacity: 70%;
+  pointer-events: none;
+}
+
 @keyframes activate {
   0% {
     transform: scale(1) rotate(0deg);
@@ -367,6 +372,13 @@ hr {
   aspect-ratio: 1/2;
 }
 
+.mask {
+  box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.5);
+  color: white;
+  background-size: cover;
+  background-position: center;
+}
+
 .no-resize {
   resize: none;
 }
@@ -404,6 +416,10 @@ hr {
   resize: none;
 }
 
+.comment-textarea:disabled {
+  opacity: 50%;
+}
+
 .plus-icon {
   position: absolute;
   top: 7px;
@@ -420,4 +436,10 @@ hr {
   width: 250px;
   height: 300px;
   overflow-y: auto;
+}
+
+.placeholder-propic {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 }

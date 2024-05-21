@@ -37,6 +37,7 @@ const ProfilePage = () => {
   const navigate = useNavigate()
   const params = useParams()
   const imageInputRef = useRef()
+  const boardID = useRef('')
   const btn1 = useRef()
   const btn2 = useRef()
   const btn3 = useRef()
@@ -87,6 +88,7 @@ const ProfilePage = () => {
   }
 
   const getUserData = async (param) => {
+    dispatch(load())
     try {
       const res = await fetch(`http://localhost:3030/api/users/${param}`, {
         headers: {
@@ -96,12 +98,15 @@ const ProfilePage = () => {
       if (res.ok) {
         const data = await res.json()
         setUser(data)
+        boardID.current = data.board.id
       } else {
         const data = await res.json()
         throw new Error(data.message)
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      dispatch(endLoad())
     }
   }
 
@@ -142,7 +147,6 @@ const ProfilePage = () => {
   }
 
   const getFollowingData = async (param) => {
-    dispatch(load())
     try {
       const res = await fetch(
         `http://localhost:3030/api/users/${param}/following`,
@@ -155,19 +159,16 @@ const ProfilePage = () => {
       if (res.ok) {
         const data = await res.json()
         setFollowing(data)
-        dispatch(endLoad())
       } else {
         const data = await res.json()
         throw new Error(data.message)
       }
     } catch (error) {
       console.log(error)
-      dispatch(endLoad())
     }
   }
 
   const getFollowerData = async (param) => {
-    dispatch(load())
     try {
       const res = await fetch(
         `http://localhost:3030/api/users/${param}/followedBy`,
@@ -180,14 +181,12 @@ const ProfilePage = () => {
       if (res.ok) {
         const data = await res.json()
         setFollowers(data)
-        dispatch(endLoad())
       } else {
         const data = await res.json()
         throw new Error(data.message)
       }
     } catch (error) {
       console.log(error)
-      dispatch(endLoad())
     }
   }
 
@@ -219,7 +218,7 @@ const ProfilePage = () => {
     getUserData(params.userID)
     getFollowerData(params.userID)
     getFollowingData(params.userID)
-    myID && params.userID !== myID
+    params.userID !== myID
       ? navigate(`/profile/${params.userID}`)
       : navigate('/profile/me')
     setShowNetwork(false)
@@ -391,17 +390,17 @@ const ProfilePage = () => {
                 </Col>
               </Row>
               <Row>
-                {showBoard && (
+                {showBoard && showProfile && !isLoading && (
                   <Col>
-                    <Board id={user.board.id} />
+                    <Board id={boardID.current} />
                   </Col>
                 )}
-                {showGroups && (
+                {showGroups && showProfile && (
                   <Col>
                     <ProfileGroups />
                   </Col>
                 )}
-                {showInfo && (
+                {showInfo && showProfile && (
                   <Col>
                     <ProfileInfo user={user} />
                   </Col>

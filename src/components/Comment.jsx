@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import dateFormatter from '../utils/dateFormatter'
 
-const Comment = () => {
+const Comment = ({ data }) => {
   return (
     <div className="d-flex flex-column">
       <div className="d-flex mb-2">

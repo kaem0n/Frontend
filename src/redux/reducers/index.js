@@ -27,6 +27,7 @@ const initialState = {
     occupation: '',
     hobbies: [],
     dateFormat: '',
+    timeFormat: '',
     bio: '',
   },
   followers: [],

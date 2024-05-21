@@ -9,6 +9,7 @@ import DeleteAccount from './settings/DeleteAccount'
 import UpdateInfo from './settings/UpdateInfo'
 import { trigger } from '../redux/actions'
 import ChangeDateFormat from './settings/ChangeDateFormat'
+import ChangeTimeFormat from './settings/ChangeTimeFormat'
 
 const Settings = () => {
   const user = useSelector((state) => state.profile)
@@ -172,6 +173,7 @@ const Settings = () => {
                       <div></div>
                       <div className="d-flex flex-column align-items-end flex-grow-1">
                         <ChangeDateFormat />
+                        <ChangeTimeFormat />
                         <button
                           className="btn-clean link-danger fs-7"
                           onClick={() => {

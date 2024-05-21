@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import emojis from '../assets/emoji'
-import { NavDropdown, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { NavDropdown } from 'react-bootstrap'
 
-const EmojiMenu = ({ value, setValue, className, align }) => {
+const EmojiMenu = ({ value, setValue, className, align, disabled }) => {
   const [categories, setCategories] = useState([])
   const [show, setShow] = useState(false)
 
@@ -56,6 +56,7 @@ const EmojiMenu = ({ value, setValue, className, align }) => {
             type="button"
             className={'btn-clean ' + className}
             onClick={() => setShow(!show)}
+            disabled={disabled}
           >
             <i className="fa-regular fa-face-smile"></i>
           </button>

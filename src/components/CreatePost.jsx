@@ -2,6 +2,7 @@
 import { useRef, useState } from 'react'
 import {
   Button,
+  Card,
   CloseButton,
   Col,
   Container,
@@ -9,21 +10,28 @@ import {
   Modal,
   OverlayTrigger,
   Row,
+  Spinner,
   Tooltip,
 } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import EmojiMenu from './EmojiMenu'
+import { useNavigate } from 'react-router-dom'
+import { endLoad, load } from '../redux/actions'
 
-const CreatePost = ({ boardID }) => {
+const CreatePost = ({ boardID, trigger, setTrigger }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
+  const isLoading = useSelector((state) => state.isLoading)
   const [show, setShow] = useState(false)
   const [files, setFiles] = useState([])
   const [previews, setPreviews] = useState([])
   const [contentField, setContentField] = useState('')
   const inputFileRef = useRef()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const createPost = async () => {
+    dispatch(load())
     try {
       const res = await fetch('http://localhost:3030/api/posts', {
         method: 'POST',
@@ -37,12 +45,11 @@ const CreatePost = ({ boardID }) => {
         const newPost = await res.json()
         console.log(newPost)
         if (files.length > 0) {
-          for (let file of files) {
-            addMedia(newPost.id, file)
-          }
+          addMedia(newPost.id, files)
         } else {
-          resetModal()
           setShow(false)
+          dispatch(endLoad())
+          setTrigger(!trigger)
         }
       } else {
         const data = await res.json()
@@ -50,36 +57,42 @@ const CreatePost = ({ boardID }) => {
       }
     } catch (error) {
       console.log(error)
+      dispatch(endLoad())
     }
   }
 
-  const addMedia = async (postID, file) => {
-    if (file) {
-      const formData = new FormData()
-      formData.append('media', file)
-      try {
-        const res = await fetch(
-          `http://localhost:3030/api/posts/${postID}/addMedia`,
-          {
-            method: 'PATCH',
-            headers: {
-              Authorization: accessToken,
-            },
-            body: formData,
+  const addMedia = async (postID, files) => {
+    dispatch(load())
+    try {
+      if (files.length > 0) {
+        for (let file of files) {
+          const formData = new FormData()
+          formData.append('media', file)
+          const res = await fetch(
+            `http://localhost:3030/api/posts/${postID}/addMedia`,
+            {
+              method: 'PATCH',
+              headers: {
+                Authorization: accessToken,
+              },
+              body: formData,
+            }
+          )
+          if (res.ok) {
+            const data = await res.json()
+            console.log(data)
+          } else {
+            const data = await res.json()
+            throw new Error(data.message)
           }
-        )
-        if (res.ok) {
-          const data = await res.json()
-          console.log(data)
-          resetModal()
-          setShow(false)
-        } else {
-          const data = await res.json()
-          throw new Error(data.message)
         }
-      } catch (error) {
-        console.log(error)
       }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setShow(false)
+      dispatch(endLoad())
+      setTrigger(!trigger)
     }
   }
 
@@ -135,18 +148,15 @@ const CreatePost = ({ boardID }) => {
   }
 
   return (
-    <>
-      {/* <button
-        type="button"
-        onClick={() => {
-          setShow(true)
-          // resetModal()
-        }}
-      >
-        Launch demo modal
-      </button> */}
-      <div className="bg-body-tertiary border rounded-3 p-2 d-flex">
-        <img src={user.proPicUrl} className="card-propic border me-2" />
+    <Card className="bg-body-tertiary">
+      <Card.Body className="p-2 d-flex">
+        <button
+          type="button"
+          className="btn-clean me-2"
+          onClick={() => navigate('/profile/me')}
+        >
+          <img src={user.proPicUrl} className="card-propic border" />
+        </button>
         <button
           type="button"
           className="btn-clean border text-secondary rounded-5 bg-body flex-grow-1 text-start ps-3"
@@ -156,7 +166,7 @@ const CreatePost = ({ boardID }) => {
         >
           Create a post...
         </button>
-      </div>
+      </Card.Body>
 
       <Modal
         show={show}
@@ -184,6 +194,7 @@ const CreatePost = ({ boardID }) => {
               rows={4}
               value={contentField}
               onChange={(e) => setContentField(e.target.value)}
+              disabled={isLoading}
             ></textarea>
             <div className="d-flex justify-content-between align-items-center mb-3">
               <OverlayTrigger
@@ -194,6 +205,7 @@ const CreatePost = ({ boardID }) => {
                   type="button"
                   className="btn-media text-info px-1"
                   onClick={() => inputFileRef.current.click()}
+                  disabled={isLoading}
                 >
                   <span className="position-relative">
                     <i className="fa-solid fa-photo-film fs-4 me-2"></i>
@@ -206,6 +218,7 @@ const CreatePost = ({ boardID }) => {
                 setValue={setContentField}
                 className="fs-4 me-2 text-secondary"
                 align="end"
+                disabled={isLoading}
               />
             </div>
             <input
@@ -255,14 +268,26 @@ const CreatePost = ({ boardID }) => {
               </div>
             )}
             <div className="d-flex">
-              <Button type="submit" variant="primary" className="flex-grow-1">
-                <i className="bi bi-send-fill"></i> Publish
+              <Button
+                type="submit"
+                variant="primary"
+                className="flex-grow-1"
+                disabled={isLoading || contentField.length < 3}
+              >
+                {isLoading ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <>
+                    <i className="bi bi-send-fill"></i>
+                    <span> Publish</span>
+                  </>
+                )}
               </Button>
             </div>
           </Form>
         </Modal.Body>
       </Modal>
-    </>
+    </Card>
   )
 }
 

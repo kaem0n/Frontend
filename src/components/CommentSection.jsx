@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useRef, useState } from 'react'
 import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Comment from './Comment'
 import EmojiMenu from './EmojiMenu'
+import { useSelector } from 'react-redux'
 
-const CommentSection = () => {
+const CommentSection = ({ data }) => {
+  const user = useSelector((state) => state.profile)
   const [inputValue, setInputValue] = useState('')
   const textarea = useRef()
   const inputFile = useRef()
@@ -11,10 +14,7 @@ const CommentSection = () => {
   return (
     <div className="p-3 bg-body-tertiary">
       <div className="d-flex border-bottom pb-3 mb-2">
-        <img
-          src="https://res.cloudinary.com/kaem0n/image/upload/v1714550501/default_user_icon_nm5w0s.png"
-          className="nav-propic border me-2"
-        />
+        <img src={user.proPicUrl} className="nav-propic border me-2" />
         <Form className="flex-grow-1 position-relative">
           <div className="form-control textarea-container p-0">
             <textarea
@@ -63,7 +63,7 @@ const CommentSection = () => {
           </div>
         </Form>
       </div>
-      <Comment />
+      <Comment data={data} />
     </div>
   )
 }
