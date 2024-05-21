@@ -15,6 +15,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ProfileNetwork from './ProfileNetwork'
 import ProfileGroups from './ProfileGroups'
 import Board from './Board'
+import CreatePost from './CreatePost'
+import PostPlaceholder from './PostPlaceholder'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -390,9 +392,14 @@ const ProfilePage = () => {
                 </Col>
               </Row>
               <Row>
-                {showBoard && showProfile && !isLoading && (
+                {showBoard && showProfile && (
                   <Col>
-                    <Board id={boardID.current} />
+                    <CreatePost boardID={boardID.current} />
+                    {!isLoading ? (
+                      <Board id={boardID.current} />
+                    ) : (
+                      <PostPlaceholder />
+                    )}
                   </Col>
                 )}
                 {showGroups && showProfile && (

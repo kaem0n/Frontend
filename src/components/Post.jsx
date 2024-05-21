@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, Col, Container, Row } from 'react-bootstrap'
-import dateFormatter from '../utils/dateFormatter'
+import { Card, Container } from 'react-bootstrap'
 import CommentSection from './CommentSection'
 import { useState } from 'react'
 import dateTimeFormatter from '../utils/dateTimeFormatter'

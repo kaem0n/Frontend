@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import CreatePost from './CreatePost'
 import { useEffect, useState } from 'react'
 import PostPlaceholder from './PostPlaceholder'
 import Post from './Post'
@@ -9,7 +8,6 @@ import { endLoad } from '../redux/actions'
 const Board = ({ id }) => {
   const accessToken = localStorage.getItem('accessToken')
   const isLoading = useSelector((state) => state.isLoading)
-  const [trigger, setTrigger] = useState(true)
   const [isFetching, setFetching] = useState(false)
   const [firstLoad, setFirstLoad] = useState(true)
   const [pageNum, setPageNum] = useState(0)
@@ -84,12 +82,10 @@ const Board = ({ id }) => {
   useEffect(() => {
     resetBoard()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, trigger, isLoading])
+  }, [id, isLoading])
 
   return (
     <div>
-      <CreatePost boardID={id} trigger={trigger} setTrigger={setTrigger} />
-      {isLoading && <PostPlaceholder />}
       {firstLoad && <PostPlaceholder />}
       {!firstLoad && posts && posts.length === 0 ? (
         <h1 className="text-center text-secondary my-4">
