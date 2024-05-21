@@ -170,7 +170,6 @@ const Settings = () => {
                   </Col>
                   <Col xs={8} className="align-self-end border-start">
                     <div className="d-flex justify-content-between">
-                      <div></div>
                       <div className="d-flex flex-column align-items-end flex-grow-1">
                         <ChangeDateFormat />
                         <ChangeTimeFormat />

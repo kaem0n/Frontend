@@ -53,41 +53,46 @@ const ChangeDateFormat = () => {
   useEffect(() => setDateFormatField(user.dateFormat), [])
 
   return (
-    <div className="mb-2 d-flex flex-column flex-sm-row justify-content-between w-100">
-      <div className="me-2">
-        {showDateSelect ? (
-          <Form.Select
-            size="sm"
-            className="py-0"
-            value={dateFormatField}
-            onChange={(e) => {
-              setDateFormatField(e.target.value)
-              changeDateFormat(e.target.value)
-              dispatch(trigger())
-            }}
-          >
-            <option value="YMD">YYYY-MM-DD</option>
-            <option value="MDY">MM-DD-YYYY</option>
-            <option value="DMY">DD-MM-YYYY</option>
-          </Form.Select>
-        ) : (
-          <>
-            <p className="fs-7">Date format: {printFormat(user.dateFormat)}</p>
-            <p className="fs-8 text-secondary fst-italic">
-              Example: {dateFormatter(new Date(), user.dateFormat)}
-            </p>
-          </>
-        )}
+    <>
+      <div className="mb-2 d-flex flex-column flex-sm-row justify-content-between w-100">
+        <div className="me-2">
+          {showDateSelect ? (
+            <Form.Select
+              size="sm"
+              className="py-0"
+              value={dateFormatField}
+              onChange={(e) => {
+                setDateFormatField(e.target.value)
+                changeDateFormat(e.target.value)
+                dispatch(trigger())
+              }}
+            >
+              <option value="YMD">YYYY-MM-DD</option>
+              <option value="MDY">MM-DD-YYYY</option>
+              <option value="DMY">DD-MM-YYYY</option>
+            </Form.Select>
+          ) : (
+            <>
+              <p className="fs-7">
+                Date format: {printFormat(user.dateFormat)}
+              </p>
+              <p className="fs-8 text-secondary fst-italic">
+                Example: {dateFormatter(new Date(), user.dateFormat)}
+              </p>
+            </>
+          )}
+        </div>
+        <button
+          className="btn-clean link-info fs-7 align-self-end align-self-sm-start"
+          onClick={() => {
+            setDateFormatField(user.dateFormat)
+            setShowDateSelect(!showDateSelect)
+          }}
+        >
+          Change date format
+        </button>
       </div>
-      <button
-        className="btn-clean link-info fs-7 align-self-end align-self-sm-start"
-        onClick={() => {
-          setShowDateSelect(!showDateSelect)
-        }}
-      >
-        Change date format
-      </button>
-    </div>
+    </>
   )
 }
 

@@ -83,6 +83,7 @@ const ChangeTimeFormat = () => {
       <button
         className="btn-clean link-info fs-7 align-self-end align-self-sm-start"
         onClick={() => {
+          setTimeFormatField(user.timeFormat)
           setShowTimeSelect(!showTimeSelect)
         }}
       >
