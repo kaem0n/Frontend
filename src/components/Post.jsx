@@ -38,7 +38,7 @@ const Post = ({ data }) => {
     }
   }
 
-  const getData = async () => {
+  const loadData = async () => {
     try {
       const res = await fetch(`http://localhost:3030/api/posts/${data.id}`, {
         headers: {
@@ -92,7 +92,7 @@ const Post = ({ data }) => {
       if (res.ok) {
         const data = await res.json()
         console.log(data)
-        getData()
+        loadData()
       } else {
         const data = await res.json()
         throw new Error(data.message)
@@ -117,7 +117,7 @@ const Post = ({ data }) => {
         <div className={isDeleted ? 'd-none' : ''}>
           <Card className={'bg-body-tertiary my-4'}>
             <Card.Body className="px-0 pb-0 pt-3">
-              <div className="d-flex justify-content-between align-items-center mb-2 px-3">
+              <div className="d-flex justify-content-between mb-2 px-3">
                 <div className="d-flex align-items-center">
                   <button
                     type="button"
@@ -164,6 +164,14 @@ const Post = ({ data }) => {
                       className="btn-clean menu-option p-2"
                       onClick={deletePost}
                     >
+                      <i className="fa-solid fa-pen-to-square me-2"></i> Edit
+                      post
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-clean menu-option p-2"
+                      onClick={deletePost}
+                    >
                       <i className="fa-solid fa-trash-can me-2"></i> Delete post
                     </button>
                   </div>
@@ -186,9 +194,13 @@ const Post = ({ data }) => {
                   <button
                     type="button"
                     className="btn-clean underline"
-                    onClick={() => setShowComments(!showComments)}
+                    onClick={() => {
+                      setShowComments(!showComments)
+                      loadData()
+                    }}
                   >
-                    Comments: {data.comments.length}
+                    Comments:{' '}
+                    {postData ? postData.comments.length : data.comments.length}
                   </button>
                 </div>
               </div>
@@ -217,7 +229,10 @@ const Post = ({ data }) => {
                 <button
                   type="button"
                   className="btn-post me-1"
-                  onClick={() => setShowComments(!showComments)}
+                  onClick={() => {
+                    setShowComments(!showComments)
+                    loadData()
+                  }}
                 >
                   <i className="fa-regular fa-comment me-1"></i>
                   Comment
@@ -225,7 +240,9 @@ const Post = ({ data }) => {
               </div>
               <div className={showComments ? '' : 'd-none'}>
                 <hr className="m-0" />
-                <CommentSection data={data} />
+                {postData && (
+                  <CommentSection data={postData} loadData={loadData} />
+                )}
               </div>
             </Card.Footer>
           </Card>

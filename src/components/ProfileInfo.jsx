@@ -23,6 +23,26 @@ const ProfileInfo = ({ user }) => {
     <Container fluid className="pb-3">
       <Row>
         <Col xs={4} className="border-end text-end fw-semibold">
+          <p className="mb-2">
+            {user.name && user.surname ? 'Full name' : 'Name'}
+          </p>
+        </Col>
+        <Col xs={8}>
+          <p className="mb-2">
+            {user.name && user.surname
+              ? user.name + ' ' + user.surname
+              : user.name
+              ? user.name
+              : '/'}
+          </p>
+        </Col>
+        <Col xs={4} className="border-end text-end fw-semibold">
+          <p className="mb-2">Email</p>
+        </Col>
+        <Col xs={8}>
+          <p className="mb-2">{user.email}</p>
+        </Col>
+        <Col xs={4} className="border-end text-end fw-semibold">
           <p className="mb-2">Age</p>
         </Col>
         <Col xs={8}>

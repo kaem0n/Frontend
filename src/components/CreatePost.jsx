@@ -18,7 +18,7 @@ import EmojiMenu from './EmojiMenu'
 import { useNavigate } from 'react-router-dom'
 import { endLoad, load } from '../redux/actions'
 
-const CreatePost = ({ boardID, trigger, setTrigger }) => {
+const CreatePost = ({ boardID }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const isLoading = useSelector((state) => state.isLoading)
@@ -48,8 +48,8 @@ const CreatePost = ({ boardID, trigger, setTrigger }) => {
           addMedia(newPost.id, files)
         } else {
           setShow(false)
+          setContentField('')
           dispatch(endLoad())
-          setTrigger(!trigger)
         }
       } else {
         const data = await res.json()
@@ -81,6 +81,7 @@ const CreatePost = ({ boardID, trigger, setTrigger }) => {
           if (res.ok) {
             const data = await res.json()
             console.log(data)
+            setContentField('')
           } else {
             const data = await res.json()
             throw new Error(data.message)
@@ -92,7 +93,6 @@ const CreatePost = ({ boardID, trigger, setTrigger }) => {
     } finally {
       setShow(false)
       dispatch(endLoad())
-      setTrigger(!trigger)
     }
   }
 
