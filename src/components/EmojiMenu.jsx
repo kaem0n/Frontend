@@ -50,7 +50,6 @@ const EmojiMenu = ({ value, setValue, className, align, disabled }) => {
     for (let category in emojis.emojis) {
       for (let group in emojis.emojis[category]) {
         for (let emoji of emojis.emojis[category][group]) {
-          console.log(emoji)
           if (emoji.support.windows && emoji.name.includes(query))
             result.push(emoji)
         }
@@ -76,7 +75,7 @@ const EmojiMenu = ({ value, setValue, className, align, disabled }) => {
       return (
         <>
           <p className="fs-8 mb-1">Search results</p>
-          <p className="fs-8 mb-1 text-secondary text-center">
+          <p className="fs-8 text-secondary text-center">
             Search produced no results.
           </p>
         </>

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Card, Container, NavDropdown } from 'react-bootstrap'
 import CommentSection from './CommentSection'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dateTimeFormatter from '../utils/dateTimeFormatter'
 import { useSelector } from 'react-redux'
 import PostMediaLayout from './PostMediaLayout'
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 const Post = ({ data }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
+  const [postData, setPostData] = useState(null)
   const [showComments, setShowComments] = useState(false)
   const [isDeleted, setDeleted] = useState(false)
   const navigate = useNavigate()
@@ -37,6 +38,25 @@ const Post = ({ data }) => {
     }
   }
 
+  const getData = async () => {
+    try {
+      const res = await fetch(`http://localhost:3030/api/posts/${data.id}`, {
+        headers: {
+          Authorization: accessToken,
+        },
+      })
+      if (res.ok) {
+        const data = await res.json()
+        setPostData(data)
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const deletePost = async () => {
     try {
       const res = await fetch(`http://localhost:3030/api/posts/${data.id}`, {
@@ -56,6 +76,40 @@ const Post = ({ data }) => {
       console.log(error)
     }
   }
+
+  const likePost = async () => {
+    console.log(data)
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/posts/${data.id}/like`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        console.log(data)
+        getData()
+      } else {
+        const data = await res.json()
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const checkLikes = () => {
+    for (let el of data.postLikes) {
+      if (user.id === el.id) return true
+    }
+    return false
+  }
+
+  useEffect(() => {}, [postData])
 
   return (
     <>
@@ -125,7 +179,9 @@ const Post = ({ data }) => {
                 <div className="d-flex justify-content-between align-items-center fs-7">
                   <button type="button" className="btn-clean underline">
                     <i className="fa-solid fa-thumbs-up me-1"></i>
-                    {data.postLikes.length}
+                    {postData
+                      ? postData.postLikes.length
+                      : data.postLikes.length}
                   </button>
                   <button
                     type="button"
@@ -141,10 +197,21 @@ const Post = ({ data }) => {
               <div className="d-flex w-100">
                 <button
                   type="button"
-                  className="btn-post ms-1"
-                  onClick={handleActive}
+                  className={
+                    checkLikes() ? 'btn-post ms-1 active' : 'btn-post ms-1'
+                  }
+                  onClick={(e) => {
+                    handleActive(e)
+                    likePost()
+                  }}
                 >
-                  <i className="fa-regular fa-thumbs-up me-1 pevent-none"></i>
+                  <i
+                    className={
+                      checkLikes()
+                        ? 'fa-solid fa-thumbs-up me-1 pevent-none'
+                        : 'fa-regular fa-thumbs-up me-1 pevent-none'
+                    }
+                  ></i>
                   Like
                 </button>
                 <button
