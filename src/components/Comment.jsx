@@ -9,6 +9,7 @@ import {
   NavDropdown,
   OverlayTrigger,
   Row,
+  Spinner,
   Tooltip,
 } from 'react-bootstrap'
 import { useRef, useState } from 'react'
@@ -17,6 +18,7 @@ import EmojiMenu from './EmojiMenu'
 const Comment = ({ data, loadData }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
+  const [isLoading, setLoading] = useState(false)
   const [toggleEdit, setToggleEdit] = useState(false)
   const [contentField, setContentField] = useState(data.content)
   const [preview, setPreview] = useState('')
@@ -26,6 +28,7 @@ const Comment = ({ data, loadData }) => {
   const navigate = useNavigate()
 
   const deleteComment = async () => {
+    setLoading(true)
     try {
       const res = await fetch(`http://localhost:3030/api/comments/${data.id}`, {
         method: 'DELETE',
@@ -36,18 +39,21 @@ const Comment = ({ data, loadData }) => {
       if (res.ok) {
         console.log('Comment deleted successfully.')
         loadData()
+        setLoading(false)
       } else {
         const err = await res.json()
         throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
   const addImage = async () => {
     const file = inputFile.current.files[0]
     if (file) {
+      setLoading(true)
       try {
         const formData = new FormData()
         formData.append('image', file)
@@ -66,17 +72,21 @@ const Comment = ({ data, loadData }) => {
           console.log(editedComment)
           setToggleEdit(false)
           loadData()
+          removePreview()
+          setLoading(false)
         } else {
           const err = await res.json()
           throw new Error(err.message)
         }
       } catch (error) {
         console.log(error)
+        setLoading(false)
       }
     }
   }
 
   const removeImage = async () => {
+    setLoading(true)
     try {
       const res = await fetch(
         `http://localhost:3030/api/comments/${data.id}/removeImage`,
@@ -92,12 +102,14 @@ const Comment = ({ data, loadData }) => {
         console.log(editedComment)
         setToggleEdit(false)
         loadData()
+        setLoading(false)
       } else {
         const err = await res.json()
         throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -115,6 +127,7 @@ const Comment = ({ data, loadData }) => {
   }
 
   const editComment = async () => {
+    setLoading(true)
     try {
       const res = await fetch(`http://localhost:3030/api/comments/${data.id}`, {
         method: 'PATCH',
@@ -132,6 +145,7 @@ const Comment = ({ data, loadData }) => {
         } else {
           setToggleEdit(false)
           loadData()
+          setLoading(false)
         }
       } else {
         const err = await res.json()
@@ -139,6 +153,7 @@ const Comment = ({ data, loadData }) => {
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -229,7 +244,7 @@ const Comment = ({ data, loadData }) => {
                   removeImage()
                 }}
               >
-                <i className="fa-solid fa-trash-can me-2"></i> Remove image
+                <i className="fa-solid fa-eraser me-2"></i> Remove image
               </button>
             )}
             <button
@@ -259,7 +274,12 @@ const Comment = ({ data, loadData }) => {
         </NavDropdown>
       </div>
       <div>
-        <div className="bg-body comment-container textarea-container mb-1">
+        <div className="bg-body comment-container textarea-container mb-1 position-relative">
+          {isLoading && (
+            <div className="position-absolute top-50 start-50 translate-middle">
+              <Spinner size="sm" />
+            </div>
+          )}
           {toggleEdit ? (
             <>
               <Form className="pb-1 cursor-text" onSubmit={handleSubmit}>
@@ -274,6 +294,7 @@ const Comment = ({ data, loadData }) => {
                   ref={textarea}
                   value={contentField}
                   onChange={(e) => setContentField(e.target.value)}
+                  disabled={isLoading}
                 />
                 <div className="px-3 d-flex justify-content-between">
                   <div className="d-flex align-items-center">
@@ -287,6 +308,7 @@ const Comment = ({ data, loadData }) => {
                         onClick={() => {
                           inputFile.current.click()
                         }}
+                        disabled={isLoading}
                       >
                         <i className="fa-regular fa-image text-secondary"></i>
                       </button>
@@ -295,6 +317,7 @@ const Comment = ({ data, loadData }) => {
                       value={contentField}
                       setValue={setContentField}
                       className="text-secondary fs-5"
+                      disabled={isLoading}
                     />
                   </div>
                   <div
@@ -313,6 +336,7 @@ const Comment = ({ data, loadData }) => {
                         removePreview()
                         setContentField(data.content)
                       }}
+                      disabled={isLoading}
                     >
                       <i className="bi bi-send-slash text-info fs-5"></i>
                     </button>
@@ -326,7 +350,8 @@ const Comment = ({ data, loadData }) => {
                         className="btn-clean"
                         disabled={
                           contentField.length < 3 ||
-                          contentField === data.content
+                          contentField === data.content ||
+                          isLoading
                         }
                       >
                         <i className="bi bi-send-fill text-primary fs-5"></i>
@@ -368,7 +393,7 @@ const Comment = ({ data, loadData }) => {
           ) : (
             <p className="pb-2 pt-1 px-3 fs-7 line-break">{data.content}</p>
           )}
-          {data.imageUrl && (
+          {data.imageUrl && !toggleEdit && (
             <img
               src={data.imageUrl}
               alt="comment-image"

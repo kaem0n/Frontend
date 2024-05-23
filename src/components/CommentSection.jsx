@@ -6,6 +6,7 @@ import {
   Form,
   OverlayTrigger,
   Row,
+  Spinner,
   Tooltip,
 } from 'react-bootstrap'
 import Comment from './Comment'
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux'
 const CommentSection = ({ data, loadData }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
+  const [isLoading, setLoading] = useState(false)
   const [contentField, setContentField] = useState('')
   const [preview, setPreview] = useState('')
   const textarea = useRef()
@@ -22,6 +24,7 @@ const CommentSection = ({ data, loadData }) => {
   const counter = useRef(4)
 
   const createComment = async () => {
+    setLoading(true)
     try {
       const res = await fetch('http://localhost:3030/api/comments', {
         method: 'POST',
@@ -40,6 +43,7 @@ const CommentSection = ({ data, loadData }) => {
         } else {
           setContentField('')
           loadData()
+          setLoading(false)
         }
       } else {
         const err = await res.json()
@@ -47,12 +51,14 @@ const CommentSection = ({ data, loadData }) => {
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
   const addImage = async (commentID) => {
     const file = inputFile.current.files[0]
     if (file) {
+      setLoading(true)
       try {
         const formData = new FormData()
         formData.append('image', file)
@@ -72,12 +78,14 @@ const CommentSection = ({ data, loadData }) => {
           removePreview()
           setContentField('')
           loadData()
+          setLoading(false)
         } else {
           const err = await res.json()
           throw new Error(err.message)
         }
       } catch (error) {
         console.log(error)
+        setLoading(false)
       }
     }
   }
@@ -112,6 +120,7 @@ const CommentSection = ({ data, loadData }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     createComment()
+    setPreview('')
   }
 
   useEffect(() => {}, [data])
@@ -147,6 +156,11 @@ const CommentSection = ({ data, loadData }) => {
             className="flex-grow-1 position-relative"
             onSubmit={handleSubmit}
           >
+            {isLoading && (
+              <div className="position-absolute top-50 start-50 translate-middle">
+                <Spinner size="sm" />
+              </div>
+            )}
             <div className="form-control textarea-container p-0">
               <textarea
                 placeholder="Write a comment..."
@@ -159,6 +173,7 @@ const CommentSection = ({ data, loadData }) => {
                     ? contentField.match(/\n/g).length + 1
                     : 2
                 }
+                disabled={isLoading}
               />
               <div className="px-2 d-flex justify-content-between">
                 <div className="d-flex align-items-center">
@@ -172,6 +187,7 @@ const CommentSection = ({ data, loadData }) => {
                       onClick={() => {
                         inputFile.current.click()
                       }}
+                      disabled={isLoading}
                     >
                       <i className="fa-regular fa-image text-secondary"></i>
                     </button>
@@ -180,6 +196,7 @@ const CommentSection = ({ data, loadData }) => {
                     value={contentField}
                     setValue={setContentField}
                     className="text-secondary fs-5"
+                    disabled={isLoading}
                   />
                 </div>
                 <div
@@ -192,7 +209,7 @@ const CommentSection = ({ data, loadData }) => {
                 >
                   <button
                     className="btn-clean"
-                    disabled={contentField.length < 3}
+                    disabled={contentField.length < 3 || isLoading}
                   >
                     <i className="bi bi-send-fill text-primary fs-5"></i>
                   </button>
