@@ -9,12 +9,12 @@ import {
   Tooltip,
 } from 'react-bootstrap'
 import CommentSection from './CommentSection'
-import { useEffect, useRef, useState } from 'react'
-import dateTimeFormatter from '../utils/dateTimeFormatter'
-import { useSelector } from 'react-redux'
-import PostMediaLayout from './PostMediaLayout'
-import { useNavigate } from 'react-router-dom'
 import EmojiMenu from './EmojiMenu'
+import PostMediaLayout from './PostMediaLayout'
+import dateTimeFormatter from '../utils/dateTimeFormatter'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Post = ({ data }) => {
   const accessToken = localStorage.getItem('accessToken')
@@ -24,7 +24,7 @@ const Post = ({ data }) => {
   const [isDeleted, setDeleted] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [toggleEdit, setToggleEdit] = useState(false)
-  const [contentField, setContentField] = useState(data.content)
+  const [contentField, setContentField] = useState('')
   const navigate = useNavigate()
   const optionsMenu = useRef()
   const textarea = useRef()
@@ -146,6 +146,7 @@ const Post = ({ data }) => {
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -165,7 +166,7 @@ const Post = ({ data }) => {
     <>
       {user && data && (
         <div className={isDeleted ? 'd-none' : ''}>
-          <Card className={'bg-body-tertiary my-4'}>
+          <Card className="bg-body-tertiary my-4">
             <Card.Body className="px-0 pb-0 pt-3">
               <div className="d-flex justify-content-between mb-2 px-3">
                 <div className="d-flex align-items-center">
@@ -213,9 +214,20 @@ const Post = ({ data }) => {
                     <button
                       type="button"
                       className="btn-clean menu-option p-2"
+                      onClick={() => navigate(`/post/${data.id}`)}
+                    >
+                      <i className="fa-solid fa-up-right-from-square me-2"></i>{' '}
+                      Open post page
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-clean menu-option p-2"
                       onClick={() => {
                         optionsMenu.current.click()
                         setToggleEdit(true)
+                        setContentField(
+                          postData ? postData.content : data.content
+                        )
                         setTimeout(() => {
                           textarea.current.focus()
                           textarea.current.selectionStart =
@@ -310,7 +322,10 @@ const Post = ({ data }) => {
                   </p>
                 )}
                 {data.mediaUrls && (
-                  <PostMediaLayout mediaUrls={data.mediaUrls} />
+                  <PostMediaLayout
+                    mediaUrls={data.mediaUrls}
+                    postID={data.id}
+                  />
                 )}
               </Container>
               <div className="px-3 mb-2">

@@ -14,6 +14,7 @@ import {
   getProfileData,
 } from './redux/actions'
 import ProfilePage from './components/ProfilePage'
+import PostPage from './components/PostPage'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -43,6 +44,7 @@ const App = () => {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/profile/:userID" element={<ProfilePage />} />
+            <Route path="/post/:postID" element={<PostPage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (

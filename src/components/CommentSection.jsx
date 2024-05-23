@@ -13,7 +13,7 @@ import Comment from './Comment'
 import EmojiMenu from './EmojiMenu'
 import { useSelector } from 'react-redux'
 
-const CommentSection = ({ data, loadData }) => {
+const CommentSection = ({ data, loadData, postPageCheck = false }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const [isLoading, setLoading] = useState(false)
@@ -126,15 +126,25 @@ const CommentSection = ({ data, loadData }) => {
   useEffect(() => {}, [data])
 
   return (
-    <div className="p-1">
-      <div className="p-3 bg-body-tertiary rounded-bottom-2">
+    <div className={postPageCheck ? '' : 'p-1'}>
+      <div
+        className={
+          postPageCheck
+            ? 'px-3 pt-3 bg-body-tertiary rounded-bottom-2 d-flex flex-column'
+            : 'px-3 pb-3 bg-body-tertiary rounded-bottom-2 d-flex flex-column'
+        }
+      >
         {data.comments.length > 0 ? (
-          <>
+          <div className={postPageCheck ? 'order-2' : ''}>
             {printComments(0, counter.current)}
             {data.comments.length > counter.current && (
               <div className="d-flex justify-content-center">
                 <button
-                  className="btn-clean text-center pb-2 underline"
+                  className={
+                    postPageCheck
+                      ? 'btn-clean text-center pb-3 underline'
+                      : 'btn-clean text-center pb-2 underline'
+                  }
                   onClick={() => {
                     counter.current += 4
                     loadData()
@@ -144,14 +154,22 @@ const CommentSection = ({ data, loadData }) => {
                 </button>
               </div>
             )}
-          </>
+          </div>
         ) : (
           <h4 className="text-secondary text-center mb-3">
             Comment section is empty.
           </h4>
         )}
-        <div className="d-flex border-top pt-3">
-          <img src={user.proPicUrl} className="nav-propic border me-2" />
+        <div
+          className={
+            postPageCheck
+              ? 'd-flex border-bottom pb-3 order-1'
+              : 'd-flex border-top pt-3'
+          }
+        >
+          {!postPageCheck && (
+            <img src={user.proPicUrl} className="nav-propic border me-2" />
+          )}
           <Form
             className="flex-grow-1 position-relative"
             onSubmit={handleSubmit}
@@ -200,7 +218,7 @@ const CommentSection = ({ data, loadData }) => {
                   />
                 </div>
                 <div
-                  className="flex-grow-1"
+                  className="flex-grow-1 cursor-text"
                   onClick={() => textarea.current.focus()}
                 ></div>
                 <OverlayTrigger

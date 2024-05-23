@@ -198,7 +198,7 @@ const Comment = ({ data, loadData }) => {
   }
 
   return (
-    <div className="d-flex flex-column mb-3">
+    <div className="d-flex flex-column my-3">
       <div className="d-flex justify-content-between">
         <div className="d-flex mb-2 align-items-center">
           <button

@@ -455,3 +455,7 @@ hr {
   width: 50px;
   border-radius: 50%;
 }
+
+.postpage-container {
+  height: 85vh;
+}
