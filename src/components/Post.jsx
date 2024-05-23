@@ -1,11 +1,20 @@
 /* eslint-disable react/prop-types */
-import { Card, Container, NavDropdown } from 'react-bootstrap'
+import {
+  Card,
+  Container,
+  Form,
+  NavDropdown,
+  OverlayTrigger,
+  Spinner,
+  Tooltip,
+} from 'react-bootstrap'
 import CommentSection from './CommentSection'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import dateTimeFormatter from '../utils/dateTimeFormatter'
 import { useSelector } from 'react-redux'
 import PostMediaLayout from './PostMediaLayout'
 import { useNavigate } from 'react-router-dom'
+import EmojiMenu from './EmojiMenu'
 
 const Post = ({ data }) => {
   const accessToken = localStorage.getItem('accessToken')
@@ -13,7 +22,12 @@ const Post = ({ data }) => {
   const [postData, setPostData] = useState(null)
   const [showComments, setShowComments] = useState(false)
   const [isDeleted, setDeleted] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+  const [toggleEdit, setToggleEdit] = useState(false)
+  const [contentField, setContentField] = useState(data.content)
   const navigate = useNavigate()
+  const optionsMenu = useRef()
+  const textarea = useRef()
 
   const handleActive = (e) => {
     if (!e.target.className.includes(' active')) {
@@ -39,6 +53,7 @@ const Post = ({ data }) => {
   }
 
   const loadData = async () => {
+    setLoading(true)
     try {
       const res = await fetch(`http://localhost:3030/api/posts/${data.id}`, {
         headers: {
@@ -48,12 +63,14 @@ const Post = ({ data }) => {
       if (res.ok) {
         const post = await res.json()
         setPostData(post)
+        setLoading(false)
       } else {
         const err = await res.json()
         throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -108,6 +125,40 @@ const Post = ({ data }) => {
     return false
   }
 
+  const editPost = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch(`http://localhost:3030/api/posts/${data.id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: accessToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content: contentField }),
+      })
+      if (res.ok) {
+        loadData()
+        setToggleEdit(false)
+        setLoading(false)
+      } else {
+        const err = await res.json()
+        throw new Error(err.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const discardChanges = () => {
+    setContentField(data.content)
+    setToggleEdit(false)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    editPost()
+  }
+
   useEffect(() => {}, [postData])
 
   return (
@@ -148,6 +199,7 @@ const Post = ({ data }) => {
                 </div>
                 <NavDropdown
                   align="end"
+                  ref={optionsMenu}
                   title={
                     <button
                       type="button"
@@ -161,10 +213,19 @@ const Post = ({ data }) => {
                     <button
                       type="button"
                       className="btn-clean menu-option p-2"
-                      onClick={deletePost}
+                      onClick={() => {
+                        optionsMenu.current.click()
+                        setToggleEdit(true)
+                        setTimeout(() => {
+                          textarea.current.focus()
+                          textarea.current.selectionStart =
+                            textarea.current.selectionEnd =
+                              textarea.current.value.length
+                        }, 10)
+                      }}
                     >
                       <i className="fa-solid fa-pen-to-square me-2"></i> Edit
-                      post
+                      post text
                     </button>
                     <button
                       type="button"
@@ -177,7 +238,77 @@ const Post = ({ data }) => {
                 </NavDropdown>
               </div>
               <Container className="px-0 mb-3">
-                <p className="mb-2 px-3 line-break">{data.content}</p>
+                {toggleEdit ? (
+                  <Form
+                    className="pb-1 cursor-text position-relative"
+                    onSubmit={handleSubmit}
+                  >
+                    {isLoading && (
+                      <div className="position-absolute top-50 start-50 translate-middle">
+                        <Spinner size="sm" />
+                      </div>
+                    )}
+                    <textarea
+                      placeholder="Write a comment..."
+                      className="comment-textarea hide-scrollbar"
+                      rows={
+                        contentField.match(/\n/g)
+                          ? contentField.match(/\n/g).length + 1
+                          : 1
+                      }
+                      ref={textarea}
+                      value={contentField}
+                      onChange={(e) => setContentField(e.target.value)}
+                      disabled={isLoading}
+                    />
+                    <div className="px-3 d-flex justify-content-between">
+                      <EmojiMenu
+                        value={contentField}
+                        setValue={setContentField}
+                        className="text-secondary fs-5"
+                        disabled={isLoading}
+                      />
+                      <div
+                        className="flex-grow-1"
+                        onClick={() => textarea.current.focus()}
+                      ></div>
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={<Tooltip>Discard changes</Tooltip>}
+                      >
+                        <button
+                          type="button"
+                          className="btn-clean me-2"
+                          onClick={discardChanges}
+                          disabled={isLoading}
+                        >
+                          <i className="bi bi-send-slash text-info fs-5"></i>
+                        </button>
+                      </OverlayTrigger>
+                      {
+                        <OverlayTrigger
+                          placement="bottom"
+                          overlay={<Tooltip>Send</Tooltip>}
+                        >
+                          <button
+                            className="btn-clean"
+                            disabled={
+                              contentField.length < 3 ||
+                              contentField === data.content ||
+                              isLoading
+                            }
+                          >
+                            <i className="bi bi-send-fill text-primary fs-5"></i>
+                          </button>
+                        </OverlayTrigger>
+                      }
+                    </div>
+                  </Form>
+                ) : (
+                  <p className="mb-2 px-3 line-break">
+                    {postData ? postData.content : data.content}
+                  </p>
+                )}
                 {data.mediaUrls && (
                   <PostMediaLayout mediaUrls={data.mediaUrls} />
                 )}

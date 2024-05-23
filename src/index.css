@@ -432,6 +432,12 @@ hr {
   left: 26px;
 }
 
+.plus-icon-sm {
+  position: absolute;
+  top: 10px;
+  left: 22px;
+}
+
 .emoji-menu {
   width: 250px;
   height: 300px;

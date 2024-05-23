@@ -141,7 +141,7 @@ const Comment = ({ data, loadData }) => {
         const editedComment = await res.json()
         console.log(editedComment)
         if (inputFile.current.files[0]) {
-          addImage(editedComment.id)
+          addImage()
         } else {
           setToggleEdit(false)
           loadData()
@@ -358,7 +358,6 @@ const Comment = ({ data, loadData }) => {
                       </button>
                     </OverlayTrigger>
                   }
-                  <input type="file" ref={inputFile} className="d-none" />
                 </div>
                 <input
                   type="file"

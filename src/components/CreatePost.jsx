@@ -61,7 +61,7 @@ const CreatePost = ({ boardID }) => {
     }
   }
 
-  const addMedia = async (postID, files) => {
+  const addMedia = async (postID) => {
     dispatch(load())
     try {
       if (files.length > 0) {
