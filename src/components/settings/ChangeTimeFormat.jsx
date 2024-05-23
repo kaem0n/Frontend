@@ -69,12 +69,15 @@ const ChangeTimeFormat = () => {
           </Form.Select>
         ) : (
           <>
-            <p className="fs-7">Time format: {printFormat(user.timeFormat)}</p>
+            <p className="fs-7">
+              Time format:{' '}
+              {printFormat(timeFormatField ? timeFormatField : user.timeFormat)}
+            </p>
             <p className="fs-8 text-secondary fst-italic">
               Example:{' '}
               {timeFormatter(
                 new Date().toISOString().split('T')[1],
-                user.timeFormat
+                timeFormatField ? timeFormatField : user.timeFormat
               )}
             </p>
           </>

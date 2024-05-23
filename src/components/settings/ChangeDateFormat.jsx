@@ -74,10 +74,17 @@ const ChangeDateFormat = () => {
           ) : (
             <>
               <p className="fs-7">
-                Date format: {printFormat(user.dateFormat)}
+                Date format:{' '}
+                {printFormat(
+                  dateFormatField ? dateFormatField : user.dateFormat
+                )}
               </p>
               <p className="fs-8 text-secondary fst-italic">
-                Example: {dateFormatter(new Date(), user.dateFormat)}
+                Example:{' '}
+                {dateFormatter(
+                  new Date(),
+                  dateFormatField ? dateFormatField : user.dateFormat
+                )}
               </p>
             </>
           )}

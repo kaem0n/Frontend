@@ -44,6 +44,10 @@ hr {
   cursor: pointer;
 }
 
+.cursor-text {
+  cursor: text;
+}
+
 .pevent-none {
   pointer-events: none;
 }
@@ -387,6 +391,8 @@ hr {
   border-bottom-right-radius: 1.2rem;
   border-bottom-left-radius: 1.2rem;
   border-top-right-radius: 1.2rem;
+  border-top-left-radius: 0rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
 }
 
 .comment-img {
@@ -398,7 +404,6 @@ hr {
 .textarea-container {
   display: flex;
   flex-direction: column;
-  cursor: text;
 }
 
 .textarea-container:focus-within {
@@ -413,6 +418,7 @@ hr {
   color: var(--bs-body-color);
   padding: 0.375rem 0.75rem;
   width: 100%;
+  height: inherit;
   resize: none;
 }
 

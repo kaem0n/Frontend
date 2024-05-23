@@ -101,7 +101,7 @@ const EmojiMenu = ({ value, setValue, className, align, disabled }) => {
           </button>
         }
       >
-        <div className={'emoji-menu'}>
+        <div className="emoji-menu bg-body-tertiary">
           <div className="emoji-container ps-2 pt-2">
             <div className="pe-2">
               <Form.Control

@@ -46,11 +46,11 @@ const Post = ({ data }) => {
         },
       })
       if (res.ok) {
-        const data = await res.json()
-        setPostData(data)
+        const post = await res.json()
+        setPostData(post)
       } else {
-        const data = await res.json()
-        throw new Error(data.message)
+        const err = await res.json()
+        throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
@@ -69,8 +69,8 @@ const Post = ({ data }) => {
         setDeleted(true)
         console.log('Post successfully deleted.')
       } else {
-        const data = await res.json()
-        throw new Error(data.message)
+        const err = await res.json()
+        throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
@@ -78,7 +78,6 @@ const Post = ({ data }) => {
   }
 
   const likePost = async () => {
-    console.log(data)
     try {
       const res = await fetch(
         `http://localhost:3030/api/posts/${data.id}/like`,
@@ -90,12 +89,12 @@ const Post = ({ data }) => {
         }
       )
       if (res.ok) {
-        const data = await res.json()
-        console.log(data)
+        const result = await res.json()
+        console.log(result)
         loadData()
       } else {
-        const data = await res.json()
-        throw new Error(data.message)
+        const err = await res.json()
+        throw new Error(err.message)
       }
     } catch (error) {
       console.log(error)
@@ -178,7 +177,7 @@ const Post = ({ data }) => {
                 </NavDropdown>
               </div>
               <Container className="px-0 mb-3">
-                <p className="mb-2 px-3">{data.content}</p>
+                <p className="mb-2 px-3 line-break">{data.content}</p>
                 {data.mediaUrls && (
                   <PostMediaLayout mediaUrls={data.mediaUrls} />
                 )}
