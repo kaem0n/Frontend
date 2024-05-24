@@ -43,6 +43,8 @@ const ProfilePage = () => {
   const btn1 = useRef()
   const btn2 = useRef()
   const btn3 = useRef()
+  const followersBtn = useRef()
+  const followingBtn = useRef()
 
   const handleActive = (event, ref1, ref2) => {
     const current = event.target
@@ -258,12 +260,16 @@ const ProfilePage = () => {
                     </Placeholder>
                   ) : (
                     followers && (
-                      <button className="btn-clean" onClick={handleClick}>
+                      <button
+                        className="btn-clean"
+                        onClick={() => followersBtn.current.click()}
+                      >
                         {followers.length}
                       </button>
                     )
                   )}
                   <button
+                    ref={followersBtn}
                     className="fw-semibold btn-clean"
                     onClick={handleClick}
                   >
@@ -323,12 +329,16 @@ const ProfilePage = () => {
                     </Placeholder>
                   ) : (
                     following && (
-                      <button className="btn-clean" onClick={handleClick}>
+                      <button
+                        className="btn-clean"
+                        onClick={() => followingBtn.current.click()}
+                      >
                         {following.length}
                       </button>
                     )
                   )}
                   <button
+                    ref={followingBtn}
                     className="fw-semibold btn-clean"
                     onClick={handleClick}
                   >

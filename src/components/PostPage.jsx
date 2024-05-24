@@ -17,6 +17,7 @@ import dateTimeFormatter from '../utils/dateTimeFormatter'
 import CommentSection from './CommentSection'
 import EmojiMenu from './EmojiMenu'
 import PostMediaDelete from './PostMediaDelete'
+import PostLike from './PostLike'
 
 const PostPage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -436,10 +437,7 @@ const PostPage = () => {
                       )}
                       <div className="px-3 pb-2 border-bottom">
                         <div className="d-flex justify-content-between align-items-center fs-7">
-                          <button type="button" className="btn-clean underline">
-                            <i className="fa-solid fa-thumbs-up me-1"></i>
-                            {postData.postLikes.length}
-                          </button>
+                          <PostLike postLikes={postData.postLikes} />
                           <button
                             type="button"
                             className="btn-clean underline"

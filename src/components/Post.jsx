@@ -15,6 +15,7 @@ import dateTimeFormatter from '../utils/dateTimeFormatter'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import PostLike from './PostLike'
 
 const Post = ({ data }) => {
   const accessToken = localStorage.getItem('accessToken')
@@ -330,12 +331,9 @@ const Post = ({ data }) => {
               </Container>
               <div className="px-3 mb-2">
                 <div className="d-flex justify-content-between align-items-center fs-7">
-                  <button type="button" className="btn-clean underline">
-                    <i className="fa-solid fa-thumbs-up me-1"></i>
-                    {postData
-                      ? postData.postLikes.length
-                      : data.postLikes.length}
-                  </button>
+                  <PostLike
+                    postLikes={postData ? postData.postLikes : data.postLikes}
+                  />
                   <button
                     type="button"
                     className="btn-clean underline"
