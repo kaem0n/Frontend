@@ -322,7 +322,7 @@ const Post = ({ data }) => {
                     {postData ? postData.content : data.content}
                   </p>
                 )}
-                {data.mediaUrls && (
+                {data.mediaUrls && data.mediaUrls.length > 0 && (
                   <PostMediaLayout
                     mediaUrls={data.mediaUrls}
                     postID={data.id}

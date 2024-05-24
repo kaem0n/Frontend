@@ -472,3 +472,14 @@ hr {
 .selected {
   border: 4px solid #dc3545 !important;
 }
+
+.group-card {
+  height: 120px;
+  overflow: auto;
+}
+
+.group-card-bg {
+  height: 40%;
+  background-size: cover !important;
+  background-position: center !important;
+}

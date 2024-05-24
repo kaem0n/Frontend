@@ -414,7 +414,7 @@ const ProfilePage = () => {
                 )}
                 {showGroups && showProfile && (
                   <Col>
-                    <ProfileGroups />
+                    <ProfileGroups user={user} />
                   </Col>
                 )}
                 {showInfo && showProfile && (

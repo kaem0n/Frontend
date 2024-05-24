@@ -36,8 +36,6 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
       })
       if (res.ok) {
         const newComment = await res.json()
-        console.log(newComment)
-        console.log(newComment.id)
         if (inputFile.current.files[0]) {
           addImage(newComment.id)
         } else {
@@ -73,8 +71,6 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
           }
         )
         if (res.ok) {
-          const data = await res.json()
-          console.log(data)
           removePreview()
           setContentField('')
           loadData()
@@ -136,7 +132,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
       >
         {data.comments.length > 0 ? (
           <div className={postPageCheck ? 'order-2' : ''}>
-            {printComments(0, counter.current)}
+            {printComments()}
             {data.comments.length > counter.current && (
               <div className="d-flex justify-content-center">
                 <button

@@ -218,7 +218,7 @@ const PostPage = () => {
                       lg={8}
                       className="bg-black d-flex flex-column justify-content-center align-items-center"
                     >
-                      {postData.mediaUrls ? (
+                      {postData.mediaUrls && postData.mediaUrls.length > 0 ? (
                         <>
                           <Carousel
                             className="d-flex align-items-center w-100 flex-grow-1"
