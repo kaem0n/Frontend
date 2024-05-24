@@ -376,6 +376,11 @@ hr {
   aspect-ratio: 1/2;
 }
 
+.img-carousel {
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .mask {
   box-shadow: inset 0px 0px 0px 1000px rgba(0, 0, 0, 0.5);
   color: white;

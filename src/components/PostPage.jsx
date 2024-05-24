@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   Card,
+  Carousel,
   Col,
   Container,
   Form,
@@ -11,7 +12,7 @@ import {
   Tooltip,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import dateTimeFormatter from '../utils/dateTimeFormatter'
 import CommentSection from './CommentSection'
 import EmojiMenu from './EmojiMenu'
@@ -26,6 +27,7 @@ const PostPage = () => {
   const [contentField, setContentField] = useState('')
   const navigate = useNavigate()
   const params = useParams()
+  const location = useLocation()
   const optionsMenu = useRef()
   const textarea = useRef()
   const postPageCheck = useRef(true)
@@ -202,6 +204,9 @@ const PostPage = () => {
 
   return (
     <Container>
+      {console.log(
+        parseInt(location.search.charAt(location.search.length - 1))
+      )}
       <Row>
         <Col>
           <Card className="postpage-container bg-body-tertiary overflow-auto">
@@ -209,11 +214,49 @@ const PostPage = () => {
               <Card.Body className="p-0 h-100">
                 <Container fluid className="p-0 h-100">
                   <Row className="g-0 h-100">
-                    <Col xs={8} className="h-100">
-                      {/* CAROUSEL */}
+                    <Col
+                      xs={12}
+                      lg={8}
+                      className="bg-black d-flex justify-content-center align-items-center"
+                    >
+                      {postData.mediaUrls ? (
+                        <Carousel
+                          className="d-flex align-items-center w-100"
+                          touch
+                          interval={null}
+                          slide={false}
+                          indicators={false}
+                          defaultActiveIndex={
+                            location.search
+                              ? parseInt(
+                                  location.search.charAt(
+                                    location.search.length - 1
+                                  ) - 1
+                                )
+                              : 0
+                          }
+                        >
+                          {postData.mediaUrls.map((url) => (
+                            <Carousel.Item key={url}>
+                              <div className="d-flex justify-content-center w-100">
+                                <img
+                                  src={url}
+                                  alt="post-media"
+                                  className="img-carousel"
+                                />
+                              </div>
+                            </Carousel.Item>
+                          ))}
+                        </Carousel>
+                      ) : (
+                        <h1 className="text-secondary d-none d-lg-block">
+                          This post has no media.
+                        </h1>
+                      )}
                     </Col>
                     <Col
-                      xs={4}
+                      xs={12}
+                      lg={4}
                       className="border-start pt-3 d-flex flex-column h-100"
                     >
                       <div className="d-flex justify-content-between mb-2 px-3">
