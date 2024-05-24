@@ -171,10 +171,6 @@ const Comment = ({ data, loadData }) => {
       if (res.ok) {
         const result = await res.json()
         console.log(result)
-        console.log(
-          new Date('2024-05-23T15:05:06.2369242') >
-            new Date('2024-05-23T14:51:40.884078')
-        )
         loadData()
       } else {
         const err = await res.json()

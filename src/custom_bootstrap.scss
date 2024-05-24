@@ -66,3 +66,8 @@ $colors: map-merge($colors, $new-colors);
   padding: 0 !important;
   overflow: hidden;
 }
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 7%;
+}

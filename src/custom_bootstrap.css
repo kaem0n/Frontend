@@ -12012,4 +12012,9 @@ textarea.form-control-lg {
 .dropdown-menu {
   padding: 0 !important;
   overflow: hidden;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 7%;
 }/*# sourceMappingURL=custom_bootstrap.css.map */

@@ -16,6 +16,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import dateTimeFormatter from '../utils/dateTimeFormatter'
 import CommentSection from './CommentSection'
 import EmojiMenu from './EmojiMenu'
+import PostMediaDelete from './PostMediaDelete'
 
 const PostPage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -25,6 +26,7 @@ const PostPage = () => {
   const [isLoading, setLoading] = useState(false)
   const [toggleEdit, setToggleEdit] = useState(false)
   const [contentField, setContentField] = useState('')
+  const [showMediaDelete, setShowMediaDelete] = useState(false)
   const navigate = useNavigate()
   const params = useParams()
   const location = useLocation()
@@ -186,7 +188,6 @@ const PostPage = () => {
         )
         if (res.ok) {
           const data = await res.json()
-          console.log(data)
           setPostData(data)
           setLoading(false)
         } else {
@@ -204,9 +205,6 @@ const PostPage = () => {
 
   return (
     <Container>
-      {console.log(
-        parseInt(location.search.charAt(location.search.length - 1))
-      )}
       <Row>
         <Col>
           <Card className="postpage-container bg-body-tertiary overflow-auto">
@@ -217,37 +215,53 @@ const PostPage = () => {
                     <Col
                       xs={12}
                       lg={8}
-                      className="bg-black d-flex justify-content-center align-items-center"
+                      className="bg-black d-flex flex-column justify-content-center align-items-center"
                     >
                       {postData.mediaUrls ? (
-                        <Carousel
-                          className="d-flex align-items-center w-100"
-                          touch
-                          interval={null}
-                          slide={false}
-                          indicators={false}
-                          defaultActiveIndex={
-                            location.search
-                              ? parseInt(
-                                  location.search.charAt(
-                                    location.search.length - 1
-                                  ) - 1
-                                )
-                              : 0
-                          }
-                        >
-                          {postData.mediaUrls.map((url) => (
-                            <Carousel.Item key={url}>
-                              <div className="d-flex justify-content-center w-100">
-                                <img
-                                  src={url}
-                                  alt="post-media"
-                                  className="img-carousel"
-                                />
-                              </div>
-                            </Carousel.Item>
-                          ))}
-                        </Carousel>
+                        <>
+                          <Carousel
+                            className="d-flex align-items-center w-100 flex-grow-1"
+                            touch
+                            interval={null}
+                            slide={false}
+                            indicators={false}
+                            prevIcon={
+                              <i className="fa-solid fa-circle-chevron-left fs-2"></i>
+                            }
+                            nextIcon={
+                              <i className="fa-solid fa-circle-chevron-right fs-2"></i>
+                            }
+                            defaultActiveIndex={
+                              location.search
+                                ? parseInt(
+                                    location.search.charAt(
+                                      location.search.length - 1
+                                    ) - 1
+                                  )
+                                : 0
+                            }
+                          >
+                            {postData.mediaUrls.map((url) => (
+                              <Carousel.Item key={url}>
+                                <div className="d-flex justify-content-center w-100">
+                                  <img
+                                    src={url}
+                                    alt="post-media"
+                                    className="img-carousel"
+                                  />
+                                </div>
+                              </Carousel.Item>
+                            ))}
+                          </Carousel>
+                          {showMediaDelete && (
+                            <PostMediaDelete
+                              mediaUrls={postData.mediaUrls}
+                              postID={postData.id}
+                              loadData={loadData}
+                              setShow={setShowMediaDelete}
+                            />
+                          )}
+                        </>
                       ) : (
                         <h1 className="text-secondary d-none d-lg-block">
                           This post has no media.
@@ -306,6 +320,20 @@ const PostPage = () => {
                           }
                         >
                           <div className="p-2 d-flex flex-column fs-7">
+                            {postData.mediaUrls &&
+                              postData.mediaUrls.length > 0 && (
+                                <button
+                                  type="button"
+                                  className="btn-clean menu-option p-2"
+                                  onClick={() => {
+                                    optionsMenu.current.click()
+                                    setShowMediaDelete(true)
+                                  }}
+                                >
+                                  <i className="fa-solid fa-eraser me-2"></i>{' '}
+                                  Delete media...
+                                </button>
+                              )}
                             <button
                               type="button"
                               className="btn-clean menu-option p-2"

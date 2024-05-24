@@ -464,3 +464,11 @@ hr {
 .postpage-container {
   height: 85vh;
 }
+
+.img-sm.item {
+  border: 4px solid white;
+}
+
+.selected {
+  border: 4px solid #dc3545 !important;
+}
