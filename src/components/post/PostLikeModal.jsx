@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { trigger } from '../redux/actions'
+import { trigger } from '../../redux/actions'
 
 /* eslint-disable react/prop-types */
 const PostLikeModal = ({ show, setShow, postLikes }) => {

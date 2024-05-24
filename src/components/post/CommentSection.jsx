@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from 'react'
 import {
   Col,
   Container,
@@ -9,9 +8,10 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap'
+import { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
 import Comment from './Comment'
 import EmojiMenu from './EmojiMenu'
-import { useSelector } from 'react-redux'
 
 const CommentSection = ({ data, loadData, postPageCheck = false }) => {
   const accessToken = localStorage.getItem('accessToken')

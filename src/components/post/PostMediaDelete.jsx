@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
 import {
   Button,
   Carousel,
@@ -9,6 +8,7 @@ import {
   Row,
   Spinner,
 } from 'react-bootstrap'
+import { useState } from 'react'
 
 const PostMediaDelete = ({ mediaUrls, postID, loadData, setShow }) => {
   const accessToken = localStorage.getItem('accessToken')

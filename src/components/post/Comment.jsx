@@ -1,7 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from 'react-router-dom'
-import dateTimeFormatter from '../utils/dateTimeFormatter'
-import { useSelector } from 'react-redux'
 import {
   Col,
   Container,
@@ -12,7 +9,10 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useRef, useState } from 'react'
+import dateTimeFormatter from '../../utils/dateTimeFormatter'
 import EmojiMenu from './EmojiMenu'
 
 const Comment = ({ data, loadData }) => {

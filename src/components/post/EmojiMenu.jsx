@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react'
-import emojis from '../assets/emoji'
 import { Form, NavDropdown } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import emojis from '../../assets/emoji'
 
 const EmojiMenu = ({ value, setValue, className, align, disabled }) => {
   const [categories, setCategories] = useState([])

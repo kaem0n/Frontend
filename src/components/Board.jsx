@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
-import PostPlaceholder from './PostPlaceholder'
+import PostPlaceholder from './post/PostPlaceholder'
 import Post from './Post'
 import { useDispatch, useSelector } from 'react-redux'
 import { endLoad } from '../redux/actions'

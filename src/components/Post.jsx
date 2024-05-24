@@ -8,14 +8,14 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap'
-import CommentSection from './CommentSection'
-import EmojiMenu from './EmojiMenu'
-import PostMediaLayout from './PostMediaLayout'
-import dateTimeFormatter from '../utils/dateTimeFormatter'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import PostLike from './PostLike'
+import dateTimeFormatter from '../utils/dateTimeFormatter'
+import PostMediaLayout from './post/PostMediaLayout'
+import PostLike from './post/PostLike'
+import CommentSection from './post/CommentSection'
+import EmojiMenu from './post/EmojiMenu'
 
 const Post = ({ data }) => {
   const accessToken = localStorage.getItem('accessToken')

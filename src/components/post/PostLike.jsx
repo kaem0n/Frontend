@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { useState } from 'react'
 import PostLikeModal from './PostLikeModal'
 
 const PostLike = ({ postLikes }) => {

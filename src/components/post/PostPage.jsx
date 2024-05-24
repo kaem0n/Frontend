@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
 import {
   Card,
   Carousel,
@@ -11,9 +10,10 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap'
+import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import dateTimeFormatter from '../utils/dateTimeFormatter'
+import dateTimeFormatter from '../../utils/dateTimeFormatter'
 import CommentSection from './CommentSection'
 import EmojiMenu from './EmojiMenu'
 import PostMediaDelete from './PostMediaDelete'

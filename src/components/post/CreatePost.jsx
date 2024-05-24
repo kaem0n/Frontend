@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -13,10 +12,11 @@ import {
   Spinner,
   Tooltip,
 } from 'react-bootstrap'
+import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import EmojiMenu from './EmojiMenu'
+import { endLoad, load } from '../../redux/actions'
 import { useNavigate } from 'react-router-dom'
-import { endLoad, load } from '../redux/actions'
+import EmojiMenu from './EmojiMenu'
 
 const CreatePost = ({ boardID }) => {
   const accessToken = localStorage.getItem('accessToken')

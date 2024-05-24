@@ -15,8 +15,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ProfileNetwork from './ProfileNetwork'
 import ProfileGroups from './ProfileGroups'
 import Board from './Board'
-import CreatePost from './CreatePost'
-import PostPlaceholder from './PostPlaceholder'
+import CreatePost from './post/CreatePost'
+import PostPlaceholder from './post/PostPlaceholder'
 
 const ProfilePage = () => {
   const accessToken = localStorage.getItem('accessToken')

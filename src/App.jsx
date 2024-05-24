@@ -1,11 +1,6 @@
 import './custom_bootstrap.css'
 import 'bootstrap-icons/font/bootstrap-icons.min.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import UserSignUp from './components/UserSignUp'
-import UserLogin from './components/UserLogin'
-import Home from './components/Home'
-import NavBar from './components/NavBar'
-import Settings from './components/Settings'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -13,8 +8,14 @@ import {
   getMyFollowingData,
   getProfileData,
 } from './redux/actions'
+
+import UserSignUp from './components/UserSignUp'
+import UserLogin from './components/UserLogin'
+import Home from './components/Home'
+import NavBar from './components/NavBar'
+import Settings from './components/Settings'
 import ProfilePage from './components/ProfilePage'
-import PostPage from './components/PostPage'
+import PostPage from './components/post/PostPage'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
