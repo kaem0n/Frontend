@@ -487,3 +487,13 @@ hr {
   background-size: cover !important;
   background-position: center !important;
 }
+
+.group-cover {
+  width: 100%;
+  aspect-ratio: 7/2;
+  object-fit: cover;
+}
+
+.top-8 {
+  top: 8%;
+}

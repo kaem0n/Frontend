@@ -16,6 +16,7 @@ import NavBar from './components/NavBar'
 import Settings from './components/Settings'
 import ProfilePage from './components/ProfilePage'
 import PostPage from './components/post/PostPage'
+import GroupPage from './components/group/GroupPage'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/profile/:userID" element={<ProfilePage />} />
             <Route path="/post/:postID" element={<PostPage />} />
+            <Route path="/group/:groupID" element={<GroupPage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (

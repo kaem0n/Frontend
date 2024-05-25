@@ -5,18 +5,20 @@
 $new-primary: #496989;
 $new-info: #58a399;
 
-$new-theme-colors: (
-  'primary': $new-primary,
-  'info': $new-info,
-);
-
 $new-colors: (
   'blue': $new-primary,
   'cyan': $new-info,
 );
 
-$theme-colors: map-merge($theme-colors, $new-theme-colors);
+$new-theme-colors: (
+  'primary': $new-primary,
+  'info': $new-info,
+);
+
 $colors: map-merge($colors, $new-colors);
+$theme-colors: map-merge($theme-colors, $new-theme-colors);
+$nav-link-color: tint-color($new-info, 20%);
+$nav-link-hover-color: tint-color($new-info, 40%);
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 

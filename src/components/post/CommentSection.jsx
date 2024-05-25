@@ -152,7 +152,13 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
             )}
           </div>
         ) : (
-          <h4 className="text-secondary text-center mb-3">
+          <h4
+            className={
+              postPageCheck
+                ? 'text-secondary text-center mb-3'
+                : 'text-secondary text-center my-3'
+            }
+          >
             Comment section is empty.
           </h4>
         )}
