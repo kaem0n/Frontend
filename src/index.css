@@ -52,6 +52,10 @@ hr {
   pointer-events: none;
 }
 
+.pevent-all {
+  pointer-events: all;
+}
+
 .profile-menu {
   min-width: 250px;
 }

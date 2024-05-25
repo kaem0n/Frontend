@@ -3,6 +3,7 @@ import { Container, Row, Spinner } from 'react-bootstrap'
 import ProfileGroupCard from './group/ProfileGroupCard'
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import CreateGroup from './group/CreateGroup'
 
 const ProfileGroups = ({ user }) => {
   const accessToken = localStorage.getItem('accessToken')
@@ -19,7 +20,7 @@ const ProfileGroups = ({ user }) => {
     setLoading(true)
     try {
       const res = await fetch(
-        `http://localhost:3030/api/groups/byFounder/${params.userID}?page=${page}&size=6`,
+        `http://localhost:3030/api/groups/byFounder/${params.userID}?page=${page}&size=6&sort=creation`,
         {
           headers: {
             Authorization: accessToken,
@@ -28,7 +29,6 @@ const ProfileGroups = ({ user }) => {
       )
       if (res.ok) {
         const data = await res.json()
-        console.log(data)
         setFounderGroups([...founderGroups, ...data.content])
         if (data.first) totalElements.current = data.totalElements
         if (data.last) last.current = true
@@ -57,7 +57,6 @@ const ProfileGroups = ({ user }) => {
       )
       if (res.ok) {
         const data = await res.json()
-        console.log(data)
         setMemberships(data)
         setLoading(false)
       } else {
@@ -86,7 +85,7 @@ const ProfileGroups = ({ user }) => {
       setLoading(true)
       try {
         const res = await fetch(
-          `http://localhost:3030/api/groups/byFounder/${params.userID}?page=0&size=6`,
+          `http://localhost:3030/api/groups/byFounder/${params.userID}?page=0&size=6&sort=creation`,
           {
             headers: {
               Authorization: accessToken,
@@ -124,7 +123,6 @@ const ProfileGroups = ({ user }) => {
         )
         if (res.ok) {
           const data = await res.json()
-          console.log(data)
           setMemberships(data)
           setLoading(false)
         } else {
@@ -144,13 +142,15 @@ const ProfileGroups = ({ user }) => {
 
   return (
     <Container className="pb-5">
-      {console.log(memberships)}
       {isLoading ? (
         <div className="group-card d-flex justify-content-center align-items-center">
           <Spinner />
         </div>
       ) : (
         <>
+          <div className="mb-3">
+            <CreateGroup />
+          </div>
           <h6>Groups founded by {user.username}:</h6>
           {founderGroups.length > 0 ? (
             <div className="mb-4">
@@ -158,18 +158,18 @@ const ProfileGroups = ({ user }) => {
                 {founderGroups.map((group) => (
                   <ProfileGroupCard key={group.id} data={group} />
                 ))}
-                {!last.current && (
-                  <div className="flex-grow-1 d-flex justify-content-center">
-                    <button
-                      className="btn-clean"
-                      onClick={() => getFounderGroupData(nextPage.current)}
-                    >
-                      Load more ({totalElements.current - 6 * nextPage.current}{' '}
-                      remaining)
-                    </button>
-                  </div>
-                )}
               </Row>
+              {!last.current && (
+                <div className="d-flex justify-content-center my-4">
+                  <button
+                    className="btn-clean"
+                    onClick={() => getFounderGroupData(nextPage.current)}
+                  >
+                    Load more ({totalElements.current - 6 * nextPage.current}{' '}
+                    remaining)
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <h3 className="text-secondary text-center mb-5">
@@ -182,22 +182,20 @@ const ProfileGroups = ({ user }) => {
             <div className="mb-4">
               <Row xs={3} md={2} lg={3} xxl={4} className="g-3">
                 {printGroups()}
-
-                {memberships.length > counter.current && (
-                  <div className="flex-grow-1 d-flex justify-content-center">
-                    <button
-                      className="btn-clean"
-                      onClick={() => {
-                        counter.current += 6
-                        getUserMemberships()
-                      }}
-                    >
-                      Load more ({memberships.length - counter.current}{' '}
-                      remaining)
-                    </button>
-                  </div>
-                )}
               </Row>
+              {memberships.length > counter.current && (
+                <div className="d-flex justify-content-center my-4">
+                  <button
+                    className="btn-clean"
+                    onClick={() => {
+                      counter.current += 6
+                      getUserMemberships()
+                    }}
+                  >
+                    Load more ({memberships.length - counter.current} remaining)
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <h3 className="text-secondary text-center mb-5">
