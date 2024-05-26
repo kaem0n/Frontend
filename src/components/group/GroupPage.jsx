@@ -1,9 +1,20 @@
-import { useEffect, useState } from 'react'
-import { Button, Card, Col, Container, Row, Tab, Tabs } from 'react-bootstrap'
+import { useEffect, useRef, useState } from 'react'
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  OverlayTrigger,
+  Row,
+  Tab,
+  Tabs,
+  Tooltip,
+} from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 import Board from '../Board'
 import CreatePost from '../post/CreatePost'
+import GroupManagement from './GroupManagement'
 
 const GroupPage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -13,12 +24,13 @@ const GroupPage = () => {
   const [info, setInfo] = useState(null)
   const [isMember, setMember] = useState(false)
   const [membershipData, setMembershipData] = useState(null)
+  const inputFile = useRef()
   const params = useParams()
 
   const fetchGroupAction = async (endPoint, method) => {
     try {
       const res = await fetch(
-        `http://localhost:3030/api/groups/${params.groupID}/${endPoint}`,
+        `http://localhost:3030/api/groups/${params.groupID}${endPoint}`,
         {
           method: method,
           headers: {
@@ -29,6 +41,56 @@ const GroupPage = () => {
       if (res.ok) {
         const result = await res.json()
         console.log(result)
+        setReloadTrigger(!reloadTrigger)
+      } else {
+        const err = await res.json()
+        throw new Error(err.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const changeCover = async () => {
+    const file = inputFile.current.files[0]
+    if (file) {
+      const formData = new FormData()
+      formData.append('image', file)
+      try {
+        const res = await fetch(
+          `http://localhost:3030/api/groups/${params.groupID}/changeCover`,
+          {
+            method: 'PATCH',
+            headers: {
+              Authorization: accessToken,
+            },
+            body: formData,
+          }
+        )
+        if (res.ok) {
+          setReloadTrigger(!reloadTrigger)
+        } else {
+          const err = await res.json()
+          throw new Error(err.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  const removeCover = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/groups/${params.groupID}/removeCover`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
         setReloadTrigger(!reloadTrigger)
       } else {
         const err = await res.json()
@@ -155,19 +217,62 @@ const GroupPage = () => {
         <Row>
           <Col>
             <div>
-              {info.group.coverUrl && (
-                <img
-                  src={info.group.coverUrl}
-                  alt="group-cover"
-                  className="group-cover rounded-top-3"
+              <div className="position-relative">
+                {info.group.coverUrl ? (
+                  <img
+                    src={info.group.coverUrl}
+                    alt="group-cover"
+                    className="group-cover rounded-top-3"
+                  />
+                ) : (
+                  <div className="group-cover bg-secondary rounded-top-3"></div>
+                )}
+                <div className="position-absolute bottom-0 end-0 me-2 mb-2">
+                  {info.group.coverUrl && (
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={<Tooltip>Delete group cover</Tooltip>}
+                    >
+                      <Button
+                        variant="secondary"
+                        className="fs-5 rounded-2 px-2 py-1 me-2 text-black"
+                        onClick={removeCover}
+                      >
+                        <i className="fa-solid fa-eraser"></i>
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip>Change group cover</Tooltip>}
+                  >
+                    <Button
+                      variant="info"
+                      className="fs-5 rounded-2 px-2 py-1"
+                      onClick={() => inputFile.current.click()}
+                    >
+                      <i className="fa-solid fa-camera"></i>
+                    </Button>
+                  </OverlayTrigger>
+                </div>
+                <input
+                  type="file"
+                  ref={inputFile}
+                  className="d-none"
+                  onChange={changeCover}
                 />
-              )}
+              </div>
               <div className="bg-body-tertiary p-3">
                 <h1 className="fw-bold">{info.group.name}</h1>
                 <div className="d-flex justify-content-between align-items-center">
                   <p>
-                    Members: {info.memberships.length} · Posts:{' '}
-                    {info.board.totalElements}
+                    Members:{' '}
+                    {
+                      info.memberships.filter(
+                        (membership) => !membership.banned
+                      ).length
+                    }{' '}
+                    · Posts: {info.board.totalElements}
                   </p>
                   <div>
                     <Button
@@ -178,7 +283,7 @@ const GroupPage = () => {
                       }
                       size="sm"
                       className="me-2"
-                      onClick={() => fetchGroupAction('follow', 'POST')}
+                      onClick={() => fetchGroupAction('/follow', 'POST')}
                       disabled={
                         (isMember && membershipData.banned) || !isMember
                       }
@@ -196,8 +301,8 @@ const GroupPage = () => {
                       size="sm"
                       onClick={() =>
                         isMember
-                          ? fetchGroupAction('leave', 'POST')
-                          : fetchGroupAction('join', 'POST')
+                          ? fetchGroupAction('/leave', 'POST')
+                          : fetchGroupAction('/join', 'POST')
                       }
                       disabled={
                         (isMember && membershipData.banned) ||
@@ -227,7 +332,7 @@ const GroupPage = () => {
                         disabled={!isMember || membershipData.banned}
                       />
                     </Col>
-                    <Col xs={4} className="">
+                    <Col xs={4}>
                       <Card className="bg-body-tertiary overflow-auto sticky-top top-8">
                         <Card.Body>
                           <h5>About this group</h5>
@@ -254,7 +359,12 @@ const GroupPage = () => {
               </Tab>
               {membershipData.admin && (
                 <Tab eventKey="manage" title="Manage">
-                  PLACEHOLDER
+                  <GroupManagement
+                    trigger={reloadTrigger}
+                    setTrigger={setReloadTrigger}
+                    fetchGroupAction={fetchGroupAction}
+                    info={info}
+                  />
                 </Tab>
               )}
             </Tabs>
