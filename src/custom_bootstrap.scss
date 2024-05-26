@@ -55,7 +55,7 @@ $nav-link-hover-color: tint-color($new-info, 20%);
 .profile-username {
   font-weight: 600;
   font-size: 1.5rem;
-  @media screen and (max-width: 576px) {
+  @media screen and (max-width: 575px) {
     font-size: 1.1rem;
   }
 }
@@ -72,4 +72,14 @@ $nav-link-hover-color: tint-color($new-info, 20%);
 .carousel-control-prev,
 .carousel-control-next {
   width: 7%;
+}
+
+.group-search {
+  width: 50%;
+  @media screen and (max-width: 1199px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 575px) {
+    width: 100%;
+  }
 }

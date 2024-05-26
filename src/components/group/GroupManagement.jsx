@@ -23,6 +23,7 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
   const [showDescriptionField, setShowDescriptionField] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [deleteTimer, setDeleteTimer] = useState(5)
+  const [search, setSearch] = useState('')
   const timerRef = useRef()
   const counter = useRef(10)
   const navigate = useNavigate()
@@ -33,103 +34,25 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
     if (callBack)
       filtered = info.memberships
         .filter(callBack)
+        .filter((membership, i) => i < counter.current)
         .sort((membership1, membership2) => membership1.id - membership2.id)
     else
       filtered = info.memberships.sort(
         (membership1, membership2) => membership1.id - membership2.id
       )
 
-    if (filtered.length < counter.current) {
-      return filtered.map((membership) => (
-        <div
-          key={membership.id}
-          className="d-flex justify-content-between mb-3"
-        >
-          <div className="d-flex align-items-center">
-            <img
-              src={membership.user.proPicUrl}
-              alt="propic"
-              className="nav-propic me-2 cursor-pointer"
-              onClick={() => navigate(`/profile/${membership.user.id}`)}
-            />
-            <Link
-              to={`/profile/${membership.user.id}`}
-              className="link-body-emphasis underline fw-semibold"
-            >
-              {membership.user.username}{' '}
-              {membership.user.id === info.group.founder.id && '(Founder)'}
-            </Link>
-          </div>
-          <div
-            className={
-              membership.user.id === info.group.founder.id
-                ? 'd-none'
-                : 'd-flex align-items-center'
-            }
-          >
-            {user.id !== membership.user.id && (
-              <OverlayTrigger
-                placement="left"
-                overlay={
-                  <Tooltip>{membership.banned ? 'Unban' : 'Ban'}</Tooltip>
-                }
-              >
-                <Button
-                  variant={membership.banned ? 'outline-danger' : 'danger'}
-                  size="sm"
-                  className="me-2 py-0"
-                  onClick={() =>
-                    fetchGroupAction(
-                      `/ban?userID=${membership.user.id}`,
-                      'PATCH'
-                    )
-                  }
-                >
-                  {membership.banned ? (
-                    <i className="bi bi-person-fill-check fs-5"></i>
-                  ) : (
-                    <i className="bi bi-person-fill-slash fs-5"></i>
-                  )}
-                </Button>
-              </OverlayTrigger>
-            )}
-            {user.id === info.group.founder.id && !membership.banned && (
-              <OverlayTrigger
-                placement="right"
-                overlay={
-                  <Tooltip>{membership.admin ? 'Demote' : 'Promote'}</Tooltip>
-                }
-              >
-                <Button
-                  variant={membership.admin ? 'outline-primary' : 'primary'}
-                  size="sm"
-                  className="py-0"
-                  onClick={() =>
-                    fetchGroupAction(
-                      `/promote?userID=${membership.user.id}`,
-                      'PATCH'
-                    )
-                  }
-                >
-                  {membership.admin ? (
-                    <i className="bi bi-person-fill-down fs-5"></i>
-                  ) : (
-                    <i className="bi bi-person-fill-up fs-5"></i>
-                  )}
-                </Button>
-              </OverlayTrigger>
-            )}
-          </div>
-        </div>
-      ))
-    } else {
-      const arr = filtered.filter((membership, i) => i < counter.current)
-
+    if (filtered.length === 0) {
       return (
-        <div>
-          {arr.map((membership) => (
+        <h4 className="text-secondary text-center mb-3">
+          No member data available.
+        </h4>
+      )
+    } else {
+      return (
+        <div className="mb-3">
+          {filtered.map((membership) => (
             <div key={membership.id} className="d-flex justify-content-between">
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center mt-2">
                 <img
                   src={membership.user.proPicUrl}
                   alt="propic"
@@ -161,7 +84,7 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
                     <Button
                       variant={membership.banned ? 'outline-danger' : 'danger'}
                       size="sm"
-                      className="me-2 py-0"
+                      className="me-1 me-sm-2 py-0"
                       onClick={() =>
                         fetchGroupAction(
                           `/ban?userID=${membership.user.id}`,
@@ -208,13 +131,17 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
               </div>
             </div>
           ))}
-          <button
-            type="button"
-            className="btn-clean"
-            onClick={() => (counter.current += 10)}
-          >
-            Load more ({filtered.length - counter.current} remaining)
-          </button>
+          {filtered.length > counter.current && (
+            <div className="mt-3 d-flex justify-content-center">
+              <button
+                type="button"
+                className="btn-clean"
+                onClick={() => (counter.current += 10)}
+              >
+                Load more ({filtered.length - counter.current} remaining)
+              </button>
+            </div>
+          )}
         </div>
       )
     }
@@ -270,23 +197,9 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
   }, [deleteTimer])
 
   return (
-    <Container className="mb-5">
+    <Container className="mb-5" fluid>
       <Row>
-        <Col xs={7}>
-          <Card className="bg-body-tertiary">
-            <Card.Body className="pb-0">
-              <div>
-                <h5>Administration:</h5>
-                {printMembers((membership) => membership.admin)}
-              </div>
-              <div>
-                <h5>Members:</h5>
-                {printMembers((membership) => !membership.admin)}
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col xs={5}>
+        <Col md={5} className="order-md-2 mb-3 mb-md-0">
           <Card className="bg-body-tertiary sticky-top top-8">
             <Card.Header>
               <h4 className="mb-1">Settings</h4>
@@ -445,6 +358,37 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
                 )}
               </Card.Footer>
             )}
+          </Card>
+        </Col>
+        <Col md={7} className="order-md-1">
+          <Card className="bg-body-tertiary">
+            <Card.Body className="pb-0">
+              <Form.Control
+                className="group-search mb-3"
+                placeholder="Search members..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {search === '' ? (
+                <>
+                  <div>
+                    <h5>Administration:</h5>
+                    {printMembers((membership) => membership.admin)}
+                  </div>
+                  <div>
+                    <h5>Members:</h5>
+                    {printMembers((membership) => !membership.admin)}
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <h5>Search results:</h5>
+                  {printMembers((membership) =>
+                    membership.user.username.includes(search)
+                  )}
+                </div>
+              )}
+            </Card.Body>
           </Card>
         </Col>
       </Row>

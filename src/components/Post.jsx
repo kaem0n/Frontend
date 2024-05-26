@@ -250,7 +250,7 @@ const Post = ({ data, disabled }) => {
                   </div>
                 </NavDropdown>
               </div>
-              <Container className="px-0 mb-3">
+              <Container className="px-0 mb-3" fluid>
                 {toggleEdit ? (
                   <Form
                     className="pb-1 cursor-text position-relative"

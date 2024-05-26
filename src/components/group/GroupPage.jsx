@@ -15,6 +15,7 @@ import { Link, useParams } from 'react-router-dom'
 import Board from '../Board'
 import CreatePost from '../post/CreatePost'
 import GroupManagement from './GroupManagement'
+import GroupInfo from './GroupInfo'
 
 const GroupPage = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -213,7 +214,7 @@ const GroupPage = () => {
 
   return (
     info && (
-      <Container>
+      <Container fluid="lg">
         <Row>
           <Col>
             <div>
@@ -227,34 +228,36 @@ const GroupPage = () => {
                 ) : (
                   <div className="group-cover bg-secondary rounded-top-3"></div>
                 )}
-                <div className="position-absolute bottom-0 end-0 me-2 mb-2">
-                  {info.group.coverUrl && (
+                {membershipData.admin && (
+                  <div className="position-absolute bottom-0 end-0 me-2 mb-2">
+                    {info.group.coverUrl && (
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={<Tooltip>Delete group cover</Tooltip>}
+                      >
+                        <Button
+                          variant="secondary"
+                          className="fs-5 rounded-2 px-2 py-1 me-2 text-black"
+                          onClick={removeCover}
+                        >
+                          <i className="fa-solid fa-eraser"></i>
+                        </Button>
+                      </OverlayTrigger>
+                    )}
                     <OverlayTrigger
                       placement="bottom"
-                      overlay={<Tooltip>Delete group cover</Tooltip>}
+                      overlay={<Tooltip>Change group cover</Tooltip>}
                     >
                       <Button
-                        variant="secondary"
-                        className="fs-5 rounded-2 px-2 py-1 me-2 text-black"
-                        onClick={removeCover}
+                        variant="info"
+                        className="fs-5 rounded-2 px-2 py-1"
+                        onClick={() => inputFile.current.click()}
                       >
-                        <i className="fa-solid fa-eraser"></i>
+                        <i className="fa-solid fa-camera"></i>
                       </Button>
                     </OverlayTrigger>
-                  )}
-                  <OverlayTrigger
-                    placement="bottom"
-                    overlay={<Tooltip>Change group cover</Tooltip>}
-                  >
-                    <Button
-                      variant="info"
-                      className="fs-5 rounded-2 px-2 py-1"
-                      onClick={() => inputFile.current.click()}
-                    >
-                      <i className="fa-solid fa-camera"></i>
-                    </Button>
-                  </OverlayTrigger>
-                </div>
+                  </div>
+                )}
                 <input
                   type="file"
                   ref={inputFile}
@@ -321,9 +324,9 @@ const GroupPage = () => {
               unmountOnExit
             >
               <Tab eventKey="board" title="Board">
-                <Container>
+                <Container className="mb-5" fluid>
                   <Row>
-                    <Col xs={8}>
+                    <Col md={8}>
                       {isMember && !membershipData.banned && (
                         <CreatePost boardID={info.group.board.id} />
                       )}
@@ -332,7 +335,7 @@ const GroupPage = () => {
                         disabled={!isMember || membershipData.banned}
                       />
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={4} className="d-none d-md-block">
                       <Card className="bg-body-tertiary overflow-auto sticky-top top-8">
                         <Card.Body>
                           <h5>About this group</h5>
@@ -355,7 +358,7 @@ const GroupPage = () => {
                 </Container>
               </Tab>
               <Tab eventKey="info" title="Info">
-                PLACEHOLDER
+                <GroupInfo info={info} />
               </Tab>
               {membershipData.admin && (
                 <Tab eventKey="manage" title="Manage">

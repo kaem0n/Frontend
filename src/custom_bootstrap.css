@@ -11999,7 +11999,7 @@ textarea.form-control-lg {
   font-weight: 600;
   font-size: 1.5rem;
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 575px) {
   .profile-username {
     font-size: 1.1rem;
   }
@@ -12017,4 +12017,18 @@ textarea.form-control-lg {
 .carousel-control-prev,
 .carousel-control-next {
   width: 7%;
+}
+
+.group-search {
+  width: 50%;
+}
+@media screen and (max-width: 1199px) {
+  .group-search {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 575px) {
+  .group-search {
+    width: 100%;
+  }
 }/*# sourceMappingURL=custom_bootstrap.css.map */
