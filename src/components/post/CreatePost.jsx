@@ -148,7 +148,7 @@ const CreatePost = ({ boardID }) => {
   }
 
   return (
-    <Card className="bg-body-tertiary">
+    <Card className="bg-body-tertiary mb-4">
       <Card.Body className="p-2 d-flex">
         <button
           type="button"

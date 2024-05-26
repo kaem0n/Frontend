@@ -9,11 +9,38 @@ const GroupPage = () => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const isLoading = useSelector((state) => state.isLoading)
+  const [reloadTrigger, setReloadTrigger] = useState(true)
   const [info, setInfo] = useState(null)
+  const [isMember, setMember] = useState(false)
   const [membershipData, setMembershipData] = useState(null)
   const params = useParams()
 
+  const fetchGroupAction = async (endPoint, method) => {
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/groups/${params.groupID}/${endPoint}`,
+        {
+          method: method,
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        const result = await res.json()
+        console.log(result)
+        setReloadTrigger(!reloadTrigger)
+      } else {
+        const err = await res.json()
+        throw new Error(err.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
     let ignore = true
 
     const getGroupData = async () => {
@@ -101,6 +128,7 @@ const GroupPage = () => {
         if (res.ok) {
           const data = await res.json()
           console.log(data)
+          setMember(true)
           setMembershipData(data)
         } else {
           const err = await res.json()
@@ -108,6 +136,7 @@ const GroupPage = () => {
         }
       } catch (error) {
         console.log(error)
+        setMember(false)
       }
     }
 
@@ -118,7 +147,7 @@ const GroupPage = () => {
       ignore = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
+  }, [isLoading, reloadTrigger])
 
   return (
     info && (
@@ -143,32 +172,39 @@ const GroupPage = () => {
                   <div>
                     <Button
                       variant={
-                        membershipData.following ? 'outline-info' : 'info'
+                        isMember && membershipData.following
+                          ? 'outline-info'
+                          : 'info'
                       }
                       size="sm"
                       className="me-2"
+                      onClick={() => fetchGroupAction('follow', 'POST')}
                       disabled={
-                        (membershipData && membershipData.banned) ||
-                        !membershipData
+                        (isMember && membershipData.banned) || !isMember
                       }
                     >
-                      {membershipData.following ? 'Unfollow' : 'Follow'}
+                      {isMember && membershipData.following
+                        ? 'Unfollow'
+                        : 'Follow'}
                     </Button>
                     <Button
                       variant={
-                        membershipData && !membershipData.banned
+                        isMember && !membershipData.banned
                           ? 'outline-primary'
                           : 'primary'
                       }
                       size="sm"
+                      onClick={() =>
+                        isMember
+                          ? fetchGroupAction('leave', 'POST')
+                          : fetchGroupAction('join', 'POST')
+                      }
                       disabled={
-                        (membershipData && membershipData.banned) ||
+                        (isMember && membershipData.banned) ||
                         info.group.founder.id === user.id
                       }
                     >
-                      {membershipData && !membershipData.banned
-                        ? 'Leave'
-                        : 'Join'}
+                      {isMember && !membershipData.banned ? 'Leave' : 'Join'}
                     </Button>
                   </div>
                 </div>
@@ -183,10 +219,13 @@ const GroupPage = () => {
                 <Container>
                   <Row>
                     <Col xs={8}>
-                      {membershipData && !membershipData.banned && (
+                      {isMember && !membershipData.banned && (
                         <CreatePost boardID={info.group.board.id} />
                       )}
-                      <Board id={info.group.board.id} />
+                      <Board
+                        id={info.group.board.id}
+                        disabled={!isMember || membershipData.banned}
+                      />
                     </Col>
                     <Col xs={4} className="">
                       <Card className="bg-body-tertiary overflow-auto sticky-top top-8">
@@ -213,6 +252,11 @@ const GroupPage = () => {
               <Tab eventKey="info" title="Info">
                 PLACEHOLDER
               </Tab>
+              {membershipData.admin && (
+                <Tab eventKey="manage" title="Manage">
+                  PLACEHOLDER
+                </Tab>
+              )}
             </Tabs>
           </Col>
         </Row>

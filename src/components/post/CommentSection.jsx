@@ -10,10 +10,16 @@ import {
 } from 'react-bootstrap'
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Comment from './Comment'
 import EmojiMenu from './EmojiMenu'
 
-const CommentSection = ({ data, loadData, postPageCheck = false }) => {
+const CommentSection = ({
+  data,
+  loadData,
+  postPageCheck = false,
+  disabled,
+}) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const [isLoading, setLoading] = useState(false)
@@ -22,6 +28,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
   const textarea = useRef()
   const inputFile = useRef()
   const counter = useRef(4)
+  const navigate = useNavigate()
 
   const createComment = async () => {
     setLoading(true)
@@ -96,7 +103,12 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
       .reverse()
       .filter((comment, i) => i < counter.current)
       .map((comment) => (
-        <Comment key={comment.id} data={comment} loadData={loadData} />
+        <Comment
+          key={comment.id}
+          data={comment}
+          loadData={loadData}
+          disabled={disabled}
+        />
       ))
   }
 
@@ -170,7 +182,11 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
           }
         >
           {!postPageCheck && (
-            <img src={user.proPicUrl} className="nav-propic border me-2" />
+            <img
+              src={user.proPicUrl}
+              className="nav-propic border me-2 cursor-pointer"
+              onClick={() => navigate(`/profile/${user.id}`)}
+            />
           )}
           <Form
             className="flex-grow-1 position-relative"
@@ -193,7 +209,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
                     ? contentField.match(/\n/g).length + 1
                     : 2
                 }
-                disabled={isLoading}
+                disabled={isLoading || disabled}
               />
               <div className="px-2 d-flex justify-content-between">
                 <div className="d-flex align-items-center">
@@ -207,7 +223,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
                       onClick={() => {
                         inputFile.current.click()
                       }}
-                      disabled={isLoading}
+                      disabled={isLoading || disabled}
                     >
                       <i className="fa-regular fa-image text-secondary"></i>
                     </button>
@@ -216,7 +232,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
                     value={contentField}
                     setValue={setContentField}
                     className="text-secondary fs-5"
-                    disabled={isLoading}
+                    disabled={isLoading || disabled}
                   />
                 </div>
                 <div
@@ -229,7 +245,7 @@ const CommentSection = ({ data, loadData, postPageCheck = false }) => {
                 >
                   <button
                     className="btn-clean"
-                    disabled={contentField.length < 3 || isLoading}
+                    disabled={contentField.length < 3 || isLoading || disabled}
                   >
                     <i className="bi bi-send-fill text-primary fs-5"></i>
                   </button>

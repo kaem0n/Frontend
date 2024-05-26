@@ -14,8 +14,9 @@ import { useSelector } from 'react-redux'
 import { useRef, useState } from 'react'
 import dateTimeFormatter from '../../utils/dateTimeFormatter'
 import EmojiMenu from './EmojiMenu'
+import PostLike from './PostLike'
 
-const Comment = ({ data, loadData }) => {
+const Comment = ({ data, loadData, disabled }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const [isLoading, setLoading] = useState(false)
@@ -397,17 +398,7 @@ const Comment = ({ data, loadData }) => {
           )}
         </div>
         <div className="fs-7 px-3">
-          <button
-            type="button"
-            className={
-              checkLikes()
-                ? 'btn-clean underline text-primary'
-                : 'btn-clean underline'
-            }
-          >
-            <i className="fa-solid fa-thumbs-up me-1"></i>
-            {data.commentLikes.length}
-          </button>
+          <PostLike likes={data.commentLikes} />
           <span className="mx-1">·</span>
           <button
             type="button"
@@ -417,6 +408,7 @@ const Comment = ({ data, loadData }) => {
                 : 'btn-clean underline'
             }
             onClick={likeComment}
+            disabled={disabled}
           >
             Like
           </button>

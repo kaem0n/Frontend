@@ -17,7 +17,7 @@ import PostLike from './post/PostLike'
 import CommentSection from './post/CommentSection'
 import EmojiMenu from './post/EmojiMenu'
 
-const Post = ({ data }) => {
+const Post = ({ data, disabled }) => {
   const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
   const [postData, setPostData] = useState(null)
@@ -167,7 +167,7 @@ const Post = ({ data }) => {
     <>
       {user && data && (
         <div className={isDeleted ? 'd-none' : ''}>
-          <Card className="bg-body-tertiary my-4">
+          <Card className="bg-body-tertiary mb-4">
             <Card.Body className="px-0 pb-0 pt-3">
               <div className="d-flex justify-content-between mb-2 px-3">
                 <div className="d-flex align-items-center">
@@ -332,7 +332,7 @@ const Post = ({ data }) => {
               <div className="px-3 mb-2">
                 <div className="d-flex justify-content-between align-items-center fs-7">
                   <PostLike
-                    postLikes={postData ? postData.postLikes : data.postLikes}
+                    likes={postData ? postData.postLikes : data.postLikes}
                   />
                   <button
                     type="button"
@@ -359,6 +359,7 @@ const Post = ({ data }) => {
                     handleActive(e)
                     likePost()
                   }}
+                  disabled={disabled}
                 >
                   <i
                     className={
@@ -384,7 +385,11 @@ const Post = ({ data }) => {
               <div className={showComments ? '' : 'd-none'}>
                 <hr className="m-0" />
                 {postData && (
-                  <CommentSection data={postData} loadData={loadData} />
+                  <CommentSection
+                    data={postData}
+                    loadData={loadData}
+                    disabled={disabled}
+                  />
                 )}
               </div>
             </Card.Footer>

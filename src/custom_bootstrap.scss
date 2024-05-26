@@ -17,8 +17,8 @@ $new-theme-colors: (
 
 $colors: map-merge($colors, $new-colors);
 $theme-colors: map-merge($theme-colors, $new-theme-colors);
-$nav-link-color: tint-color($new-info, 20%);
-$nav-link-hover-color: tint-color($new-info, 40%);
+$nav-link-color: $new-info;
+$nav-link-hover-color: tint-color($new-info, 20%);
 
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 

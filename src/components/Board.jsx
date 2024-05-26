@@ -5,7 +5,7 @@ import Post from './Post'
 import { useDispatch, useSelector } from 'react-redux'
 import { endLoad } from '../redux/actions'
 
-const Board = ({ id }) => {
+const Board = ({ id, disabled }) => {
   const accessToken = localStorage.getItem('accessToken')
   const isLoading = useSelector((state) => state.isLoading)
   const [isFetching, setFetching] = useState(false)
@@ -94,7 +94,9 @@ const Board = ({ id }) => {
       ) : (
         !firstLoad &&
         posts &&
-        posts.map((post) => <Post key={post.id} data={post} />)
+        posts.map((post) => (
+          <Post key={post.id} data={post} disabled={disabled} />
+        ))
       )}
       {!firstLoad && !lastPage && <PostPlaceholder />}
       {!firstLoad && lastPage && posts.length > 0 && (

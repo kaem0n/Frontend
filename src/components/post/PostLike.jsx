@@ -3,7 +3,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useState } from 'react'
 import PostLikeModal from './PostLikeModal'
 
-const PostLike = ({ postLikes }) => {
+const PostLike = ({ likes }) => {
   const [show, setShow] = useState(false)
 
   return (
@@ -11,10 +11,10 @@ const PostLike = ({ postLikes }) => {
       <OverlayTrigger
         placement="top"
         overlay={
-          <Tooltip className="text-start">
-            {postLikes.length > 6 ? (
+          <Tooltip className={likes.length > 0 ? 'text-start' : 'd-none'}>
+            {likes.length > 6 ? (
               <>
-                {postLikes
+                {likes
                   .filter((user, i) => i < 6)
                   .map((user) => (
                     <p
@@ -22,10 +22,10 @@ const PostLike = ({ postLikes }) => {
                       key={user.id}
                     >{`${user.username} \n`}</p>
                   ))}
-                <p>and {postLikes.length - 6} more...</p>
+                <p>and {likes.length - 6} more...</p>
               </>
             ) : (
-              postLikes.map((user) => (
+              likes.map((user) => (
                 <p
                   className="line-break"
                   key={user.id}
@@ -41,11 +41,11 @@ const PostLike = ({ postLikes }) => {
           onClick={() => setShow(true)}
         >
           <i className="fa-solid fa-thumbs-up me-1"></i>
-          {postLikes.length}
+          {likes.length}
         </button>
       </OverlayTrigger>
 
-      <PostLikeModal show={show} setShow={setShow} postLikes={postLikes} />
+      <PostLikeModal show={show} setShow={setShow} likes={likes} />
     </>
   )
 }

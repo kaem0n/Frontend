@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { trigger } from '../../redux/actions'
 
 /* eslint-disable react/prop-types */
-const PostLikeModal = ({ show, setShow, postLikes }) => {
+const PostLikeModal = ({ show, setShow, likes }) => {
   const accessToken = localStorage.getItem('accessToken')
   const myID = useSelector((state) => state.profile.id)
   const [followingList, setFollowingList] = useState([])
@@ -84,7 +84,7 @@ const PostLikeModal = ({ show, setShow, postLikes }) => {
       <Modal.Body className="p-1 overflow-auto">
         <Container>
           <Row>
-            {postLikes.map((user, i) => (
+            {likes.map((user, i) => (
               <Col
                 xs={12}
                 key={user.id}
