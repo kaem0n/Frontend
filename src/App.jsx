@@ -17,6 +17,7 @@ import Settings from './components/Settings'
 import ProfilePage from './components/ProfilePage'
 import PostPage from './components/post/PostPage'
 import GroupPage from './components/group/GroupPage'
+import SearchPage from './components/SearchPage'
 
 const App = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -48,6 +49,7 @@ const App = () => {
             <Route path="/profile/:userID" element={<ProfilePage />} />
             <Route path="/post/:postID" element={<PostPage />} />
             <Route path="/group/:groupID" element={<GroupPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/settings" element={<Settings />} />
           </>
         ) : (

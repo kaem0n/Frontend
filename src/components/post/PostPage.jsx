@@ -437,7 +437,7 @@ const PostPage = () => {
                       )}
                       <div className="px-3 pb-2 border-bottom">
                         <div className="d-flex justify-content-between align-items-center fs-7">
-                          <PostLike postLikes={postData.postLikes} />
+                          <PostLike likes={postData.postLikes} />
                           <button
                             type="button"
                             className="btn-clean underline"
