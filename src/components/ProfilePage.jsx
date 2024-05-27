@@ -233,6 +233,7 @@ const ProfilePage = () => {
   useEffect(() => {
     getFollowerData(params.userID)
     getFollowingData(params.userID)
+    getUserData(params.userID)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadTrigger])
 
