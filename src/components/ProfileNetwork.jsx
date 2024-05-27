@@ -108,7 +108,7 @@ const ProfileNetwork = ({
                     src={user.proPicUrl}
                     alt={user.userID}
                     height={40}
-                    className="rounded-circle border me-3 cursor-pointer"
+                    className="nav-propic border me-3 cursor-pointer"
                     onClick={() => navigate(`/profile/${user.userID}`)}
                   />
                   <button
@@ -155,7 +155,7 @@ const ProfileNetwork = ({
                     src={user.proPicUrl}
                     alt={user.userID}
                     height={40}
-                    className="rounded-circle border me-3 cursor-pointer"
+                    className="nav-propic border me-3 cursor-pointer"
                     onClick={() => navigate(`/profile/${user.userID}`)}
                   />
                   <button

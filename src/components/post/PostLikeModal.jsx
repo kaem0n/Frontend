@@ -99,7 +99,7 @@ const PostLikeModal = ({ show, setShow, likes }) => {
                     src={user.proPicUrl}
                     alt={user.id}
                     height={40}
-                    className="rounded-circle border me-3 cursor-pointer"
+                    className="nav-propic border me-3 cursor-pointer"
                     onClick={() => navigate(`/profile/${user.id}`)}
                   />
                   <button

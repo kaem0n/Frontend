@@ -49,13 +49,13 @@ const NavBar = () => {
         <Container fluid>
           <Link className="navbar-brand me-2 me-md-3" to="/">
             <img
-              src="/public/logo.png"
+              src="/logo.png"
               alt="logo"
               height={30}
               className="d-none d-sm-block"
             />
             <img
-              src="/public/favicon.png"
+              src="/favicon.png"
               alt="logo"
               height={30}
               className="d-sm-none"
