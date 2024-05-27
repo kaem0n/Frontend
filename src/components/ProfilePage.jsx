@@ -240,7 +240,7 @@ const ProfilePage = () => {
     user && (
       <Container fluid>
         <Row className="justify-content-center">
-          <Col md={6}>
+          <Col md={8} lg={6} xxl={5}>
             <Container
               fluid
               id="profile-page"

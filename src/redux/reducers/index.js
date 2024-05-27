@@ -28,6 +28,7 @@ const initialState = {
     hobbies: [],
     dateFormat: '',
     timeFormat: '',
+    lightTheme: true,
     bio: '',
   },
   followers: [],

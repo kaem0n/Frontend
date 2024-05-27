@@ -8,7 +8,7 @@ const PostMediaLayout = ({ mediaUrls, postID }) => {
       {mediaUrls.length === 1 ? (
         <Col xs={12}>
           <Link to={`/post/${postID}?slide=1`}>
-            <img src={mediaUrls[0]} alt={mediaUrls[0]} className="img-sm" />
+            <img src={mediaUrls[0]} alt={mediaUrls[0]} className="w-100" />
           </Link>
         </Col>
       ) : mediaUrls.length === 2 ? (

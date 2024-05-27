@@ -127,16 +127,18 @@ const PostMediaDelete = ({ mediaUrls, postID, loadData, setShow }) => {
   return (
     <div className="position-relative">
       <Carousel
-        className="d-flex align-items-center w-100 py-2 px-5 border-top"
+        className="d-flex align-items-center w-100 py-2 px-3 px-sm-5 border-top"
         touch
         interval={null}
         slide={false}
         indicators={false}
+        prevIcon={<i className="fa-solid fa-circle-chevron-left fs-2"></i>}
+        nextIcon={<i className="fa-solid fa-circle-chevron-right fs-2"></i>}
       >
         {handleDeleteItems()}
       </Carousel>
       <Form
-        className="px-3 pb-2 text-white d-flex justify-content-between align-items-center"
+        className="px-3 pb-2 text-white d-flex flex-column flex-sm-row justify-content-between align-items-center"
         onSubmit={handleSubmit}
       >
         <p>{toDelete.length} items selected for deletion.</p>

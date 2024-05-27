@@ -1,17 +1,42 @@
 import { useRef } from 'react'
 import { NavDropdown } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getProfileData } from '../redux/actions'
 
 const NavProfileCard = () => {
+  const accessToken = localStorage.getItem('accessToken')
   const user = useSelector((state) => state.profile)
-  const navigate = useNavigate()
   const toggleRef = useRef()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const logOut = () => {
     localStorage.removeItem('accessToken')
     navigate('/')
     window.location.reload()
+  }
+
+  const changeTheme = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3030/api/users/me/changeTheme`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      )
+      if (res.ok) {
+        dispatch(getProfileData())
+      } else {
+        const err = await res.json()
+        throw new Error(err.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -51,6 +76,19 @@ const NavProfileCard = () => {
         <div
           className="menu-option"
           onClick={() => {
+            changeTheme()
+          }}
+        >
+          {user.lightTheme ? (
+            <i className="bi bi-brightness-high-fill me-1"></i>
+          ) : (
+            <i className="bi bi-moon-stars-fill me-1"></i>
+          )}
+          Change theme
+        </div>
+        <div
+          className="menu-option"
+          onClick={() => {
             navigate('/settings')
             toggleRef.current.click()
           }}
@@ -65,20 +103,27 @@ const NavProfileCard = () => {
         <div className="fs-8 text-secondary">
           <p>
             <a
-              href="https://github.com/kaem0n/meetoo"
-              className="link-secondary underline"
-            >
-              GitHub Repository
-            </a>{' '}
-            ·{' '}
-            <a
               href="https://github.com/kaem0n"
               className="link-secondary underline"
             >
-              kaem0n
+              GitHub
+            </a>{' '}
+            ·{' '}
+            <a
+              href="https://www.linkedin.com/in/antonio-ruggia-piquer-a086592b5/"
+              className="link-secondary underline"
+            >
+              LinkedIn
+            </a>{' '}
+            ·{' '}
+            <a
+              href="https://www.instagram.com/_antoniorp_/"
+              className="link-secondary underline"
+            >
+              Instagram
             </a>
           </p>
-          <p>MeeToo &copy; {new Date().getFullYear()}</p>
+          <p>MeeToo &copy; {new Date().getFullYear()} by kaem0n</p>
         </div>
       </div>
     </NavDropdown>

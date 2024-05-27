@@ -57,7 +57,9 @@ const ProfileNetwork = ({
       fluid
       id="profile-network"
       className={
-        show ? 'vanish-right vh-85 d-flex flex-column' : 'position-absolute'
+        show
+          ? 'vanish-right vh-85 d-flex flex-column px-0'
+          : 'position-absolute'
       }
     >
       <Row>

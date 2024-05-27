@@ -228,7 +228,7 @@ const GroupPage = () => {
                 ) : (
                   <div className="group-cover bg-secondary rounded-top-3"></div>
                 )}
-                {membershipData.admin && (
+                {membershipData && membershipData.admin && (
                   <div className="position-absolute bottom-0 end-0 me-2 mb-2">
                     {info.group.coverUrl && (
                       <OverlayTrigger
@@ -267,8 +267,8 @@ const GroupPage = () => {
               </div>
               <div className="bg-body-tertiary p-3">
                 <h1 className="fw-bold">{info.group.name}</h1>
-                <div className="d-flex justify-content-between align-items-center">
-                  <p>
+                <div className="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+                  <p className="mb-2 mb-sm-0">
                     Members:{' '}
                     {
                       info.memberships.filter(
@@ -277,7 +277,7 @@ const GroupPage = () => {
                     }{' '}
                     · Posts: {info.board.totalElements}
                   </p>
-                  <div>
+                  <div className="align-self-end">
                     <Button
                       variant={
                         isMember && membershipData.following
@@ -360,7 +360,7 @@ const GroupPage = () => {
               <Tab eventKey="info" title="Info">
                 <GroupInfo info={info} />
               </Tab>
-              {membershipData.admin && (
+              {membershipData && membershipData.admin && (
                 <Tab eventKey="manage" title="Manage">
                   <GroupManagement
                     trigger={reloadTrigger}

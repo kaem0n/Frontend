@@ -39,6 +39,15 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reloadTrigger])
 
+  useEffect(() => {
+    if (user) {
+      const html = document.getElementsByTagName('html')[0]
+      if (user.lightTheme) html.setAttribute('data-bs-theme', 'light')
+      else html.setAttribute('data-bs-theme', 'dark')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.lightTheme])
+
   return (
     <BrowserRouter>
       {accessToken ? <NavBar /> : <></>}

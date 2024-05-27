@@ -26,6 +26,7 @@ const Post = ({ data, disabled }) => {
   const [isLoading, setLoading] = useState(false)
   const [toggleEdit, setToggleEdit] = useState(false)
   const [contentField, setContentField] = useState('')
+  const [boardOwner, setBoardOwner] = useState(null)
   const navigate = useNavigate()
   const optionsMenu = useRef()
   const textarea = useRef()
@@ -163,9 +164,32 @@ const Post = ({ data, disabled }) => {
 
   useEffect(() => {}, [postData])
 
+  useEffect(() => {
+    const getBoardOwner = async () => {
+      const endPoints = ['users', 'groups']
+      for (let endPoint of endPoints) {
+        const res = await fetch(
+          `http://localhost:3030/api/${endPoint}/byBoard/${data.board.id}`,
+          {
+            headers: {
+              Authorization: accessToken,
+            },
+          }
+        )
+        if (res.ok) {
+          const result = await res.json()
+          setBoardOwner(result)
+          break
+        } else continue
+      }
+    }
+    getBoardOwner()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <>
-      {user && data && (
+      {user && data && boardOwner && (
         <div className={isDeleted ? 'd-none' : ''}>
           <Card className="bg-body-tertiary mb-4">
             <Card.Body className="px-0 pb-0 pt-3">
@@ -183,13 +207,35 @@ const Post = ({ data, disabled }) => {
                     />
                   </button>
                   <div className="d-flex flex-column align-items-start">
-                    <button
-                      type="button"
-                      className="btn-clean fw-semibold underline"
-                      onClick={() => navigate(`/profile/${data.user.id}`)}
-                    >
-                      {data.user.username}
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        className="btn-clean fw-semibold underline"
+                        onClick={() => navigate(`/profile/${data.user.id}`)}
+                      >
+                        {data.user.username}
+                      </button>
+                      {data.user.id !== boardOwner.id && (
+                        <>
+                          <i className="fa-solid fa-caret-right mx-2"></i>
+                          <button
+                            type="button"
+                            className="btn-clean fw-semibold underline"
+                            onClick={() =>
+                              navigate(
+                                boardOwner.username
+                                  ? `/profile/${boardOwner.id}`
+                                  : `/group/${boardOwner.id}`
+                              )
+                            }
+                          >
+                            {boardOwner.username
+                              ? boardOwner.username
+                              : boardOwner.name}
+                          </button>
+                        </>
+                      )}
+                    </div>
                     <p className="fs-8 text-secondary">
                       {dateTimeFormatter(
                         data.publicationDate,

@@ -2,6 +2,7 @@ import { Container, Form, Nav, Navbar } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import NavProfileCard from './NavProfileCard'
 import { useState } from 'react'
+import NavProfileOffcanvas from './NavProfileOffcanvas'
 
 const NavBar = () => {
   const accessToken = localStorage.getItem('accessToken')
@@ -39,20 +40,29 @@ const NavBar = () => {
   }
 
   return (
-    <header className="mb-5 pb-5">
+    <header className="mb-4 pb-5">
       <Navbar
         collapseOnSelect
-        expand="lg"
         className="bg-body-tertiary border-bottom"
         fixed="top"
       >
         <Container fluid>
-          <Link className="navbar-brand" to="/">
-            <img src="/public/logo.png" alt="logo" height={30} />
+          <Link className="navbar-brand me-2 me-md-3" to="/">
+            <img
+              src="/public/logo.png"
+              alt="logo"
+              height={30}
+              className="d-none d-sm-block"
+            />
+            <img
+              src="/public/favicon.png"
+              alt="logo"
+              height={30}
+              className="d-sm-none"
+            />
           </Link>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto w-25">
+            <Nav className="ms-auto ms-md-0 me-2 me-md-auto nav-search">
               <Form
                 className="flex-grow-1 position-relative"
                 onSubmit={handleSubmit}
@@ -123,23 +133,35 @@ const NavBar = () => {
                         </div>
                       </div>
                     )}
-                    <div className="d-flex justify-content-center menu-option">
-                      <button
-                        className="btn-clean flex-grow-1"
-                        onClick={() => {
-                          search !== '' && navigate(`/search?query=${search}`)
-                          setSearch('')
-                        }}
-                      >
-                        <i className="fa-solid fa-ellipsis"></i>
-                      </button>
+                    <div className="d-flex flex-column justify-content-center menu-option">
+                      {searchResults.users.length === 0 &&
+                      searchResults.groups.length === 0 &&
+                      searchResults.posts.length === 0 &&
+                      searchResults.comments.length === 0 ? (
+                        <h6 className="text-secondary">
+                          Search produced no results.
+                        </h6>
+                      ) : (
+                        <button
+                          className="btn-clean flex-grow-1"
+                          onClick={() => {
+                            search !== '' && navigate(`/search?query=${search}`)
+                            setSearch('')
+                          }}
+                        >
+                          <i className="fa-solid fa-ellipsis"></i>
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
               </Form>
             </Nav>
-            <Nav>
+            <Nav className="ms-auto d-none d-sm-block">
               <NavProfileCard />
+            </Nav>
+            <Nav className="ms-auto d-sm-none">
+              <NavProfileOffcanvas />
             </Nav>
           </Navbar.Collapse>
         </Container>

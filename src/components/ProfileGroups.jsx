@@ -154,7 +154,7 @@ const ProfileGroups = ({ user }) => {
           <h6>Groups founded by {user.username}:</h6>
           {founderGroups.length > 0 ? (
             <div className="mb-4">
-              <Row xs={3} md={2} lg={3} xxl={4} className="g-3">
+              <Row xs={2} sm={3} xxl={4} className="g-3">
                 {founderGroups.map((group) => (
                   <ProfileGroupCard key={group.id} data={group} />
                 ))}
@@ -180,7 +180,7 @@ const ProfileGroups = ({ user }) => {
           <h6>Groups {user.username} is member of:</h6>
           {memberships && memberships.length > 0 ? (
             <div className="mb-4">
-              <Row xs={3} md={2} lg={3} xxl={4} className="g-3">
+              <Row xs={2} sm={3} xxl={4} className="g-3">
                 {printGroups()}
               </Row>
               {memberships.length > counter.current && (

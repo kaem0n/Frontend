@@ -12031,4 +12031,23 @@ textarea.form-control-lg {
   .group-search {
     width: 100%;
   }
+}
+
+.nav-search {
+  width: 25%;
+}
+@media screen and (max-width: 991px) {
+  .nav-search {
+    width: 33%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .nav-search {
+    width: 66%;
+  }
+}
+@media screen and (max-width: 575px) {
+  .nav-search {
+    width: 80%;
+  }
 }/*# sourceMappingURL=custom_bootstrap.css.map */
