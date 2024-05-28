@@ -34,7 +34,7 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
     if (callBack)
       filtered = info.memberships
         .filter(callBack)
-        .filter((membership, i) => i < counter.current)
+
         .sort((membership1, membership2) => membership1.id - membership2.id)
     else
       filtered = info.memberships.sort(
@@ -50,87 +50,97 @@ const GroupManagement = ({ trigger, setTrigger, fetchGroupAction, info }) => {
     } else {
       return (
         <div className="mb-3">
-          {filtered.map((membership) => (
-            <div key={membership.id} className="d-flex justify-content-between">
-              <div className="d-flex align-items-center mt-2">
-                <img
-                  src={membership.user.proPicUrl}
-                  alt="propic"
-                  className="nav-propic me-2 cursor-pointer"
-                  onClick={() => navigate(`/profile/${membership.user.id}`)}
-                />
-                <Link
-                  to={`/profile/${membership.user.id}`}
-                  className="link-body-emphasis underline fw-semibold"
-                >
-                  {membership.user.username}{' '}
-                  {membership.user.id === info.group.founder.id && '(Founder)'}
-                </Link>
-              </div>
+          {filtered
+            .filter((membership, i) => i < counter.current)
+            .map((membership) => (
               <div
-                className={
-                  membership.user.id === info.group.founder.id
-                    ? 'd-none'
-                    : 'd-flex align-items-center'
-                }
+                key={membership.id}
+                className="d-flex justify-content-between"
               >
-                {user.id !== membership.user.id && (
-                  <OverlayTrigger
-                    placement="left"
-                    overlay={
-                      <Tooltip>{membership.banned ? 'Unban' : 'Ban'}</Tooltip>
-                    }
+                <div className="d-flex align-items-center mt-2">
+                  <img
+                    src={membership.user.proPicUrl}
+                    alt="propic"
+                    className="nav-propic me-2 cursor-pointer"
+                    onClick={() => navigate(`/profile/${membership.user.id}`)}
+                  />
+                  <Link
+                    to={`/profile/${membership.user.id}`}
+                    className="link-body-emphasis underline fw-semibold"
                   >
-                    <Button
-                      variant={membership.banned ? 'outline-danger' : 'danger'}
-                      size="sm"
-                      className="me-1 me-sm-2 py-0"
-                      onClick={() =>
-                        fetchGroupAction(
-                          `/ban?userID=${membership.user.id}`,
-                          'PATCH'
-                        )
+                    {membership.user.username}{' '}
+                    {membership.user.id === info.group.founder.id &&
+                      '(Founder)'}
+                  </Link>
+                </div>
+                <div
+                  className={
+                    membership.user.id === info.group.founder.id
+                      ? 'd-none'
+                      : 'd-flex align-items-center'
+                  }
+                >
+                  {user.id !== membership.user.id && (
+                    <OverlayTrigger
+                      placement="left"
+                      overlay={
+                        <Tooltip>{membership.banned ? 'Unban' : 'Ban'}</Tooltip>
                       }
                     >
-                      {membership.banned ? (
-                        <i className="bi bi-person-fill-check fs-5"></i>
-                      ) : (
-                        <i className="bi bi-person-fill-slash fs-5"></i>
-                      )}
-                    </Button>
-                  </OverlayTrigger>
-                )}
-                {user.id === info.group.founder.id && !membership.banned && (
-                  <OverlayTrigger
-                    placement="right"
-                    overlay={
-                      <Tooltip>
-                        {membership.admin ? 'Demote' : 'Promote'}
-                      </Tooltip>
-                    }
-                  >
-                    <Button
-                      variant={membership.admin ? 'outline-primary' : 'primary'}
-                      size="sm"
-                      className="py-0"
-                      onClick={() =>
-                        fetchGroupAction(
-                          `/promote?userID=${membership.user.id}`,
-                          'PATCH'
-                        )
+                      <Button
+                        variant={
+                          membership.banned ? 'outline-danger' : 'danger'
+                        }
+                        size="sm"
+                        className="me-1 me-sm-2 py-0"
+                        onClick={() =>
+                          fetchGroupAction(
+                            `/ban?userID=${membership.user.id}`,
+                            'PATCH'
+                          )
+                        }
+                      >
+                        {membership.banned ? (
+                          <i className="bi bi-person-fill-check fs-5"></i>
+                        ) : (
+                          <i className="bi bi-person-fill-slash fs-5"></i>
+                        )}
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                  {user.id === info.group.founder.id && !membership.banned && (
+                    <OverlayTrigger
+                      placement="right"
+                      overlay={
+                        <Tooltip>
+                          {membership.admin ? 'Demote' : 'Promote'}
+                        </Tooltip>
                       }
                     >
-                      {membership.admin ? (
-                        <i className="bi bi-person-fill-down fs-5"></i>
-                      ) : (
-                        <i className="bi bi-person-fill-up fs-5"></i>
-                      )}
-                    </Button>
-                  </OverlayTrigger>
-                )}
+                      <Button
+                        variant={
+                          membership.admin ? 'outline-primary' : 'primary'
+                        }
+                        size="sm"
+                        className="py-0"
+                        onClick={() =>
+                          fetchGroupAction(
+                            `/promote?userID=${membership.user.id}`,
+                            'PATCH'
+                          )
+                        }
+                      >
+                        {membership.admin ? (
+                          <i className="bi bi-person-fill-down fs-5"></i>
+                        ) : (
+                          <i className="bi bi-person-fill-up fs-5"></i>
+                        )}
+                      </Button>
+                    </OverlayTrigger>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           {filtered.length > counter.current && (
             <div className="mt-3 d-flex justify-content-center">
               <button

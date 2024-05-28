@@ -100,7 +100,6 @@ const CommentSection = ({
           new Date(comment1.publicationDate) -
           new Date(comment2.publicationDate)
       )
-      .reverse()
       .filter((comment, i) => i < counter.current)
       .map((comment) => (
         <Comment
